@@ -15,7 +15,7 @@ In Development:
 ### Prerequisites
 * Sign up for [OpenAI](https://openai.com) and get your secret key. This is rotated periodically so needs to be updated. It is recommended to use a Python Virtual Environment.
 * Have Java (ver. 17) and Python >= 3.8 installed on your computer. 
-* Install [RabbitMQ] (https://www.rabbitmq.com). Or (the prefered way), user the official RabbitMQ docker image:
+* Install [RabbitMQ](https://www.rabbitmq.com). Or (the prefered way), user the official RabbitMQ docker image:
   * `docker pull rabbitmq`
   * `docker pull rabbitmq:3.9-management` (management provides browser gui to see queues, channels, exchanges, etc.)
 
