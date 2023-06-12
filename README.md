@@ -11,6 +11,7 @@ In Development:
 * Website (React.js)
 * iOS app (Swift, SwiftUI)
 
+---
 ### Prerequisites
 * Sign up for [OpenAI](https://openai.com) and get your secret key. This is rotated periodically so needs to be updated. It is recommended to use a Python Virtual Environment.
 * Have Java (ver. 17) and Python >= 3.8 installed on your computer. 
@@ -18,6 +19,7 @@ In Development:
   * `docker pull rabbitmq`
   * `docker pull rabbitmq:3.9-management` (management provides browser gui to see queues, channels, exchanges, etc.)
 
+---
 ### How to run 
 This will be detailed for all 3 microservices:
 
@@ -51,6 +53,7 @@ Before running, you will need to enter the following into your `.env.` file:
 * RabbitMQ username and password (default ones are already in repo `.env` file. Change if yours are different. 
 * RabbitMQ port (the one in repo is default one)
 
+---
 #### Gateway 
 1. As this is a Maven project, do:
 ```
@@ -62,6 +65,8 @@ Inside of the `applications.yml` and `application.properties`, adjust any inform
 This is connected to a `PostgreSQL` database. Start your database server before starting this application. By default, it is running on port 5234, change if needed. 
 
 This server will start on port 8080 by default. There is an optional docker file included, if you would like to setup RabbitMQ via `docker-compose`. 
+
+---
 
 #### AccountManagement
 
@@ -76,4 +81,5 @@ This is connected to a `PostgreSQL` database. Start your database server before 
 
 This server will start on port 8081 by default.
 
+---
 #### Design Diagrams (UML + ER Diagram)
