@@ -77,7 +77,7 @@ mvn spring-boot:run
 ```
 Inside of the `applications.yml` and `application.properties`, adjust any information necessary (RabbitMQ username, password, port, etc.) 
 
-This is connected to a `PostgreSQL` database. Start your database server before starting this application. By default, it is running on port 5234, change if needed. 
+This is connected to a `PostgreSQL` database. Start your database server before starting this application. By default, it is running on port 5234, change if needed. Also, a JWT used for authentication filter chain. Please provide a JWT for this, inside of `applications.properties`.
 
 This server will start on port 8081 by default.
 
