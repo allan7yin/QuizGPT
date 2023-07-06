@@ -83,3 +83,6 @@ This server will start on port 8081 by default.
 
 ---
 #### Design Diagrams (UML + ER Diagram)
+![Quiz-1](https://github.com/allan7yin/QuizGenerationApp/assets/66652405/1f4c60da-43af-4f73-a269-24daf5fe1584)
+
+
