@@ -1,0 +1,28 @@
+/* HomePage.css */
+.homepage-container {
+    background-color: #201F24;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Add more styles as needed */
+  }
+
+.homepage-title {
+    background-color: #363638;
+    width: 38%;
+    height: 50px;
+    border-radius: 10px; /* Set the border radius to create rounded edges */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #FFF
+}
+
+  /* styles/HomePage.css */
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #201F24; /* Replace this with your desired background color */
+  }
+  
+  
