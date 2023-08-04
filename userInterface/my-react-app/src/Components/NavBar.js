@@ -1,6 +1,9 @@
 import React from 'react';
 import '../Styles/NavBar.css'
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faGithub } from '@fortawesome/free-brands-svg-icons';
+
 const Navbar = () => {
   return (
     <nav className='NavContainer'>
@@ -15,7 +18,9 @@ const Navbar = () => {
           <a className='NavLink' href="/services">Export</a>
         </li>
         <li className='NavItem'>
-          <a className='NavLink' href="https://github.com/allan7yin/QuizGenerationAppGPT" target="_blank">Source</a>
+          <a className='NavLink' href="https://github.com/allan7yin/QuizGenerationAppGPT" target="_blank">
+          <FontAwesomeIcon icon={faGithub} className="Icon" /> Source
+          </a>
         </li>
       </ul>
     </nav>
