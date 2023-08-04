@@ -8,12 +8,13 @@ const LoginPage = () => {
         e.preventDefault();
     
         const loginData = {
-          Username: username,
-          Password: password,
+            username: username,
+            password: password,
+            email: "plz@uwaterloo.ca"
         };
     
         try {
-          const response = await fetch('localhost:8080', {
+          const response = await fetch('http://localhost:8080/api/account/login', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -22,7 +23,7 @@ const LoginPage = () => {
           });
     
           if (response.ok) {
-            // Handle successful login here
+            console.log("logged in")
           } else {
             // Handle login error (e.g., incorrect credentials)
           }
