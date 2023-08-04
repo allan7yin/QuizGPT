@@ -1,4 +1,4 @@
-package com.quizGpt.formManagement.Quiz.Service;
+package com.quizGpt.Gateway.Quiz.Service;
 
 import java.util.List;
 import java.util.Optional;
@@ -7,12 +7,12 @@ import org.jvnet.hk2.annotations.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 
-import com.quizGpt.formManagement.Quiz.Entity.Quiz;
-import com.quizGpt.formManagement.Quiz.Entity.QuizAttempt;
-import com.quizGpt.formManagement.Quiz.Exception.QuizAttemptNotFoundException;
-import com.quizGpt.formManagement.Quiz.Exception.QuizNotFoundException;
-import com.quizGpt.formManagement.Quiz.Repository.QuizAttemptRepository;
-import com.quizGpt.formManagement.Quiz.Repository.QuizRepository;
+import com.quizGpt.Gateway.Quiz.Entity.Quiz;
+import com.quizGpt.Gateway.Quiz.Entity.QuizAttempt;
+import com.quizGpt.Gateway.Quiz.Exception.QuizAttemptNotFoundException;
+import com.quizGpt.Gateway.Quiz.Exception.QuizNotFoundException;
+import com.quizGpt.Gateway.Quiz.Repository.QuizAttemptRepository;
+import com.quizGpt.Gateway.Quiz.Repository.QuizRepository;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;

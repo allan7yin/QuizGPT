@@ -1,4 +1,4 @@
-package com.quizGpt.formManagement.Account.Service;
+package com.quizGpt.Gateway.Account.Service;
 
 import org.springframework.amqp.core.MessageProperties;
 import org.slf4j.Logger;
@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.quizGpt.formManagement.Account.Entity.MqResponse;
-import com.quizGpt.formManagement.Account.Repository.MqResponseRepository;
+import com.quizGpt.Gateway.Account.Entity.MqResponse;
+import com.quizGpt.Gateway.Account.Repository.MqResponseRepository;
 
 import org.springframework.beans.factory.annotation.Value;
 
@@ -83,7 +83,7 @@ public class AuthMqServiceImpl implements AuthMqService {
         logger.info(JSON);
 
         try {
-            mqResponseRepository.save( new MqResponse(correlationID, JSON));
+            mqResponseRepository.save(new MqResponse(correlationID, JSON));
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
@@ -110,7 +110,7 @@ public class AuthMqServiceImpl implements AuthMqService {
     }
 
     public boolean isEntryExistsByCorrelationId(String correlationId) {
-        return mqResponseRepository.existsById(correlationId);
+        return mqResponseRepository.existsBycorrelationId(correlationId);
     }
 
 }

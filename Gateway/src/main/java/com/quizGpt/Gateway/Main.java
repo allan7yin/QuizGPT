@@ -1,4 +1,4 @@
-package com.quizGpt.formManagement;
+package com.quizGpt.Gateway;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;

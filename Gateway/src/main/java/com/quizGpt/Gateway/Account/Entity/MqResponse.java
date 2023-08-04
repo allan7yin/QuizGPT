@@ -1,4 +1,4 @@
-package com.quizGpt.formManagement.Account.Entity;
+package com.quizGpt.Gateway.Account.Entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

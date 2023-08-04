@@ -1,8 +1,8 @@
-package com.quizGpt.formManagement.Quiz.Service;
+package com.quizGpt.Gateway.Quiz.Service;
 
 import org.springframework.stereotype.Service;
 
-import com.quizGpt.formManagement.Quiz.Dto.CreateQuizRequestDto;
+import com.quizGpt.Gateway.Quiz.Dto.CreateQuizRequestDto;
 
 @Service
 public interface ProducerService {

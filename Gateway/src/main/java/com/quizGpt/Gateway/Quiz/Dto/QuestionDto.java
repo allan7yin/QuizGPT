@@ -1,4 +1,4 @@
-package com.quizGpt.formManagement.Quiz.Dto;
+package com.quizGpt.Gateway.Quiz.Dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

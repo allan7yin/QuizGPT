@@ -1,4 +1,4 @@
-package com.quizGpt.formManagement.Quiz.Exception;
+package com.quizGpt.Gateway.Quiz.Exception;
 
 public class QuizAttemptNotFoundException  extends Exception {
     public QuizAttemptNotFoundException(String errorMessage ) {

@@ -1,12 +1,14 @@
-package com.quizGpt.formManagement.Account.Service;
+package com.quizGpt.Gateway.Account.Service;
 
-import com.quizGpt.formManagement.Account.Entity.MqResponse;
-import com.quizGpt.formManagement.Account.Exception.CorrelationIdNotFound;
+import com.quizGpt.Gateway.Account.Entity.MqResponse;
+import com.quizGpt.Gateway.Account.Exception.CorrelationIdNotFound;
 
 public interface AccountService {
-    public MqResponse FindMqResponseByCorelationId(String correlationId) throws CorrelationIdNotFound;
+    public MqResponse FindMqResponseByCorrelationId(String correlationId) throws CorrelationIdNotFound;
 
     public MqResponse FindFirstMqResponse(String correlationIdOrUsername) throws CorrelationIdNotFound;
 
     public void MqDelete(MqResponse response);
+
+    public MqResponse FindFirstByResponseContaining(String username);
 }

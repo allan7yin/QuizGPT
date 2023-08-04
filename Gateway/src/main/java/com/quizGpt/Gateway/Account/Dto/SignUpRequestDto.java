@@ -1,4 +1,4 @@
-package com.quizGpt.formManagement.Account.Dto;
+package com.quizGpt.Gateway.Account.Dto;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;

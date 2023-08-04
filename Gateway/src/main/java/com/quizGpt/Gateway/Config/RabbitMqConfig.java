@@ -1,4 +1,4 @@
-package com.quizGpt.formManagement.Config;
+package com.quizGpt.Gateway.Config;
 
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;

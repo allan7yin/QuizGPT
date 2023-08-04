@@ -1,20 +1,19 @@
-package com.quizGpt.formManagement.Quiz.Service;
+package com.quizGpt.Gateway.Quiz.Service;
 
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.quizGpt.Gateway.Quiz.Dto.CreateQuizRequestDto;
+import com.quizGpt.Gateway.Quiz.Dto.QuizDto;
+import com.quizGpt.Gateway.Quiz.Entity.Quiz;
+import com.quizGpt.Gateway.Quiz.Repository.QuizRepository;
 
 import org.springframework.stereotype.Service;
 import org.modelmapper.ModelMapper;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.quizGpt.formManagement.Quiz.Dto.CreateQuizRequestDto;
-import com.quizGpt.formManagement.Quiz.Dto.QuizDto;
-import com.quizGpt.formManagement.Quiz.Entity.Quiz;
-import com.quizGpt.formManagement.Quiz.Repository.QuizRepository;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;

@@ -1,12 +1,12 @@
-package com.quizGpt.formManagement.Account.Service;
+package com.quizGpt.Gateway.Account.Service;
 
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.quizGpt.formManagement.Account.Entity.MqResponse;
-import com.quizGpt.formManagement.Account.Exception.CorrelationIdNotFound;
-import com.quizGpt.formManagement.Account.Repository.MqResponseRepository;
+import com.quizGpt.Gateway.Account.Entity.MqResponse;
+import com.quizGpt.Gateway.Account.Exception.CorrelationIdNotFound;
+import com.quizGpt.Gateway.Account.Repository.MqResponseRepository;
 
 import lombok.AllArgsConstructor;
 
@@ -17,7 +17,7 @@ public class AccountServiceImpl implements AccountService{
     private MqResponseRepository mqResponseRepository;
 
     @Override
-    public MqResponse FindMqResponseByCorelationId(String correlationId) throws CorrelationIdNotFound {
+    public MqResponse FindMqResponseByCorrelationId(String correlationId) throws CorrelationIdNotFound {
         // like to use <Optional> when the thing being returned may not be present. Often used when querying database
         Optional<MqResponse> response = mqResponseRepository.findById(correlationId);
 
@@ -43,6 +43,19 @@ public class AccountServiceImpl implements AccountService{
     @Override
     public void MqDelete(MqResponse response) {
         mqResponseRepository.delete(response);
+    }
+    
+    @Override
+    public MqResponse FindFirstByResponseContaining(String username) {
+        // Use the findOne() method to retrieve the MqResponse entity by CorrelationId
+        Optional<MqResponse> optionalMqResponse = Optional.ofNullable(mqResponseRepository.findFirstByResponseContaining(username));
+
+        // Check if the entity was found and return it, otherwise return null or throw an exception as needed
+        if (optionalMqResponse.isPresent()) {
+            return optionalMqResponse.get();
+        } else {
+            return null; // or throw an exception
+        }
     }
     
 }

@@ -1,9 +1,9 @@
-package com.quizGpt.formManagement.Quiz.Service;
+package com.quizGpt.Gateway.Quiz.Service;
 
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.quizGpt.formManagement.Quiz.Dto.QuizDto;
+import com.quizGpt.Gateway.Quiz.Dto.QuizDto;
 
 @Service
 public interface ConsumerService {

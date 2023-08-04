@@ -1,4 +1,4 @@
-package com.quizGpt.formManagement.Quiz.Dto;
+package com.quizGpt.Gateway.Quiz.Dto;
 
 import java.util.List;
 

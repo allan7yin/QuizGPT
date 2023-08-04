@@ -1,14 +1,13 @@
-package com.quizGpt.formManagement.Account.Controller;
-
+package com.quizGpt.Gateway.Account.Controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.quizGpt.formManagement.Account.Dto.LoginRequestDto;
-import com.quizGpt.formManagement.Account.Dto.LoginResponseDto;
-import com.quizGpt.formManagement.Account.Dto.SignUpRequestDto;
-import com.quizGpt.formManagement.Account.Entity.MqResponse;
-import com.quizGpt.formManagement.Account.Exception.CorrelationIdNotFound;
-import com.quizGpt.formManagement.Account.Service.AccountService;
-import com.quizGpt.formManagement.Account.Service.AuthMqServiceImpl;
+import com.quizGpt.Gateway.Account.Dto.LoginRequestDto;
+import com.quizGpt.Gateway.Account.Dto.LoginResponseDto;
+import com.quizGpt.Gateway.Account.Dto.SignUpRequestDto;
+import com.quizGpt.Gateway.Account.Entity.MqResponse;
+import com.quizGpt.Gateway.Account.Exception.CorrelationIdNotFound;
+import com.quizGpt.Gateway.Account.Service.AccountService;
+import com.quizGpt.Gateway.Account.Service.AuthMqServiceImpl;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -72,9 +71,9 @@ public class AccountController {
     @PostMapping("/account/signup")
     public @NotNull ResponseEntity SignUpUser(@RequestBody SignUpRequestDto request) throws JsonProcessingException, TimeoutException, CorrelationIdNotFound, InterruptedException, ExecutionException {
         SignUpRequestDto loginDto = null;
-        authMqService.SendSignUpRequestDto(request); 
+        String correlationId = authMqService.SendSignUpRequestDto(request); 
 
-        Future<String> response = GetResponseOrWait(request.getUsername());
+        Future<String> response = GetResponseOrWait(correlationId);
         String trueResponse = response.get();
         
         if (trueResponse != null) {
@@ -91,7 +90,7 @@ public class AccountController {
 
     private CompletableFuture<String> GetResponseOrWait(String correlationId) throws TimeoutException, CorrelationIdNotFound, InterruptedException {
         long startTime = System.currentTimeMillis();
-        long timeout = 5000; // Timeout in milliseconds
+        long timeout = 60000; // Timeout in milliseconds
 
         CompletableFuture<String> futureResponse = new CompletableFuture<>();
         MqResponse response = null;
@@ -101,15 +100,19 @@ public class AccountController {
             boolean entryExists = checkEntryInTable(correlationId);
 
             if (entryExists) {
-                response = accountService.FindMqResponseByCorelationId(correlationId);
+                response = accountService.FindMqResponseByCorrelationId(correlationId);
                 logger.info(response.getResponse());
                 futureResponse.complete(response.getResponse().replace("response=", ""));
-                accountService.MqDelete(response);
+                // accountService.MqDelete(response);
                 return futureResponse;
             }
 
             // Wait for 100 milliseconds before checking again
-            Thread.sleep(100);
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
         throw  new TimeoutException("Timeout: Took too long to fetch (> 5seconds) " + correlationId);

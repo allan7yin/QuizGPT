@@ -1,4 +1,4 @@
-package com.quizGpt.formManagement.Account.Service;
+package com.quizGpt.Gateway.Account.Service;
 
 import org.springframework.stereotype.Component;
 

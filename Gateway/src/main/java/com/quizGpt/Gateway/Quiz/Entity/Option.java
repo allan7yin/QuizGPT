@@ -1,4 +1,4 @@
-package com.quizGpt.formManagement.Quiz.Entity;
+package com.quizGpt.Gateway.Quiz.Entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

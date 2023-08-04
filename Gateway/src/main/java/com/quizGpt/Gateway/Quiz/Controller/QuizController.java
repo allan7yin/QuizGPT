@@ -1,4 +1,4 @@
-package com.quizGpt.formManagement.Quiz.Controller;
+package com.quizGpt.Gateway.Quiz.Controller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.quizGpt.formManagement.Quiz.Dto.CreateQuizRequestDto;
-import com.quizGpt.formManagement.Quiz.Dto.QuizDto;
-import com.quizGpt.formManagement.Quiz.Entity.Quiz;
-import com.quizGpt.formManagement.Quiz.Exception.QuizNotFoundException;
-import com.quizGpt.formManagement.Quiz.Service.QuizServiceImpl;
-import com.quizGpt.formManagement.Quiz.Service.RabbitMqServiceImpl;
+import com.quizGpt.Gateway.Quiz.Dto.CreateQuizRequestDto;
+import com.quizGpt.Gateway.Quiz.Dto.QuizDto;
+import com.quizGpt.Gateway.Quiz.Entity.Quiz;
+import com.quizGpt.Gateway.Quiz.Exception.QuizNotFoundException;
+import com.quizGpt.Gateway.Quiz.Service.QuizServiceImpl;
+import com.quizGpt.Gateway.Quiz.Service.RabbitMqServiceImpl;
 
 import lombok.AllArgsConstructor;
 
