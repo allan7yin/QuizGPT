@@ -6,6 +6,7 @@ const NavContainer = styled.nav`
   color: #fff;
   padding: 20px;
   justify-content: center;
+  font-family: 'Overpass', sans-serif;
 `;
 
 const NavList = styled.ul`
@@ -39,13 +40,13 @@ const Navbar = () => {
           <NavLink href="/">Create Quiz</NavLink>
         </NavItem>
         <NavItem>
-          <NavLink href="/about">My Quizes</NavLink>
+          <NavLink href="/about">Quizes</NavLink>
         </NavItem>
         <NavItem>
           <NavLink href="/services">Export</NavLink>
         </NavItem>
         <NavItem>
-          <NavLink href="/contact">Contact</NavLink>
+          <NavLink href="https://github.com/allan7yin/QuizGenerationAppGPT" target="_blank">Source</NavLink>
         </NavItem>
       </NavList>
     </NavContainer>

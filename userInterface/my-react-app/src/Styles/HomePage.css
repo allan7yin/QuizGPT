@@ -1,28 +1,86 @@
 /* HomePage.css */
 .homepage-container {
-    background-color: #201F24;
+    background-color: #202023;
     display: flex;
     flex-direction: column;
     align-items: center;
     /* Add more styles as needed */
   }
-
 .homepage-title {
+  padding-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #FFF;
+  font-family: 'Overpass', sans-serif;
+  border-radius: 10px; /* Set the border radius to create rounded edges */
+  font-size: 50px;
+  font-weight: bolder
+  
+}
+.homepage-subtitle {
     background-color: #363638;
-    width: 38%;
+    padding-left: 15px;
+    padding-right: 15px;
     height: 50px;
     border-radius: 10px; /* Set the border radius to create rounded edges */
     display: flex;
     justify-content: center;
     align-items: center;
-    color: #FFF
+    color: #FFF;
+    font-family: 'Overpass', sans-serif;
+    font-size: larger;
 }
 
   /* styles/HomePage.css */
 body {
     margin: 0;
     padding: 0;
-    background-color: #201F24; /* Replace this with your desired background color */
-  }
+    background-color: #202023; /* Replace this with your desired background color */
+}
+
+.Container {
+  padding-top: 30px;
+  display: flex;
+  gap: 10px;
+  width: 60%
+}
+
+.Prompt {
+  flex: 1;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  border: transparent;
+  width: 100%;
+  padding: 10px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.Prompt-input {
+  background-color: #363638;
+  font-family: 'Overpass', sans-serif;
+  border-radius: 10px;
+  border: transparent;
+  width: 80%;
+  height: 30px; 
+  padding: 5px;
+  box-sizing: border-box;
+  font-size: 16px;
+  color: #FFF;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.Prompt-input:focus {
+  /* Add your desired styles for focused state */
+  border: 2px solid transparent; /* For example, adding a white border */
+}
+
+.Prompt-input:active {
+  /* Add your desired styles for focused state */
+  border: 2px solid transparent; /* For example, adding a white border */
+}
+
   
   
