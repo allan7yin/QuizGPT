@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import '../Styles/LoginButton.css'
 
 const LoginButton = () => {
     const navigate = useNavigate(); 
@@ -7,7 +8,7 @@ const LoginButton = () => {
         navigate('/login');
     };
 
-  return <button onClick={handleLoginClick}>Login</button>;
+  return <button className='login-button' onClick={handleLoginClick}>Login</button>;
 };
 
 export default LoginButton;

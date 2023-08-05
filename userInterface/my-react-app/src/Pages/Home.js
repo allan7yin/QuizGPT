@@ -1,6 +1,5 @@
-import React from 'react';
 import '../Styles/HomePage.css'
-import { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Navbar from '../Components/NavBar';
 import LoginButton from '../Components/LoginButton';
@@ -8,16 +7,37 @@ import LoginButton from '../Components/LoginButton';
 const HomePage = () => {
     const [inputNumOptions, setInputNumOptions] = useState('');
     const [inputNumQuestions, setInputNumQuestions] = useState('');
+    const [authenticated, setAuthenticated] = useState(false);
 
     const handleInputNumOptionsChange = (event) => {
         const { value } = event.target;
         setInputNumOptions(value.replace(/\D/g, '')); // Remove all non-digit characters
-        };
+    };
     
     const handleInputNumQuestionsChange = (event) => {
         const { value } = event.target;
         setInputNumQuestions(value.replace(/\D/g, '')); // Remove all non-digit characters
-        };
+    };
+
+    useEffect(() => {
+        // Check if the JWT is valid and update the state accordingly
+        setAuthenticated(isJwtValid());
+      }, []);
+
+    const isJwtValid = () => {
+        const jwt = localStorage.getItem('jwt');
+        if (!jwt) return false;
+    
+        // Decode the JWT to check if it's expired
+        try {
+            const decodedJwt = JSON.parse(atob(jwt.split('.')[1]));
+            const expirationTime = decodedJwt.exp * 1000; // Convert to milliseconds
+            return expirationTime > Date.now();
+        } catch (error) {
+            // If there's an error decoding or the JWT is invalid, return false
+            return false;
+        }
+    };
 
 
     return(
@@ -50,9 +70,11 @@ const HomePage = () => {
                 </div>
             </div>
 
+            {authenticated ? null : (
             <div className='login-Button-container'>
                 <LoginButton />
             </div>
+            )}
         </div>
         </>
     )

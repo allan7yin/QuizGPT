@@ -32,7 +32,7 @@
   align-items: center;
   color: #FFF;
   font-family: 'Overpass', sans-serif;
-  border-radius: 10px; /* Set the border radius to create rounded edges */
+  border-radius: 7px; /* Set the border radius to create rounded edges */
   font-size: 50px;
   font-weight: bolder
   
@@ -42,7 +42,7 @@
     padding-left: 15px;
     padding-right: 15px;
     height: 50px;
-    border-radius: 10px; /* Set the border radius to create rounded edges */
+    border-radius: 7px; /* Set the border radius to create rounded edges */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -68,7 +68,7 @@ body {
 .Prompt {
   flex: 1;
   border: 1px solid #ccc;
-  border-radius: 10px;
+  border-radius: 7px;
   border: transparent;
   width: 100%;
   padding: 10px;
@@ -79,7 +79,7 @@ body {
 .Prompt-input {
   background-color: #363638;
   font-family: 'Overpass', sans-serif;
-  border-radius: 10px;
+  border-radius: 7px;
   border: transparent;
   width: 80%;
   height: 30px; 

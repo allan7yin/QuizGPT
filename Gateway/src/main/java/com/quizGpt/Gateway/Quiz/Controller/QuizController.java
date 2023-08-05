@@ -23,7 +23,7 @@ import com.quizGpt.Gateway.Quiz.Service.RabbitMqServiceImpl;
 import lombok.AllArgsConstructor;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api")
 public class QuizController {
 
     @Autowired

@@ -48,22 +48,30 @@ public class AccountController {
         
         Future<String> response = GetResponseOrWait(correlationID);
         String trueResponse = response.get();
+        String responseJSON = trueResponse.substring(21);
         
 
         LoginResponseDto loginDto = null;
-        if (trueResponse != null) {
+        if (responseJSON != null) {
 
-            logger.info(trueResponse);
+            logger.info(responseJSON);
 
-            loginDto = objectMapper.readValue(trueResponse, LoginResponseDto.class);
+
+            loginDto = objectMapper.readValue(responseJSON, LoginResponseDto.class);
 
             session.setAttribute("username", loginDto.getUsername());
             session.setAttribute("roles", loginDto.getRoles());
         }
         
+        if (responseJSON.contains("OK") && responseJSON.contains("200")) { // JSON mapper not working too well here, manual intervention for now 
+            loginDto.setStatusCode("OK");
+            loginDto.setStatusCodeValue(200);
+        }
+
         if (loginDto.getStatusCodeValue() == 200) {
             return ResponseEntity.ok(loginDto);
         } else {// if (loginDto.getStatusCodeValue() == 400) {
+            logger.info("error");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(loginDto);
         }
     }
