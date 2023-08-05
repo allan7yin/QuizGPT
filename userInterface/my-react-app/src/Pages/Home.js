@@ -38,7 +38,7 @@ const HomePage = () => {
 
         // make API call to create quiz, will return a 
         try {
-            const response = await fetch('http://localhost:8080/api/createQuizTest', {
+            const response = await fetch('http://localhost:8080/api/quiz', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -47,9 +47,10 @@ const HomePage = () => {
           });
         
             if (response.ok) {
-                
+                const data = await response.json()
+                console.log(data)
             } else {
-                
+                console.log("Something went wrong ...")
             }
         } catch (error) {
             console.error('Create Quiz Request failed:', error.message);

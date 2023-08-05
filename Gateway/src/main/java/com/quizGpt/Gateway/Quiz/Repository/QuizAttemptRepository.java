@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.quizGpt.Gateway.Quiz.Entity.QuizAttempt;
 
 @Repository
-public interface QuizAttemptRepository extends JpaRepository<QuizAttempt, Long> {
+public interface QuizAttemptRepository extends JpaRepository<QuizAttempt, String> {
     
 }

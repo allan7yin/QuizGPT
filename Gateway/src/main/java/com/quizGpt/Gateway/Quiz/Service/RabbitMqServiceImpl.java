@@ -69,6 +69,6 @@ public class RabbitMqServiceImpl implements ProducerService, ConsumerService{
         // Long quizId = quiz.getId();
         // json = jsonToJavaObjectMapper.writeValueAsString(quiz);
         logger.info(quiz.toString());
-        // quizRepository.save(quiz);
+        quizRepository.save(quiz);
     }
 }

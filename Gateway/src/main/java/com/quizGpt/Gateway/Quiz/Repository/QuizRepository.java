@@ -6,5 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.quizGpt.Gateway.Quiz.Entity.Quiz;
 
 @Repository
-public interface QuizRepository extends JpaRepository<Quiz, Long>{
+public interface QuizRepository extends JpaRepository<Quiz, String>{
+    public boolean existsById(String Id);
 }

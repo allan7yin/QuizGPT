@@ -7,5 +7,4 @@ import com.quizGpt.Gateway.Quiz.Dto.CreateQuizRequestDto;
 @Service
 public interface ProducerService {
     void SendMessageToGptServer(CreateQuizRequestDto message);
-    
 }

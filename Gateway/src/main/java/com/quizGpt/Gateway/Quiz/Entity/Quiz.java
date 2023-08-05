@@ -24,8 +24,7 @@ import lombok.ToString;
 @Table(name = "Quizes")
 public class Quiz {
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     @OneToMany(targetEntity = Question.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name="quizId_fk", referencedColumnName = "id")

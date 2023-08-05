@@ -18,10 +18,10 @@ import lombok.ToString;
 public class QuizDto {
     @NotBlank
     @JsonProperty("id")
-    private Long id;
+    private String id;
 
-    @JsonProperty("number")
-    private Long number;
+    // @JsonProperty("number")
+    // private Long number;
 
     @NotBlank
     @JsonProperty("questions")

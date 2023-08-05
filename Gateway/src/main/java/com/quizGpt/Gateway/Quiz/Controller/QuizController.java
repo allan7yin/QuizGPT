@@ -2,6 +2,11 @@ package com.quizGpt.Gateway.Quiz.Controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeoutException;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +18,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.quizGpt.Gateway.Account.Controller.AccountController;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quizGpt.Gateway.Quiz.Dto.CreateQuizRequestDto;
 import com.quizGpt.Gateway.Quiz.Dto.QuizDto;
 import com.quizGpt.Gateway.Quiz.Entity.Quiz;
@@ -23,8 +29,6 @@ import com.quizGpt.Gateway.Quiz.Service.RabbitMqServiceImpl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import lombok.AllArgsConstructor;
 
 @RestController
 @RequestMapping("/api")
@@ -36,17 +40,29 @@ public class QuizController {
     @Autowired
     private ModelMapper modelMapper;
 
-    // @Autowired
+    @Autowired
     private QuizServiceImpl quizService;    
 
     private final Logger logger = LoggerFactory.getLogger(QuizController.class);
 
-    @PostMapping("/createQuiz")
-    public void CreateQuiz(@RequestBody CreateQuizRequestDto createQuizRequestDto) {
+    @PostMapping("/quiz")
+    public String CreateQuiz(@RequestBody CreateQuizRequestDto createQuizRequestDto) throws JsonProcessingException, QuizNotFoundException, TimeoutException, InterruptedException, ExecutionException {
+        String generatedId = UUID.randomUUID().toString();
+        createQuizRequestDto.setId(generatedId);
+        logger.info(createQuizRequestDto.toString());
         rabbitMqService.SendMessageToGptServer(createQuizRequestDto);
+
+        // quiz generated with this is stored in Database. Find it via the uuid we have, and return it 
+        Future<Quiz> futureQuiz = GetResponseOrWait(generatedId);
+        Quiz response = futureQuiz.get();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String responseJSON = objectMapper.writeValueAsString(response);
+        logger.info(responseJSON);
+        return responseJSON;
     }
 
-    @PostMapping("/createQuizTest")
+    @PostMapping("/quiz/test")
     public String CreateQuizTest(@RequestBody CreateQuizRequestDto createQuizRequestDto) {
         logger.info(createQuizRequestDto.toString());
         return createQuizRequestDto.getId();
@@ -61,20 +77,51 @@ public class QuizController {
             QuizDto quizDto = modelMapper.map(quiz, QuizDto.class);
             quizDtos.add(quizDto);
         }
-
         return quizDtos;
     }
 
     @GetMapping("/quiz/{id}")
-    public QuizDto GetQuiz(@PathVariable Long id) throws QuizNotFoundException {
+    public QuizDto GetQuiz(@PathVariable String id) throws QuizNotFoundException {
         Quiz quiz =  quizService.GetQuizById(id);
         var quizDto = modelMapper.map(quiz, QuizDto.class);
         return quizDto;
     }
 
     @DeleteMapping("/quiz/{id}")
-    public void DeleteQuiz(@PathVariable Long id) throws QuizNotFoundException {
+    public void DeleteQuiz(@PathVariable String id) throws QuizNotFoundException {
         quizService.DeleteQuiz(id);
     }
     
+    private CompletableFuture<Quiz> GetResponseOrWait(String generatedId) throws QuizNotFoundException, TimeoutException {
+        long startTime = System.currentTimeMillis();
+        long timeout = 60000; // Timeout in milliseconds
+
+        CompletableFuture<Quiz> futureResponse = new CompletableFuture<>();
+        Quiz response = null;
+
+        while (System.currentTimeMillis() - startTime < timeout) {
+            // Check if entry is present in the database table
+            boolean entryExists = checkEntryInTable(generatedId);
+
+            if (entryExists) {
+                response = quizService.GetQuizById(generatedId);
+                futureResponse.complete(response);
+                // accountService.MqDelete(response);
+                return futureResponse;
+            }
+
+            // Wait for 100 milliseconds before checking again
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        throw  new TimeoutException("Timeout: Took too long to fetch (> 5seconds) " + generatedId);
+    }
+
+    private boolean checkEntryInTable(String correlationId) {
+        return quizService.isEntryExistsByGeneratedId(correlationId);
+    }
 }

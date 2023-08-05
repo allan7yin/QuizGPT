@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import org.jvnet.hk2.annotations.Service;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Component;
 
 import com.quizGpt.Gateway.Quiz.Entity.Quiz;
 import com.quizGpt.Gateway.Quiz.Entity.QuizAttempt;
@@ -18,6 +18,9 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 @Service
+@AllArgsConstructor
+@NoArgsConstructor
+@Component
 public class QuizServiceImpl implements QuizService {
 
     @Autowired
@@ -33,7 +36,7 @@ public class QuizServiceImpl implements QuizService {
     }
 
     @Override
-    public Quiz GetQuizById(Long id) throws QuizNotFoundException {
+    public Quiz GetQuizById(String id) throws QuizNotFoundException {
         Optional<Quiz> response = quizRepository.findById(id);
 
         if (response.isPresent()) {
@@ -49,7 +52,7 @@ public class QuizServiceImpl implements QuizService {
     }
 
     @Override
-    public void DeleteQuiz(Long id) throws QuizNotFoundException {
+    public void DeleteQuiz(String id) throws QuizNotFoundException {
         quizRepository.deleteById(id);
     }
 
@@ -60,7 +63,7 @@ public class QuizServiceImpl implements QuizService {
     }
 
     @Override
-    public QuizAttempt GetQuizAttemptById(Long id) throws QuizAttemptNotFoundException {
+    public QuizAttempt GetQuizAttemptById(String id) throws QuizAttemptNotFoundException {
         Optional<QuizAttempt> response = quizAttemptRepository.findById(id);
 
         if (response.isPresent()) {
@@ -76,8 +79,12 @@ public class QuizServiceImpl implements QuizService {
     }
 
     @Override
-    public void DeleteQuizAttempt(Long id) {
+    public void DeleteQuizAttempt(String id) {
         quizAttemptRepository.deleteById(id);
+    }
+
+    public boolean isEntryExistsByGeneratedId(String Id) {
+        return quizRepository.existsById(Id);
     }
     
 }

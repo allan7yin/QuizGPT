@@ -81,13 +81,32 @@ def parse_response(text): # need numOptions to know how many to parse into
     
 def chatgpt_request(topic, numQuestions, numOptions, difficulty):
     if env == "mock":
-        response = openai.Completion.create( 
-        model="text-davinci-003",
-        # prompt=generate_prompt(topic, numQuestions, numOptions, difficulty),
-        prompt=MOCK_PROMPT,
-        temperature=0.8,
-        max_tokens=1000
-        )
+        # response = openai.Completion.create( 
+        # model="text-davinci-003",
+        # # prompt=generate_prompt(topic, numQuestions, numOptions, difficulty),
+        # prompt=MOCK_PROMPT,
+        # temperature=0.8,
+        # max_tokens=1000
+        # )
+        response = {
+        "choices": [
+            {
+                "finish_reason": "stop",
+                "index": 0,
+                "logprobs": None,
+                "text": "\nQuestion 1: What is the result of 75 + 16?\nA: 91\nB: 81\nC: 89\nD: 71\nAnswer: A\n\nQuestion 2: What is the result of 67 + 97?\nA: 154\nB: 164\nC: 174\nD: 144\nAnswer: B\n\nQuestion 3: What is the result of 57 + 37?\nA: 94\nB: 76\nC: 84\nD: 92\nAnswer: A\n\nQuestion 4: What is the result of 16 + 17?\nA: 33\nB: 31\nC: 37\nD: 34\nAnswer: A\n\nQuestion 5: What is the result of 73 + 97?\nA: 170\nB: 160\nC: 150\nD: 180\nAnswer: A"
+            }
+        ],
+        "created": 1686432460,
+        "id": "cmpl-7Q0PUWmJZqoKTVr2Q4M5VSXkFBNKh",
+        "model": "text-davinci-003",
+        "object": "text_completion",
+        "usage": {
+            "completion_tokens": 169,
+            "prompt_tokens": 166,
+            "total_tokens": 335
+        }
+}
     else:
         response = openai.Completion.create( 
         model="text-davinci-003",
@@ -175,15 +194,21 @@ def home():
     app.logger.info("started flask application - quizgpt service")
 
 # complete this one time, first time app is started
-@app.before_first_request
-def startup():
-    app.logger.info('Starting RabbitMQ thread')
-    rabbitmq_thread = threading.Thread(target=start_consuming)
-    rabbitmq_thread.start()
+# THIS HAS BEEN DEPRACATED 
+# @app.before_first_request
+# def startup():
+#     app.logger.info('Starting RabbitMQ thread')
+#     rabbitmq_thread = threading.Thread(target=start_consuming)
+#     rabbitmq_thread.start()
 
-
+print('Starting Flask app. Environment: ', env)
+print('Starting RabbitMQ thread')
+app.logger.info('Logging test')
+rabbitmq_thread = threading.Thread(target=start_consuming)
+rabbitmq_thread.start()
 if __name__ == "__main__":
-    app.logger.info('Starting Flask app. Environment: ', env)
-    if env == "dev":
+    app.logger.info('Starting Flask app. Environment: ' + env)
+    if env == "dev" or env == "mock":
         app.logger.info("In dev environment.")
         app.run(port=5000)
+
