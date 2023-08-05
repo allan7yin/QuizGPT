@@ -1,50 +1,67 @@
 import '../Styles/HomePage.css'
 import React, { useEffect, useState } from 'react';
+import { useQuizForm } from '../Hooks/useQuizForm';
 
 import Navbar from '../Components/NavBar';
 import LoginButton from '../Components/LoginButton';
+import myImage from '../Images/answer.png';
 
 const HomePage = () => {
-    const [inputNumOptions, setInputNumOptions] = useState('');
-    const [inputNumQuestions, setInputNumQuestions] = useState('');
+    const { inputNumOptions, setInputNumOptions, inputNumQuestions, setInputNumQuestions, inputTopic, setInputTopic, inputDifficulty, setInputDifficulty, handleInputNumOptionsChange, handleInputNumQuestionsChange } = useQuizForm();
     const [authenticated, setAuthenticated] = useState(false);
 
-    const handleInputNumOptionsChange = (event) => {
-        const { value } = event.target;
-        setInputNumOptions(value.replace(/\D/g, '')); // Remove all non-digit characters
-    };
-    
-    const handleInputNumQuestionsChange = (event) => {
-        const { value } = event.target;
-        setInputNumQuestions(value.replace(/\D/g, '')); // Remove all non-digit characters
-    };
-
     useEffect(() => {
-        // Check if the JWT is valid and update the state accordingly
         setAuthenticated(isJwtValid());
-      }, []);
+    }, []);
 
     const isJwtValid = () => {
         const jwt = localStorage.getItem('jwt');
         if (!jwt) return false;
-    
-        // Decode the JWT to check if it's expired
         try {
             const decodedJwt = JSON.parse(atob(jwt.split('.')[1]));
-            const expirationTime = decodedJwt.exp * 1000; // Convert to milliseconds
+            const expirationTime = decodedJwt.exp * 1000; 
             return expirationTime > Date.now();
         } catch (error) {
-            // If there's an error decoding or the JWT is invalid, return false
             return false;
         }
     };
 
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        const loginData = {
+            topic: inputTopic,
+            numberOfQuestions: inputNumQuestions,
+            numberOfOptionsPerQuestion: inputNumOptions,
+            difficulty: inputDifficulty
+        }
+
+        // make API call to create quiz, will return a 
+        try {
+            const response = await fetch('http://localhost:8080/api/createQuizTest', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(loginData),
+          });
+        
+            if (response.ok) {
+                
+            } else {
+                
+            }
+        } catch (error) {
+            console.error('Create Quiz Request failed:', error.message);
+        }
+    }
 
     return(
         <>
         <Navbar />
         <div className="homepage-container">
             <div className="homepage-title"> QuizGPT </div>
+            <img src={myImage} alt="My Image" className='home-image' />
             <div className="homepage-subtitle"> 
                 Welcome to a quick and easy way to generate multiple choice quizeses!
             </div>
@@ -55,9 +72,9 @@ const HomePage = () => {
                 </p>
             </div>
 
-            <div className='Container'>
+            <form className='Container' onSubmit={handleSubmit}>
                 <div className='Prompt'>
-                    <input className='Prompt-input' type="text" placeholder="Topic"/>
+                    <input className='Prompt-input' type="text" placeholder="Topic" onChange={(event) => setInputTopic(event.target.value)} value={inputTopic} /> 
                 </div>
                 <div className='Prompt'>
                     <input className='Prompt-input' type="text" placeholder="Number of Questions" onChange={handleInputNumQuestionsChange} value={inputNumQuestions}/>
@@ -66,9 +83,12 @@ const HomePage = () => {
                     <input className='Prompt-input' type="text" placeholder="Number of Options" onChange={handleInputNumOptionsChange} value={inputNumOptions}/>
                 </div>
                 <div className='Prompt'>
-                    <input className='Prompt-input' type="text" placeholder="Difficulty"/>
+                    <input className='Prompt-input' type="text" placeholder="Difficulty" onChange={(e) => setInputDifficulty(e.target.value)} value={inputDifficulty}/>
                 </div>
-            </div>
+                <div className='Prompt'> 
+                    <button className='Prompt-input-submit-button'> Submit </button>
+                </div>
+            </form>
 
             {authenticated ? null : (
             <div className='login-Button-container'>

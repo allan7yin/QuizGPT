@@ -1,7 +1,11 @@
 package com.quizGpt.Gateway.Quiz.Dto;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.springframework.data.annotation.Id;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import jakarta.persistence.GeneratedValue;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,9 +18,10 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class CreateQuizRequestDto {
-    @NotBlank
-    @JsonProperty("id")
-    private Long id;
+    @Id
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "org.hibernate.id.UUIDGenerator")
+    private String id;
 
     @NotBlank
     @JsonProperty("topic")
@@ -33,5 +38,4 @@ public class CreateQuizRequestDto {
     @NotBlank
     @JsonProperty("difficulty")
     private String difficulty;
-    
 }

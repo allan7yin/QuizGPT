@@ -13,12 +13,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.quizGpt.Gateway.Account.Controller.AccountController;
 import com.quizGpt.Gateway.Quiz.Dto.CreateQuizRequestDto;
 import com.quizGpt.Gateway.Quiz.Dto.QuizDto;
 import com.quizGpt.Gateway.Quiz.Entity.Quiz;
 import com.quizGpt.Gateway.Quiz.Exception.QuizNotFoundException;
 import com.quizGpt.Gateway.Quiz.Service.QuizServiceImpl;
 import com.quizGpt.Gateway.Quiz.Service.RabbitMqServiceImpl;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import lombok.AllArgsConstructor;
 
@@ -35,9 +39,17 @@ public class QuizController {
     // @Autowired
     private QuizServiceImpl quizService;    
 
-    @PostMapping("/quiz")
+    private final Logger logger = LoggerFactory.getLogger(QuizController.class);
+
+    @PostMapping("/createQuiz")
     public void CreateQuiz(@RequestBody CreateQuizRequestDto createQuizRequestDto) {
         rabbitMqService.SendMessageToGptServer(createQuizRequestDto);
+    }
+
+    @PostMapping("/createQuizTest")
+    public String CreateQuizTest(@RequestBody CreateQuizRequestDto createQuizRequestDto) {
+        logger.info(createQuizRequestDto.toString());
+        return createQuizRequestDto.getId();
     }
 
     @GetMapping("/quizzes")

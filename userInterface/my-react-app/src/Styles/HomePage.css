@@ -1,4 +1,9 @@
-/* HomePage.css */
+.home-image {
+  width: 100px;
+  height: 100px;
+  margin-bottom: 50px;
+}
+
 .description-Container {
   display: flex;
   justify-content: center;
@@ -23,6 +28,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-top: 5%;
     /* Add more styles as needed */
   }
 .homepage-title {
@@ -71,7 +77,6 @@ body {
   border-radius: 7px;
   border: transparent;
   width: 100%;
-  padding: 10px;
   outline: none;
   box-sizing: border-box;
 }
@@ -83,7 +88,6 @@ body {
   border: transparent;
   width: 80%;
   height: 30px; 
-  padding: 10px;
   box-sizing: border-box;
   font-size: 16px;
   color: #FFF;
@@ -97,4 +101,18 @@ body {
   right: 20px;
 }
   
+.Prompt-input-submit-button {
+  background-color: #81E6D9;
+  font-family: 'Overpass', sans-serif;
+  border-radius: 7px;
+  border: transparent;
+  width: 50%;
+  height: 30px; 
+  box-sizing: border-box;
+  font-size: 16px;
+  color: #202023;
+  outline: none;
+  box-sizing: border-box;
+  font-weight: bolder;
+}
   
