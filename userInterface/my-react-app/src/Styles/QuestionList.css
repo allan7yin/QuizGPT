@@ -7,6 +7,7 @@
     color: #FFF;
     flex-wrap: wrap;
     gap: 20px;
+    margin-bottom: 50px;
 }
 
 .question-list-title {
@@ -27,10 +28,7 @@
     color: #202023; 
     border-radius: 10px;
     padding: 20px;
-
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     flex-direction: column;
-
     display: flex;
     align-items: center; /* Center the question text horizontally */
     text-align: center;
@@ -38,7 +36,7 @@
 
 .question {
     width: 100%; /* Set the question width to 100% */
-    font-size: 117%;
+    font-size: 120%;
     font-family: 'Overpass', sans-serif;
     margin-bottom: 15px; /* Add some space below the question */
 }

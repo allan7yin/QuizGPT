@@ -1,5 +1,5 @@
 .NavContainer {
-    background-color: #F4EDE4;
+    background-color: #201F24; 
     color: #fff;
     padding: 20px;
     justify-content: center;
@@ -18,7 +18,7 @@
 }
 
 .NavLink {
-    color: #201F24;
+    color: #fff;
     text-decoration: none;
     padding: 8px;
     border-radius: 5px;

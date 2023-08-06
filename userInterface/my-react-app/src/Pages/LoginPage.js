@@ -57,7 +57,6 @@ const LoginPage = () => {
 
     return (
         <>
-        <Navbar />
         <div className="login-container">
           <div className="login-box">
             <h2>Sign in</h2>

@@ -12,7 +12,6 @@ const QuizPage = () => {
 
     return (
         <>
-        <Navbar />
         <div className='quiz-container'>
             <h1 className='quiz-title'> Generated Quiz </h1>
             <QuestionList questions={questions} answers={answers} options={options} />

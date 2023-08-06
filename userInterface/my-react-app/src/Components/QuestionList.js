@@ -19,12 +19,14 @@ const QuestionList = ({ questions, options, answers }) => {
                             {option}
                         </label>
                     </div>
-
                 ))}
             </div>
         </form>
       ))}
+      <button> submit </button>
+      <button> save </button>
     </div>
+    
   );
 };
 

@@ -30,12 +30,13 @@
     align-items: center;
     margin-top: 5%;
   }
+  
 .homepage-title {
   padding-bottom: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
-  color: #FFF;
+  color: #201F24;
   font-family: 'Overpass', sans-serif;
   border-radius: 7px; /* Set the border radius to create rounded edges */
   font-size: 50px;

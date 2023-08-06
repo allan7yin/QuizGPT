@@ -1,11 +1,12 @@
 import React from 'react';
-import '../Styles/NavBar.css'
+import '../Styles/NavBarDarkMode.css'
 import { Link } from 'react-router-dom';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
+import { faMoon } from '@fortawesome/free-solid-svg-icons';
 
-const Navbar = () => {
+const Navbar = ({ darkMode, onToggleDarkMode }) => {
   return (
     <nav className='NavContainer'>
       <ul className='NavList'>

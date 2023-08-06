@@ -1,4 +1,4 @@
-import '../Styles/HomePage.css'
+import '../Styles/HomePageDarkMode.css'
 import React, { useEffect, useState } from 'react';
 import { useQuizForm } from '../Hooks/useQuizForm';
 
@@ -75,7 +75,6 @@ const HomePage = () => {
 
     return(
         <>
-        <Navbar />
         <div className="homepage-container">
             <h1 className="homepage-title"> QuizGPT </h1>
             <img src={myImage} alt="My Image" className='home-image' />
