@@ -77,7 +77,7 @@ const HomePage = () => {
         <>
         <Navbar />
         <div className="homepage-container">
-            <div className="homepage-title"> QuizGPT </div>
+            <h1 className="homepage-title"> QuizGPT </h1>
             <img src={myImage} alt="My Image" className='home-image' />
             <div className="homepage-subtitle"> 
                 Welcome to a quick and easy way to generate multiple choice quizeses!

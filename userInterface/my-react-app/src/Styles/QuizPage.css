@@ -1,0 +1,22 @@
+.quiz-container {
+    background-color: #202023;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 1%;
+}
+
+.quiz-title {
+    background-color: #363638;
+    padding-left: 15px;
+    padding-right: 15px;
+    height: 50px;
+    width: 30%;
+    border-radius: 7px; /* Set the border radius to create rounded edges */
+    display: flex;
+    justify-content: center;
+    color: #FFF;
+    font-family: 'Overpass', sans-serif;
+    font-size: 30px;
+    align-items: center;
+}

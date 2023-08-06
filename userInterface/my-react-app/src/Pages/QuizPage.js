@@ -1,24 +1,25 @@
-import React from 'react';
-import {useLocation} from 'react-router-dom';
-import { useParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 import Navbar from '../Components/NavBar';
-
+import { useQuizData } from '../Hooks/useQuizHooks';
+import QuestionList from '../Components/QuestionList';
+import '../Styles/QuizPage.css'
 
 const QuizPage = () => {
-  const { quizId } = useParams();
-  const location = useLocation();
+    const { questions, answers, options } = useQuizData();
+    // console.log(questions)
+    // console.log(answers)
+    // console.log(options)
 
-  // Fetch quiz data using the quiz ID from the URL
-  const testReceive = () => {
-    console.log(location.state)
-  }
+    return (
+        <>
+        <Navbar />
+        <div className='quiz-container'>
+            <h1 className='quiz-title'> Generated Quiz </h1>
+            <QuestionList questions={questions} answers={answers} options={options} />
+        </div>
 
-  return (
-    <>
-    <Navbar />
-    <button onClick={testReceive}> TEST </button>
-    </>
-  );
+        </>
+    );
 };
 
 export default QuizPage;

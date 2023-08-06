@@ -1,0 +1,62 @@
+.question-list-container {
+    background-color: #202023;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 40%;
+    color: #FFF;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.question-list-title {
+    padding-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #FFF;
+    font-family: 'Overpass', sans-serif;
+    border-radius: 7px; /* Set the border radius to create rounded edges */
+    font-size: 50px;
+    font-weight: bolder
+}
+
+.question-container {
+    width: 80%;
+    background-color: #FFF;
+    color: #202023; 
+    border-radius: 10px;
+    padding: 20px;
+
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    flex-direction: column;
+
+    display: flex;
+    align-items: center; /* Center the question text horizontally */
+    text-align: center;
+}
+
+.question {
+    width: 100%; /* Set the question width to 100% */
+    font-size: 117%;
+    font-family: 'Overpass', sans-serif;
+    margin-bottom: 15px; /* Add some space below the question */
+}
+
+.options-container {
+    flex: 1;
+    width: 100%; /* Set the options container width to 100% */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+.option {
+    font-family: 'Overpass', sans-serif;
+    color:#202023;
+    margin-bottom: 7px;
+}
+
+input[type='checkbox'] {
+    margin-right: 5px;
+  }
