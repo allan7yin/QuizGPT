@@ -1,5 +1,6 @@
 import React from 'react';
 import '../Styles/NavBar.css'
+import { Link } from 'react-router-dom';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
@@ -9,13 +10,13 @@ const Navbar = () => {
     <nav className='NavContainer'>
       <ul className='NavList'>
         <li className='NavItem'>
-          <a className='NavLink' href="/">Create Quiz</a>
+          <Link className='NavLink' to="/">Create Quiz</Link>
         </li>
         <li className='NavItem'>
-          <a className='NavLink' href="/about">Quizes</a>
+          <Link className='NavLink' to="/about">Quizes</Link>
         </li>
         <li className='NavItem'>
-          <a className='NavLink' href="/services">Export</a>
+          <Link className='NavLink' to="/services">Export</Link>
         </li>
         <li className='NavItem'>
           <a className='NavLink' href="https://github.com/allan7yin/QuizGenerationAppGPT" target="_blank">

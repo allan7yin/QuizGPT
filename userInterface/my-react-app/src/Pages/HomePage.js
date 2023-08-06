@@ -6,13 +6,18 @@ import Navbar from '../Components/NavBar';
 import LoginButton from '../Components/LoginButton';
 import myImage from '../Images/answer.png';
 
+import { useNavigate } from 'react-router-dom';
+
 const HomePage = () => {
     const { inputNumOptions, setInputNumOptions, inputNumQuestions, setInputNumQuestions, inputTopic, setInputTopic, inputDifficulty, setInputDifficulty, handleInputNumOptionsChange, handleInputNumQuestionsChange } = useQuizForm();
-    const [authenticated, setAuthenticated] = useState(false);
+    const [authenticated, setAuthenticated] = useState(null);
+    const navigate = useNavigate(); 
 
     useEffect(() => {
-        setAuthenticated(isJwtValid());
-    }, []);
+        // Perform the authentication check here (e.g., checking the JWT in localStorage)
+        const isAuthenticated = isJwtValid();
+        setAuthenticated(isAuthenticated);
+      }, []);
 
     const isJwtValid = () => {
         const jwt = localStorage.getItem('jwt');
@@ -26,8 +31,13 @@ const HomePage = () => {
         }
     };
 
+    if (authenticated === null) {
+        return null; // or return a loading indicator
+      }
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+
 
         const loginData = {
             topic: inputTopic,
@@ -47,8 +57,14 @@ const HomePage = () => {
           });
         
             if (response.ok) {
-                const data = await response.json()
-                console.log(data)
+                const quiz = await response.json()
+                console.log(quiz)
+                // once we have the response, we will redirect to the page /quiz/id
+                const quizId = quiz.id
+                console.log(quizId)
+                navigate(
+                    `/quiz/${quizId}`,
+                    {state: quiz});
             } else {
                 console.log("Something went wrong ...")
             }
