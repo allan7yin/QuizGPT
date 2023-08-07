@@ -5,10 +5,12 @@ import { useLocation } from "react-router-dom";
 export const useQuizData = () => {
   const location = useLocation();
   const quizData = location.state.questions;
+  const quizTitle = location.state.title;
 
   const [questions, setQuestions] = useState([]);
   const [answers, setAnswers] = useState([]);
   const [options, setOptions] = useState([]);
+  const [title, setTitle] = useState("");
 
   const generateProcessingData = () => {
     const quizData = location.state.questions;
@@ -37,10 +39,11 @@ export const useQuizData = () => {
     setQuestions(questionsArray);
     setAnswers(answersArray);
     setOptions(optionsArray);
+    setTitle(quizTitle);
   };
   useEffect(() => {
     generateProcessingData();
   }, []);
 
-  return { questions, answers, options };
+  return { questions, answers, options, title };
 };

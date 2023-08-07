@@ -9,6 +9,8 @@ import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
   const {
+    inputTitle,
+    setInputTitle,
     inputNumOptions,
     setInputNumOptions,
     inputNumQuestions,
@@ -48,7 +50,8 @@ const HomePage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const loginData = {
+    const quizData = {
+      title: inputTitle,
       topic: inputTopic,
       numberOfQuestions: inputNumQuestions,
       numberOfOptionsPerQuestion: inputNumOptions,
@@ -62,7 +65,7 @@ const HomePage = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(loginData),
+        body: JSON.stringify(quizData),
       });
 
       if (response.ok) {
@@ -111,6 +114,15 @@ const HomePage = () => {
         </div>
 
         <form className="Container" onSubmit={handleSubmit}>
+          <div className="Prompt">
+            <input
+              className="Prompt-input"
+              type="text"
+              placeholder="Quiz Title"
+              onChange={(event) => setInputTitle(event.target.value)}
+              value={inputTitle}
+            />
+          </div>
           <div className="Prompt">
             <input
               className="Prompt-input"

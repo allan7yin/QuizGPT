@@ -5,6 +5,7 @@ export const useQuizForm = () => {
   const [inputNumQuestions, setInputNumQuestions] = useState("");
   const [inputTopic, setInputTopic] = useState("");
   const [inputDifficulty, setInputDifficulty] = useState("");
+  const [inputTitle, setInputTitle] = useState("");
 
   const handleInputNumOptionsChange = (e) => {
     const { value } = e.target;
@@ -17,6 +18,8 @@ export const useQuizForm = () => {
   };
 
   return {
+    inputTitle,
+    setInputTitle,
     inputNumOptions,
     setInputNumOptions,
     inputNumQuestions,

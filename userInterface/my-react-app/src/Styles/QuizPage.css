@@ -17,6 +17,10 @@
   justify-content: center;
   color: #fff;
   font-family: "Overpass", sans-serif;
+  text-align: center;
   font-size: 30px;
   align-items: center;
+  margin-bottom: 1%;
+  outline: none;
+  border: transparent;
 }
