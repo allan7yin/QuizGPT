@@ -1,9 +1,9 @@
 .home-image {
-    width: 100px;
-    height: 100px;
-    margin-bottom: 50px;
-  }
-  
+  width: 100px;
+  height: 100px;
+  margin-bottom: 50px;
+}
+
 .description-Container {
   display: flex;
   justify-content: center;
@@ -13,36 +13,36 @@
 .description-text {
   max-width: 600px; /* Set the maximum width of the text */
   text-align: center;
-  font-size: 17px; 
-  font-family: 'Overpass', sans-serif;
+  font-size: 17px;
+  font-family: "Overpass", sans-serif;
 }
 
 #light .description-text {
-  color: #201F24;
+  color: #201f24;
 }
 
 #dark .description-text {
-  color: #FFF
+  color: #fff;
 }
 
 .description-text-keyword {
-  color: #FF63C3;
+  color: #ff63c3;
   font-weight: bold;
 }
-  
+
 .homepage-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-top: 5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 5%;
 }
 
 #light .homepage-container {
-  background-color: #F0E7DB;
+  background-color: #f0e7db;
 }
 
 #dark .homepage-container {
-  background-color: #201F24;
+  background-color: #201f24;
 }
 
 .homepage-title {
@@ -50,22 +50,22 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: 'Overpass', sans-serif;
+  font-family: "Overpass", sans-serif;
   border-radius: 7px; /* Set the border radius to create rounded edges */
   font-size: 50px;
-  font-weight: bolder
+  font-weight: bolder;
 }
 
 #light .homepage-title {
-  color: #201F24;
+  color: #201f24;
 }
 
 #dark .homepage-title {
-  color: #FFF
+  color: #fff;
 }
 
 .homepage-subtitle {
-  background-color: #F5EFE8;
+  background-color: #f5efe8;
   padding-left: 15px;
   padding-right: 15px;
   height: 50px;
@@ -73,77 +73,76 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: 'Overpass', sans-serif;
+  font-family: "Overpass", sans-serif;
   font-size: larger;
 }
 
 #light .homepage-subtitle {
-  background-color: #F5EFE8;
-  color: #201F24;
+  background-color: #f5efe8;
+  color: #201f24;
 }
 
 #dark .homepage-title {
   background-color: #363538;
-  color: #FFF
+  color: #fff;
 }
-  
-body.main[data-theme="light"]{
-  background-color: #F0E7DB; 
+
+body.main[data-theme="light"] {
+  background-color: #f0e7db;
 }
 
 #light .main {
-  background-color: #F0E7DB; 
+  background-color: #f0e7db;
 }
 
 .Container {
   padding-top: 30px;
   display: flex;
   gap: 10px;
-  width: 60%
+  width: 60%;
 }
-  
-  .Prompt {
-    flex: 1;
-    border: 1px solid #ccc;
-    border-radius: 7px;
-    border: transparent;
-    width: 100%;
-    outline: none;
-    box-sizing: border-box;
-  }
-  
-  .Prompt-input {
-    background-color: #F5EFE8;
-    font-family: 'Overpass', sans-serif;
-    border-radius: 7px;
-    border: transparent;
-    width: 80%;
-    height: 30px; 
-    box-sizing: border-box;
-    font-size: 16px;
-    color: #201F24;
-    outline: none;
-    box-sizing: border-box;
-  }
-  
-  .login-Button-container {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-  }
-    
-  .Prompt-input-submit-button {
-    background-color: #81E6D9;
-    font-family: 'Overpass', sans-serif;
-    border-radius: 7px;
-    border: transparent;
-    width: 50%;
-    height: 30px; 
-    box-sizing: border-box;
-    font-size: 16px;
-    color: #202023;
-    outline: none;
-    box-sizing: border-box;
-    font-weight: bolder;
-  }
-    
+
+.Prompt {
+  flex: 1;
+  border: 1px solid #ccc;
+  border-radius: 7px;
+  border: transparent;
+  width: 100%;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.Prompt-input {
+  background-color: #f5efe8;
+  font-family: "Overpass", sans-serif;
+  border-radius: 7px;
+  border: transparent;
+  width: 80%;
+  height: 30px;
+  box-sizing: border-box;
+  font-size: 16px;
+  color: #201f24;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.login-Button-container {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+.Prompt-input-submit-button {
+  background-color: #81e6d9;
+  font-family: "Overpass", sans-serif;
+  border-radius: 7px;
+  border: transparent;
+  width: 50%;
+  height: 30px;
+  box-sizing: border-box;
+  font-size: 16px;
+  color: #202023;
+  outline: none;
+  box-sizing: border-box;
+  font-weight: bolder;
+}

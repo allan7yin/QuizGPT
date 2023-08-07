@@ -1,6 +1,6 @@
 // quizHooks.js
-import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 
 export const useQuizData = () => {
   const location = useLocation();
@@ -11,33 +11,33 @@ export const useQuizData = () => {
   const [options, setOptions] = useState([]);
 
   const generateProcessingData = () => {
-    const quizData = location.state.questions
-    const questionsArray = []
-    const answersArray = []
-    const optionsArray = []
-    // extract question, options, and answers into one separate arrays 
-    // wil make answer checking much easier 
-    
-    quizData.forEach(question => { 
-        const questionText = question.text
-        questionsArray.push(questionText)
+    const quizData = location.state.questions;
+    const questionsArray = [];
+    const answersArray = [];
+    const optionsArray = [];
+    // extract question, options, and answers into one separate arrays
+    // wil make answer checking much easier
 
-        const ansText = question.answers[0].text
-        const ans = ansText[ansText.length - 1]
-        answersArray.push(ans)
+    quizData.forEach((question) => {
+      const questionText = question.text;
+      questionsArray.push(questionText);
 
-        const optionsText = question.options
-        const tempArray = []
-        optionsText.forEach(option => {
-            tempArray.push(option.text)
-        })
-        optionsArray.push(tempArray)
-    })
+      const ansText = question.answers[0].text;
+      const ans = ansText[ansText.length - 1];
+      answersArray.push(ans);
 
-    setQuestions(questionsArray)
-    setAnswers(answersArray)
-    setOptions(optionsArray)
-}
+      const optionsText = question.options;
+      const tempArray = [];
+      optionsText.forEach((option) => {
+        tempArray.push(option.text);
+      });
+      optionsArray.push(tempArray);
+    });
+
+    setQuestions(questionsArray);
+    setAnswers(answersArray);
+    setOptions(optionsArray);
+  };
   useEffect(() => {
     generateProcessingData();
   }, []);

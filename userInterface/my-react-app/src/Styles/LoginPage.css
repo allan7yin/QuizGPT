@@ -1,74 +1,72 @@
 /* Login.css */
 
 .login-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh; /* This will center the form vertically */
-    background-color: #202023; /* Grey background color */
-  }
-  
-  .login-box {
-    align-items: center;
-    padding: 20px;
-    background-color: #363638; /* White background for the form box */
-    border-radius: 7px;
-    width: 25%;
-    height: 40%;
-    font-family: 'Overpass', sans-serif;
-    font-size: larger;
-    color: #FFF;
-    margin-bottom: 17%;
-  }
-  
-  .login-form {
-    /* Add any additional form styles here */
-    
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* This will center the form vertically */
+  background-color: #202023; /* Grey background color */
+}
 
-  .login-input {
-    background-color: #FFF;
-    font-family: 'Overpass', sans-serif;
-    border-radius: 7px;
-    border: transparent;
-    width: 60%;
-    height: 30px; 
-    padding: 10px;
-    box-sizing: border-box;
-    font-size: 16px;
-    color: #202023;
-    outline: none;
-    box-sizing: border-box;
-    margin-bottom: 17px;
-  }
+.login-box {
+  align-items: center;
+  padding: 20px;
+  background-color: #363638; /* White background for the form box */
+  border-radius: 7px;
+  width: 25%;
+  height: 40%;
+  font-family: "Overpass", sans-serif;
+  font-size: larger;
+  color: #fff;
+  margin-bottom: 17%;
+}
+
+.login-form {
+  /* Add any additional form styles here */
+}
+
+.login-input {
+  background-color: #fff;
+  font-family: "Overpass", sans-serif;
+  border-radius: 7px;
+  border: transparent;
+  width: 60%;
+  height: 30px;
+  padding: 10px;
+  box-sizing: border-box;
+  font-size: 16px;
+  color: #202023;
+  outline: none;
+  box-sizing: border-box;
+  margin-bottom: 17px;
+}
 
 .login-input-label {
-    padding-right: 10px;
+  padding-right: 10px;
 }
 
 .button-container {
-    display: flex;
-    justify-content: space-between;
-  }
-  
-.auth-button {
-    background-color: #FBD38D;
-    font-family: 'Overpass', sans-serif;
-    border-radius: 7px;
-    width: 20%;
-    border: transparent;
-    padding: 10px;
-    box-sizing: border-box;
-    font-size: 16px;
-    color: #201F24;
-    outline: none;
-    box-sizing: border-box;
-    margin: 1%;
-
-    transition: background-color 0.3s; 
-  
-    &:hover {
-      background-color: #0BDA51; /* Change the background color on hover */
-    }
+  display: flex;
+  justify-content: space-between;
 }
-  
+
+.auth-button {
+  background-color: #fbd38d;
+  font-family: "Overpass", sans-serif;
+  border-radius: 7px;
+  width: 20%;
+  border: transparent;
+  padding: 10px;
+  box-sizing: border-box;
+  font-size: 16px;
+  color: #201f24;
+  outline: none;
+  box-sizing: border-box;
+  margin: 1%;
+
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #0bda51; /* Change the background color on hover */
+  }
+}

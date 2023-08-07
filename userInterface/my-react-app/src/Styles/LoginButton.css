@@ -1,18 +1,18 @@
 .login-button {
-    background-color: #363638;
-    font-family: 'Overpass', sans-serif;
-    border-radius: 7px;
-    border: transparent;
-    padding: 10px;
-    box-sizing: border-box;
-    font-size: 16px;
-    color: #FFF;
-    outline: none;
-    box-sizing: border-box;
+  background-color: #363638;
+  font-family: "Overpass", sans-serif;
+  border-radius: 7px;
+  border: transparent;
+  padding: 10px;
+  box-sizing: border-box;
+  font-size: 16px;
+  color: #fff;
+  outline: none;
+  box-sizing: border-box;
 
-    transition: background-color 0.3s; 
-  
-    &:hover {
-      background-color: #0BDA51; /* Change the background color on hover */
-    }
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #0bda51; /* Change the background color on hover */
+  }
 }

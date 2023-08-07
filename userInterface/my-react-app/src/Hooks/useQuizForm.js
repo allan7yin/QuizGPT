@@ -1,19 +1,19 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 export const useQuizForm = () => {
-  const [inputNumOptions, setInputNumOptions] = useState('');
-  const [inputNumQuestions, setInputNumQuestions] = useState('');
-  const [inputTopic, setInputTopic] = useState('');
-  const [inputDifficulty, setInputDifficulty] = useState('');
+  const [inputNumOptions, setInputNumOptions] = useState("");
+  const [inputNumQuestions, setInputNumQuestions] = useState("");
+  const [inputTopic, setInputTopic] = useState("");
+  const [inputDifficulty, setInputDifficulty] = useState("");
 
   const handleInputNumOptionsChange = (e) => {
     const { value } = e.target;
-    setInputNumOptions(value.replace(/\D/g, '')); // Remove all non-digit characters
+    setInputNumOptions(value.replace(/\D/g, "")); // Remove all non-digit characters
   };
 
   const handleInputNumQuestionsChange = (e) => {
     const { value } = e.target;
-    setInputNumQuestions(value.replace(/\D/g, '')); // Remove all non-digit characters
+    setInputNumQuestions(value.replace(/\D/g, "")); // Remove all non-digit characters
   };
 
   return {
