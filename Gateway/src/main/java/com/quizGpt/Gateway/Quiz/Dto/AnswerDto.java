@@ -10,8 +10,8 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class AnswerDto {
-    // private Long answerId;
-    // private Long questionId;
+    private Long answerId;
+    private Long questionId;
     private String text;
     
 }

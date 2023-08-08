@@ -1,6 +1,5 @@
-package com.quizGpt.Gateway.Quiz.Entity;
+package com.quizGpt.Gateway.Quiz.Dto;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,13 +8,9 @@ import lombok.ToString;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
 @ToString
-@Table(name = "UserAnswer")
-public class UserAnswer {
-    @Id
-    public String userAnswerId;
-
+public class UserAnswerDto {
+    public String userAnswerId; // uuid
     public int questionId;
     public String text;
 }

@@ -20,8 +20,8 @@ public class QuizDto {
     @JsonProperty("id")
     private String id;
 
-    // @JsonProperty("number")
-    // private Long number;
+    @JsonProperty("title")
+    private String title;
 
     @NotBlank
     @JsonProperty("questions")

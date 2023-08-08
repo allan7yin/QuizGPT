@@ -26,6 +26,8 @@ public class Quiz {
     @Id
     private String id;
 
+    private String title;
+
     @OneToMany(targetEntity = Question.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name="quizId_fk", referencedColumnName = "id")
     private List<Question> Questions;

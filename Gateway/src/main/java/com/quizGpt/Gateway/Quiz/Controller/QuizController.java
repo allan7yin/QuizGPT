@@ -7,6 +7,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +22,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quizGpt.Gateway.Quiz.Dto.CreateQuizRequestDto;
+import com.quizGpt.Gateway.Quiz.Dto.QuizAttemptDto;
 import com.quizGpt.Gateway.Quiz.Dto.QuizDto;
 import com.quizGpt.Gateway.Quiz.Entity.Quiz;
+import com.quizGpt.Gateway.Quiz.Entity.QuizAttempt;
+import com.quizGpt.Gateway.Quiz.Exception.QuizAttemptNotFoundException;
 import com.quizGpt.Gateway.Quiz.Exception.QuizNotFoundException;
 import com.quizGpt.Gateway.Quiz.Service.QuizServiceImpl;
 import com.quizGpt.Gateway.Quiz.Service.RabbitMqServiceImpl;
@@ -44,6 +48,7 @@ public class QuizController {
     private QuizServiceImpl quizService;    
 
     private final Logger logger = LoggerFactory.getLogger(QuizController.class);
+    private static final AtomicLong counter = new AtomicLong(1);
 
     @PostMapping("/quiz")
     public String CreateQuiz(@RequestBody CreateQuizRequestDto createQuizRequestDto) throws JsonProcessingException, QuizNotFoundException, TimeoutException, InterruptedException, ExecutionException {
@@ -60,12 +65,6 @@ public class QuizController {
         String responseJSON = objectMapper.writeValueAsString(response);
         logger.info(responseJSON);
         return responseJSON;
-    }
-
-    @PostMapping("/quiz/test")
-    public String CreateQuizTest(@RequestBody CreateQuizRequestDto createQuizRequestDto) {
-        logger.info(createQuizRequestDto.toString());
-        return createQuizRequestDto.getId();
     }
 
     @GetMapping("/quizzes")
@@ -124,4 +123,30 @@ public class QuizController {
     private boolean checkEntryInTable(String correlationId) {
         return quizService.isEntryExistsByGeneratedId(correlationId);
     }
+
+    // @GetMapping("/quizAttempt/{id}")
+    // public QuizAttemptDto GetQuizAttempt(@PathVariable Long id) throws QuizAttemptNotFoundException {
+        
+    //     QuizAttempt quizAttempt =  quizService.GetQuizAttemptById(id);
+    //     var quizAttemptDto = modelMapper.map(quizAttempt, QuizAttemptDto.class);
+    //     return quizAttemptDto;
+    // }
+
+    @PostMapping("/quizAttempt")
+    public QuizAttemptDto createQuizAttempt(@RequestBody QuizAttemptDto newQuizAttempt) {
+        String generatedId = UUID.randomUUID().toString(); // for the attempt 
+        newQuizAttempt.setQuizAttemptId(generatedId);
+
+        for (int i = 0; i < newQuizAttempt.userAnswerList.size(); i++) {
+            String answerId = UUID.randomUUID().toString();
+            newQuizAttempt.userAnswerList.get(i).setUserAnswerId(answerId);
+        }
+
+        logger.info(newQuizAttempt.toString());
+        
+        var quizAttempt = modelMapper.map(newQuizAttempt, QuizAttempt.class);
+        newQuizAttempt = modelMapper.map(quizService.SaveQuizAttempt(quizAttempt), QuizAttemptDto.class);
+        return newQuizAttempt;
+    }
+
 }

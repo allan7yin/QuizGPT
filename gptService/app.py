@@ -126,6 +126,7 @@ def callback(ch, method, properties, body): # called when message from queue has
         app.logger.info(message)
         quiz_id = message["id"]
         topic = message["topic"]
+        title = message["title"]
         numQuestions = message["numberOfQuestions"]
         numOptions = message["numberOfOptionsPerQuestion"]
         difficulty = message["difficulty"]
@@ -141,6 +142,7 @@ def callback(ch, method, properties, body): # called when message from queue has
         data = [question.__dict__ for question in formatted_quiz_dto]
         response_data = {
             "id": quiz_id,
+            "title": title,
             "questions": data
         }
 

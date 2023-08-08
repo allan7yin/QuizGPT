@@ -24,6 +24,10 @@ public class CreateQuizRequestDto {
     private String id;
 
     @NotBlank
+    @JsonProperty("title")
+    private String title;
+
+    @NotBlank
     @JsonProperty("topic")
     private String topic;
 
