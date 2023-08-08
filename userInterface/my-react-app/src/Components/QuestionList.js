@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "../Styles/QuestionList.css";
 import ErrorModal from "./ErrorModal";
 
-const QuestionList = ({ questions, options, answers }) => {
+const QuestionList = ({ title, questions, options, answers, quizId }) => {
   const [error, setError] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState(
@@ -22,7 +22,7 @@ const QuestionList = ({ questions, options, answers }) => {
     }
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     const allQuestionsAnswered = questions.every(
@@ -33,22 +33,18 @@ const QuestionList = ({ questions, options, answers }) => {
       setError("");
       setSubmitted(true);
       console.log("Quiz submitted successfully.");
-
-      console.log(selectedOptions);
-      console.log(answers);
       const newResults = [];
 
       for (let i = 0; i < selectedOptions.length; i++) {
-        newResults.push(selectedOptions[i][0] == answers[i]);
+        newResults.push(selectedOptions[i][0] == answers[i][1]);
       }
       setResults(newResults);
-      console.log(results);
     } else {
       setError("Please answer all questions before submitting.");
     }
   };
 
-  const handleSave = (event) => {
+  const handleSave = async (event) => {
     event.preventDefault();
 
     const allQuestionsAnswered = questions.every(
@@ -60,6 +56,38 @@ const QuestionList = ({ questions, options, answers }) => {
       setError("");
       console.log("Quiz saved successfully.");
       // we have the choices the user selected in selectedOptions, send it to the backend -> name,
+
+      const userAnswers = [];
+
+      for (let i = 0; i < questions.length; i++) {
+        userAnswers.push({
+          questionId: questions[0][0],
+          text: selectedOptions[i],
+        });
+      }
+
+      const attemptData = {
+        quizId: quizId,
+        userAnswerList: userAnswers,
+      };
+
+      try {
+        const response = await fetch("http://localhost:8080/api/quizAttempt", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(attemptData),
+        });
+
+        if (response.ok) {
+          // console.log(response.data);
+        } else {
+          console.log("Something went wrong while saving attempt...");
+        }
+      } catch (error) {
+        console.error(error.errorMessage);
+      }
     } else {
       setError("Please answer all questions before saving.");
     }
@@ -85,7 +113,7 @@ const QuestionList = ({ questions, options, answers }) => {
           }`}
           key={index1}
         >
-          <div className="question">{question}</div>
+          <div className="question">{question[1]}</div>
           <div class="options-container">
             {options[index1].map((option, index2) => (
               <div key={index2}>
@@ -93,14 +121,18 @@ const QuestionList = ({ questions, options, answers }) => {
                   <input
                     type="checkbox"
                     className="option"
-                    value={option}
+                    value={option[1]}
                     onChange={(event) =>
-                      handleOptionChange(index1, option, event.target.checked)
+                      handleOptionChange(
+                        index1,
+                        option[1],
+                        event.target.checked
+                      )
                     }
-                    checked={selectedOptions[index1] === option}
+                    checked={selectedOptions[index1] === option[1]}
                     disabled={submitted} // Disable checkboxes when the quiz is submitted
                   />
-                  {option}
+                  {option[1]}
                 </label>
               </div>
             ))}

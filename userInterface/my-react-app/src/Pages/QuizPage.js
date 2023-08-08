@@ -4,8 +4,7 @@ import "../Styles/QuizPage.css";
 import { useState } from "react";
 
 const QuizPage = () => {
-  const { questions, answers, options, title } = useQuizData();
-  console.log(title);
+  const { questions, answers, options, title, quizId } = useQuizData();
 
   return (
     <>
@@ -18,6 +17,7 @@ const QuizPage = () => {
           questions={questions}
           answers={answers}
           options={options}
+          quizId={quizId}
         />
       </div>
     </>

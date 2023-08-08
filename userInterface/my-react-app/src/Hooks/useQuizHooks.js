@@ -4,8 +4,8 @@ import { useLocation } from "react-router-dom";
 
 export const useQuizData = () => {
   const location = useLocation();
-  const quizData = location.state.questions;
   const quizTitle = location.state.title;
+  const quizId = location.state.id;
 
   const [questions, setQuestions] = useState([]);
   const [answers, setAnswers] = useState([]);
@@ -20,18 +20,18 @@ export const useQuizData = () => {
     // extract question, options, and answers into one separate arrays
     // wil make answer checking much easier
 
+    // save the question + answer + option id, will need when saving the attempt
     quizData.forEach((question) => {
-      const questionText = question.text;
-      questionsArray.push(questionText);
+      questionsArray.push([question.questionId, question.text]);
 
       const ansText = question.answers[0].text;
       const ans = ansText[ansText.length - 1];
-      answersArray.push(ans);
+      answersArray.push([question.answers[0].answerId, ans]);
 
       const optionsText = question.options;
       const tempArray = [];
       optionsText.forEach((option) => {
-        tempArray.push(option.text);
+        tempArray.push([option.optionId, option.text]);
       });
       optionsArray.push(tempArray);
     });
@@ -45,5 +45,5 @@ export const useQuizData = () => {
     generateProcessingData();
   }, []);
 
-  return { questions, answers, options, title };
+  return { questions, answers, options, title, quizId };
 };
