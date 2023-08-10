@@ -1,6 +1,7 @@
-import React from "react";
+import { React } from "react";
 import { useNavigate } from "react-router-dom";
 import "../Styles/LoginButton.css";
+// import { useAuth0 } from "@auth0/auth0-react";
 
 const LoginButton = () => {
   const navigate = useNavigate();
