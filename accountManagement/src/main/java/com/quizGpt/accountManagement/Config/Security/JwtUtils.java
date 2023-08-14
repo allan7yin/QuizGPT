@@ -1,6 +1,9 @@
 package com.quizGpt.accountManagement.Config.Security;
 
+import java.util.AbstractMap;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.crypto.SecretKey;
 
@@ -71,6 +74,32 @@ public class JwtUtils {
         }
 
         return username;
+    }
+
+    public List<String> getInfoFromFireBaseToken(String token) {
+        String email = "";
+        String username = "";
+
+
+        byte[] secretBytes = JWT_SECRET_KEY.getBytes();
+        SecretKey secretKey = Keys.hmacShaKeyFor(secretBytes);
+
+        try {
+            JwtParser parser = Jwts.parserBuilder()
+                .setSigningKey(secretKey)
+                .build();
+            
+            Claims claims = parser.parseClaimsJws(token).getBody();
+            email = (String) claims.get("email");
+            username = (String) claims.get("name");
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+
+        List<String> pair = new ArrayList<>();
+        pair.add(username);
+        pair.add(email);
+        return pair;
     }
     
     public boolean validateJwtToken(String token) {

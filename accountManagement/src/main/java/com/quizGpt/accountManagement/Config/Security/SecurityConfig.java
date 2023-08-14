@@ -2,13 +2,16 @@ package com.quizGpt.accountManagement.Config.Security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-// import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -21,6 +24,7 @@ import lombok.AllArgsConstructor;
 @Configuration
 @EnableMethodSecurity(prePostEnabled = true)
 @AllArgsConstructor
+@EnableWebSecurity
 public class SecurityConfig {
     UserDetailsServiceImpl userDetailsService;
 
@@ -50,17 +54,20 @@ public class SecurityConfig {
     public SecurityFilterChain SecurityChainFilter(HttpSecurity http) throws Exception {
         http
             .csrf(CsrfConfigurer::disable)
+            .cors(Customizer.withDefaults())
             .exceptionHandling(exceptionHandling -> exceptionHandling.authenticationEntryPoint(unauthorizedHandler))
             .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
-                .requestMatchers("/api/login/**").permitAll()
-                .requestMatchers("/api/users/**").permitAll()
-                .anyRequest().authenticated()
+                    .requestMatchers("/api/account/auth/**").permitAll()
+                    .requestMatchers("/api/users/**").permitAll()
+                    .anyRequest().authenticated()
             );
 
         http.authenticationProvider(authenticationProvider());
-        http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class); // will do the FireBase auth here
 
         return http.build();
     }
 }
+
+

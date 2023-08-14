@@ -10,7 +10,6 @@ spring:
     driver-class-name: org.postgresql.Driver
     initialization-mode: always
     data: classpath:data.sql
-
   jpa:
     hibernate:
       ddl-auto: update
@@ -25,7 +24,7 @@ spring:
     port: 5672
     username: guest
     password: guest
-  
+
   sql:
     init:
       data-locations: classpath:/data.sql

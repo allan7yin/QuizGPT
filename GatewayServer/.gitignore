@@ -1,0 +1,25 @@
+# Dependencies
+/GatewayServer/node_modules/
+npm-debug.log*
+
+# Build artifacts
+dist/
+build/
+
+# Environment
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# OS-specific
+.DS_Store
+
+# Logs
+logs/
+*.log
+
+# User-specific settings
+.idea/
+.vscode/

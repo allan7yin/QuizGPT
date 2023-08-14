@@ -68,7 +68,8 @@ public class RabbitMqServiceImpl implements ConsumerService {
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-
+        
+        // need to configure to first run code through the filterchain, then if ok,
         ResponseEntity<?> response = loginController.authenticateUser(loginRequestDto);
 
         logger.info(loginRequestDto.toString());

@@ -18,4 +18,7 @@ public class LoginRequestDto implements Serializable{
 
     @NotBlank
     private String Password;
+
+    @NotBlank
+    private boolean isOauth;
 }
