@@ -1,4 +1,4 @@
-## QuizGenerationApp
+## QuizGPT
 
 This is a multiple choice quiz generation app. By entering a "topc", "number of questions", "number of options per question", and "difficulty". The application uses that to create a prompt, which is then used to query the chatgpt language model via OpenAI's API. This repository contains 3 microservices:
 * Gateway: the first one that interacts with the front-end. Depending on whether a createQuiz requet has beebn made, or authentication/account related request has been made, will direct the request to on of the other 2 services. This is developed as a `SpringBoot application`. 
