@@ -1,19 +1,10 @@
-import { React } from "react";
-import { useNavigate } from "react-router-dom";
-import "../Styles/LoginButton.css";
-// import { useAuth0 } from "@auth0/auth0-react";
+import React from "react";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const LoginButton = () => {
-  const navigate = useNavigate();
-  const handleLoginClick = () => {
-    navigate("/login");
-  };
+  const { loginWithRedirect } = useAuth0();
 
-  return (
-    <button className="login-button" onClick={handleLoginClick}>
-      Login
-    </button>
-  );
+  return <button onClick={() => loginWithRedirect()}>Log In</button>;
 };
 
 export default LoginButton;

@@ -3,7 +3,6 @@ import "../Styles/LoginPage.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { useNavigate } from "react-router-dom";
-import { signInWithGoogle } from "../Firebase";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
@@ -93,7 +92,7 @@ const LoginPage = () => {
               <button className="auth-button" type="submit">
                 Log in
               </button>
-              <button className="auth-button" onClick={signInWithGoogle}>
+              <button className="auth-button">
                 {" "}
                 <FontAwesomeIcon icon={faGoogle} /> Google{" "}
               </button>

@@ -1,10 +1,12 @@
 import "../Styles/HomePageDarkMode.css";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useQuizForm } from "../Hooks/useQuizForm";
 
 import LoginButton from "../Components/LoginButton";
+import LogoutButton from "../Components/LogoutButton";
 import myImage from "../Images/answer.png";
 
+import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
@@ -12,9 +14,7 @@ const HomePage = () => {
     inputTitle,
     setInputTitle,
     inputNumOptions,
-    setInputNumOptions,
     inputNumQuestions,
-    setInputNumQuestions,
     inputTopic,
     setInputTopic,
     inputDifficulty,
@@ -22,33 +22,36 @@ const HomePage = () => {
     handleInputNumOptionsChange,
     handleInputNumQuestionsChange,
   } = useQuizForm();
-  const [authenticated, setAuthenticated] = useState(null);
+
+  const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Perform the authentication check here (e.g., checking the JWT in localStorage)
-    const isAuthenticated = isJwtValid();
-    setAuthenticated(isAuthenticated);
-  }, []);
+    const saveAccessToken = async () => {
+      const domain = "dev-w5ogvkwglktdnp2m.us.auth0.com";
 
-  const isJwtValid = () => {
-    const jwt = localStorage.getItem("jwt");
-    if (!jwt) return false;
-    try {
-      const decodedJwt = JSON.parse(atob(jwt.split(".")[1]));
-      const expirationTime = decodedJwt.exp * 1000;
-      return expirationTime > Date.now();
-    } catch (error) {
-      return false;
-    }
-  };
+      try {
+        const accessToken = await getAccessTokenSilently({
+          authorizationParams: {
+            audience: `https://${domain}/api/v2/`,
+            scope: "read:current_user",
+          },
+        });
 
-  if (authenticated === null) {
-    return null; // or return a loading indicator
-  }
+        localStorage.setItem("token", accessToken);
+      } catch (e) {
+        console.log(e.message);
+      }
+    };
+
+    saveAccessToken();
+  }, [getAccessTokenSilently]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const accessToken = localStorage.getItem("token");
+    console.log(accessToken);
 
     const quizData = {
       title: inputTitle,
@@ -64,6 +67,7 @@ const HomePage = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`, // add the access token here
         },
         body: JSON.stringify(quizData),
       });
@@ -87,7 +91,7 @@ const HomePage = () => {
     <>
       <div className="homepage-container">
         <h1 className="homepage-title"> QuizGPT </h1>
-        <img src={myImage} alt="My Image" className="home-image" />
+        <img src={myImage} className="home-image" />
         <div className="homepage-subtitle">
           Welcome to a quick and easy way to generate multiple choice quizeses!
         </div>
@@ -164,7 +168,9 @@ const HomePage = () => {
           </div>
         </form>
 
-        {authenticated ? null : (
+        {isAuthenticated ? (
+          <LogoutButton />
+        ) : (
           <div className="login-Button-container">
             <LoginButton />
           </div>
