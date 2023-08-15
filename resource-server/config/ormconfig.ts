@@ -1,5 +1,4 @@
 import { DataSource } from "typeorm";
-import { MqResponse } from "../src/account/entities/mqResponse";
 import dotenv from "dotenv";
 import { Quiz } from "../src/quiz/entities/quiz";
 import { QuizAttempt } from "../src/quiz/entities/quizAttempt";
@@ -17,15 +16,7 @@ const dataSource = new DataSource({
   username: "allanyin",
   password: "",
   database: "QuizGPT",
-  entities: [
-    MqResponse,
-    Quiz,
-    QuizAttempt,
-    Question,
-    Answer,
-    Option,
-    UserAnswer,
-  ],
+  entities: [Quiz, QuizAttempt, Question, Answer, Option, UserAnswer],
   synchronize: true,
 });
 

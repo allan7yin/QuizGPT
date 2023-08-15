@@ -25,7 +25,6 @@ export class QuizAttempt {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @Column()
   @OneToMany(() => UserAnswer, (userAnswer) => userAnswer.quizAttempt)
   userAnswers: UserAnswer[];
 

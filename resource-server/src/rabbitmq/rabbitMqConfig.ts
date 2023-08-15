@@ -6,7 +6,7 @@ dotenv.config();
 export var connection: amqp.Connection;
 export var channel: amqp.Channel;
 
-const rabbitMqConfig = async () => {
+export const rabbitMqConfig = async () => {
   try {
     connection = await amqp.connect("amqp://localhost:5672");
     channel = await connection.createChannel();
@@ -19,6 +19,10 @@ const rabbitMqConfig = async () => {
     for (const queueName of queueNames) {
       await channel.assertQueue(queueName!, { durable: true });
     }
+
+    await channel.assertExchange(process.env.rabbitmq_gpt_exchange!, "direct", {
+      durable: true,
+    });
 
     await channel.bindQueue(
       process.env.to_gpt_rabbitmq_request_queue!,
@@ -35,5 +39,3 @@ const rabbitMqConfig = async () => {
     console.log(error);
   }
 };
-
-module.exports = { rabbitMqConfig };

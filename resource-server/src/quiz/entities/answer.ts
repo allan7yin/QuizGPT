@@ -9,7 +9,6 @@ export class Answer {
   @Column()
   content: String;
 
-  @Column()
   @ManyToOne(() => Question, (question) => question.options)
   question: Question;
 

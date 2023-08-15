@@ -19,17 +19,14 @@ export class Question {
   @Column()
   text: String;
 
-  @Column()
   @OneToMany(() => Option, (option) => option.question, { cascade: true })
   //   @JoinColumn({ name: "questionId_fk", referencedColumnName: "questionId" })
   options: Option[];
 
-  @Column()
   @OneToMany(() => Answer, (answer) => answer.question, { cascade: true })
   //   @JoinColumn({ name: "questionId_fk", referencedColumnName: "questionId" })
   answers: Answer[];
 
-  @Column()
   @ManyToOne(() => Quiz, (quiz) => quiz.questions)
   quiz: Quiz;
 

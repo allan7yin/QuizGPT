@@ -5,16 +5,14 @@ import { QuizAttempt } from "./quizAttempt";
 @Entity("Quizes")
 export class Quiz {
   @PrimaryGeneratedColumn()
-  quizId: number;
+  quizId: string;
 
-  @Column()
   @OneToMany(() => Question, (question) => question.quiz, {
     cascade: true,
     eager: true,
   })
   questions: Question[];
 
-  @Column()
   @OneToMany(() => QuizAttempt, (quizAttempt) => quizAttempt.quiz)
   attempts: QuizAttempt[];
 
@@ -22,7 +20,7 @@ export class Quiz {
   //   @ManyToOne(() => User, (user) => user.quizzes)
   //   owner: User;
 
-  constructor(quizId: number, questions: Question[], attempts: QuizAttempt[]) {
+  constructor(quizId: string, questions: Question[], attempts: QuizAttempt[]) {
     this.quizId = quizId;
     this.questions = questions;
     this.attempts = attempts;

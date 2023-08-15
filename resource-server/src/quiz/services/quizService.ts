@@ -5,7 +5,7 @@ import { getQuizRepository } from "../repositories/quizRepository";
 import { getQuizAttemptRepository } from "../repositories/quizAttemptRepository";
 import { getQuestionRepository } from "../repositories/questionRepository";
 
-export class quizService {
+export class QuizService {
   quizRepository = getQuizRepository();
   quizAttemptRepository = getQuizAttemptRepository();
   questionRepository = getQuestionRepository();
@@ -14,7 +14,7 @@ export class quizService {
     return this.quizRepository.find();
   }
 
-  async getQuizById(id: number): Promise<Quiz> {
+  async getQuizById(id: string): Promise<Quiz> {
     const quiz = await this.quizRepository.findOneBy({
       quizId: id,
     });
@@ -28,7 +28,7 @@ export class quizService {
     return this.quizRepository.save(quiz);
   }
 
-  async deleteQuiz(id: number): Promise<void> {
+  async deleteQuiz(id: string): Promise<void> {
     const quiz = await this.getQuizById(id);
     await this.quizRepository.remove(quiz);
   }

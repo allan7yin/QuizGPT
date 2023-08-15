@@ -1,29 +1,22 @@
-import * as http from "http";
 import express from "express";
+import "reflect-metadata";
+import dataSource from "../config/ormconfig";
+import { rabbitMqConfig } from "./rabbitmq/rabbitMqConfig";
+import { quizController } from "./quiz/controllers/quizController";
+
+// Server setup code
 const app = express();
+app.use(express.json());
 
 const PORT = process.env.PORT;
-import "reflect-metadata";
-const { dataSource } = require("../config/ormconfig");
-const { rabbitMqConfig } = require("./rabbitmq/rabbitMqConfig");
-
-rabbitMqConfig;
 dataSource;
 
-// const accountController = require("./src/account/controllers/accountController");
 rabbitMqConfig();
 
-// const userRoutes = require("./routes/userRoutes");
-// const postRoutes = require("./routes/postRoutes");
+// configure api endpoints
+app.use("/api/v1", quizController);
 
-// app.use("/api/users", userRoutes);
-// app.use("/api/posts", postRoutes);
-
-const server = http.createServer((req, res) => {
-  res.writeHead(200, { "Content-Type": "text/plain" });
-  res.end("Hello, TypeScript!\n");
-});
-
-server.listen(PORT, () => {
-  console.log(`Server is listening on port ${PORT}`);
+// start application
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
