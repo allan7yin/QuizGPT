@@ -14,7 +14,7 @@ import { UserAnswer } from "./userAnswer";
 @Entity("QuizAttempt")
 export class QuizAttempt {
   @PrimaryGeneratedColumn()
-  quizAttemptId: number;
+  quizAttemptId: string;
 
   @ManyToOne(() => Quiz, (quiz) => quiz.attempts)
   quiz: Quiz;
@@ -29,7 +29,7 @@ export class QuizAttempt {
   userAnswers: UserAnswer[];
 
   constructor(
-    quizAttemptId: number,
+    quizAttemptId: string,
     quiz: Quiz,
     createdAt: Date,
     updatedAt: Date,

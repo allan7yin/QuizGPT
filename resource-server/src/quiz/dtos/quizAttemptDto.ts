@@ -1,24 +1,21 @@
 import { QuizDto } from "./quizDto";
 import { UserAnswerDto } from "./userAnswerDto";
+import { v4 as uuidv4 } from "uuid";
 
 export class QuizAttemptDto {
-  quizAttemptId: number;
-  quiz: QuizDto;
+  quizAttemptId: string;
+  quizId: string;
   createdAt: Date;
   updatedAt: Date;
   userAnswers: UserAnswerDto[];
 
-  constructor(
-    quizAttemptId: number,
-    quiz: QuizDto,
-    createdAt: Date,
-    updatedAt: Date,
-    userAnswers: UserAnswerDto[]
-  ) {
-    this.quizAttemptId = quizAttemptId;
-    this.quiz = quiz;
-    this.createdAt = createdAt;
-    this.updatedAt = updatedAt;
+  constructor(quizId: string, userAnswers: UserAnswerDto[]) {
+    this.quizAttemptId = uuidv4();
+    this.quizId = quizId;
+    this.createdAt = new Date();
+    this.updatedAt = new Date();
     this.userAnswers = userAnswers;
   }
+
+  // when user saves a Quiz attempt, pass the quizId and the userAnswers
 }

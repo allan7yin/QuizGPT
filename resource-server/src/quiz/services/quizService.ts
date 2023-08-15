@@ -60,7 +60,7 @@ export class QuizService {
     return this.quizAttemptRepository.find();
   }
 
-  async getQuizAttemptById(id: number): Promise<QuizAttempt> {
+  async getQuizAttemptById(id: string): Promise<QuizAttempt> {
     const quizAttempt = await this.quizAttemptRepository.findOneBy({
       quizAttemptId: id,
     });
@@ -74,7 +74,7 @@ export class QuizService {
     return this.quizAttemptRepository.save(attempt);
   }
 
-  async deleteQuizAttempt(id: number): Promise<void> {
+  async deleteQuizAttempt(id: string): Promise<void> {
     const quizAttempt = await this.getQuizAttemptById(id);
     await this.quizAttemptRepository.remove(quizAttempt);
   }
