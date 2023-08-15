@@ -1,6 +1,6 @@
 import { MqResponse } from "../entities/mqResponse";
 import { MqResponseRepository } from "../repositories/mqResponseRepository";
-import { channel } from "../rabbitmq/rabbitMqConfig";
+import { channel } from "../../rabbitmq/rabbitMqConfig";
 import { v4 as uuidv4 } from "uuid";
 import dotenv from "dotenv";
 
@@ -35,33 +35,33 @@ export class AuthMqService {
     );
   }
 
-  public async ConsumeLoginMessageFromMQ(): Promise<void> {
-    try {
-      channel.consume(process.env.to_gateway_login_response_queue, (data) => {
-        if (data) {
-          console.log(`${Buffer.from(data.content)}`);
-          channel.ack(data);
-          this.save(data);
-        }
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  // public async ConsumeLoginMessageFromMQ(): Promise<void> {
+  //   try {
+  //     channel.consume(process.env.to_gateway_login_response_queue, (data) => {
+  //       if (data) {
+  //         console.log(`${Buffer.from(data.content)}`);
+  //         channel.ack(data);
+  //         this.save(data);
+  //       }
+  //     });
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
 
-  public async ConsumeSignUpMessageFromMQ(): Promise<void> {
-    try {
-      channel.consume(process.env.to_gateway_sign_up_response_queue, (data) => {
-        if (data) {
-          console.log(`${Buffer.from(data.content)}`);
-          channel.ack(data);
-          this.save(data);
-        }
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  // public async ConsumeSignUpMessageFromMQ(): Promise<void> {
+  //   try {
+  //     channel.consume(process.env.to_gateway_sign_up_response_queue, (data) => {
+  //       if (data) {
+  //         console.log(`${Buffer.from(data.content)}`);
+  //         channel.ack(data);
+  //         this.save(data);
+  //       }
+  //     });
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
 
   private async save(incomingMessage: any): Promise<void> {
     try {

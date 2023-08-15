@@ -1,10 +1,14 @@
 import { DataSource } from "typeorm";
-import { MqResponse } from "../src/entities/mqResponse";
+import { MqResponse } from "../src/account/entities/mqResponse";
 import dotenv from "dotenv";
+import { Quiz } from "../src/quiz/entities/quiz";
+import { QuizAttempt } from "../src/quiz/entities/quizAttempt";
+import { Question } from "../src/quiz/entities/question";
+import { Answer } from "../src/quiz/entities/answer";
+import { Option } from "../src/quiz/entities/option";
+import { UserAnswer } from "../src/quiz/entities/userAnswer";
 
 dotenv.config;
-
-// Your other imports and code
 
 const dataSource = new DataSource({
   type: "postgres",
@@ -13,7 +17,15 @@ const dataSource = new DataSource({
   username: "allanyin",
   password: "",
   database: "QuizGPT",
-  entities: [MqResponse],
+  entities: [
+    MqResponse,
+    Quiz,
+    QuizAttempt,
+    Question,
+    Answer,
+    Option,
+    UserAnswer,
+  ],
   synchronize: true,
 });
 
