@@ -21,8 +21,9 @@ export class QuizService {
     let quiz: Quiz | null;
 
     while (attempts < maxAttempts) {
-      quiz = await this.quizRepository.findOneBy({
-        quizId: id,
+      quiz = await this.quizRepository.findOne({
+        where: { quizId: id },
+        relations: ["questions", "questions.options", "questions.answers"],
       });
 
       if (quiz) {

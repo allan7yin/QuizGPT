@@ -111,7 +111,6 @@ export class RabbitmqService {
       quiz.questions = [];
 
       for (let q of dataObject.questions) {
-        console.log(q);
         const question = new Question();
         question.options = [];
         question.answers = [];
@@ -120,17 +119,16 @@ export class RabbitmqService {
           const option = new Option();
           option.content = op;
           question.options.push(option);
-          option.question = question;
         }
 
         for (let a of q.answers) {
           const answer = new Answer();
           answer.content = a;
           question.answers.push(answer);
-          answer.question = question;
         }
 
         question.text = q.text;
+        console.log(question);
         quiz.questions.push(question);
       }
       await quizRepository.save(quiz);

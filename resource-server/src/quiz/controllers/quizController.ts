@@ -29,6 +29,7 @@ quizController.post("/quiz", async (req: Request, res: Response) => {
 
     // need to find it in the database, and then send it back
     const quiz: Quiz = await quizService.getQuizById(quizDto.id);
+    console.log(quiz);
     res.status(200).send(JSON.stringify(quiz)); // send id back to client to use, can save next time and attach the id as query parameter
   } catch (error) {
     console.log(error);
