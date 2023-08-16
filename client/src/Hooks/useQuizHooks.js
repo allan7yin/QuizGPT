@@ -5,7 +5,9 @@ import { useLocation } from "react-router-dom";
 export const useQuizData = () => {
   const location = useLocation();
   const quizTitle = location.state.title;
-  const quizId = location.state.id;
+  const quizId = location.state.quizId;
+
+  console.log(location.state);
 
   const [questions, setQuestions] = useState([]);
   const [answers, setAnswers] = useState([]);
@@ -24,14 +26,14 @@ export const useQuizData = () => {
     quizData.forEach((question) => {
       questionsArray.push([question.questionId, question.text]);
 
-      const ansText = question.answers[0].text;
+      const ansText = question.answers[0].content;
       const ans = ansText[ansText.length - 1];
       answersArray.push([question.answers[0].answerId, ans]);
 
       const optionsText = question.options;
       const tempArray = [];
       optionsText.forEach((option) => {
-        tempArray.push([option.optionId, option.text]);
+        tempArray.push([option.optionId, option.content]);
       });
       optionsArray.push(tempArray);
     });

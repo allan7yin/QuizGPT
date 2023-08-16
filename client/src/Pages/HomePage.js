@@ -33,7 +33,7 @@ const HomePage = () => {
       try {
         const accessToken = await getAccessTokenSilently({
           authorizationParams: {
-            audience: `https://${domain}/api/v2/`,
+            audience: "http://localhost:8080/api/v1",
             scope: "read:current_user",
           },
         });
@@ -63,20 +63,23 @@ const HomePage = () => {
 
     // make API call to create quiz, will return a
     try {
-      const response = await fetch("http://localhost:8080/api/quiz", {
+      console.log("1");
+      const response = await fetch("http://localhost:8080/api/v1/quiz", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`, // add the access token here
+          authorization: `Bearer ${accessToken}`,
         },
         body: JSON.stringify(quizData),
       });
+
+      console.log("2");
 
       if (response.ok) {
         const quiz = await response.json();
         console.log(quiz);
         // once we have the response, we will redirect to the page /quiz/id
-        const quizId = quiz.id;
+        const quizId = quiz.quizId;
         console.log(quizId);
         navigate(`/quiz/${quizId}`, { state: quiz });
       } else {

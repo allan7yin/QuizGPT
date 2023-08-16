@@ -14,8 +14,9 @@ root.render(
       clientId="0dfvdORx076LBUisN9JcW08AXWNfMevD"
       authorizationParams={{
         redirect_uri: window.location.origin,
-        audience: "https://dev-w5ogvkwglktdnp2m.us.auth0.com/api/v2/",
-        scope: "read:current_user update:current_user_metadata",
+        audience: "http://localhost:8080/api/v1",
+        scope:
+          "read:current_user update:current_user_metadata read:quiz create:quiz read:messages",
       }}
     >
       <App />

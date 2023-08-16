@@ -4,15 +4,15 @@ import React from "react";
 const LogoutButton = () => {
   const { logout } = useAuth0();
 
-  return (
-    <button
-      onClick={() =>
-        logout({ logoutParams: { returnTo: window.location.origin } })
-      }
-    >
-      Log Out
-    </button>
-  );
+  const handleLogout = () => {
+    // Remove token from localStorage
+    localStorage.removeItem("authToken");
+
+    // Call the Auth0 logout function
+    logout({ returnTo: window.location.origin });
+  };
+
+  return <button onClick={handleLogout}>Log Out</button>;
 };
 
 export default LogoutButton;
