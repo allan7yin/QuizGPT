@@ -1,28 +1,35 @@
-import express, { Request, Response } from "express";
+import express, { Request, Response, json } from "express";
 import { QuizService } from "../services/quizService";
-import { RabbitMqService } from "../services/rabbitMqService";
+import { RabbitmqService } from "../services/rabbitmqService";
 import { plainToInstance } from "class-transformer";
 import { CreateQuizRequestDto } from "../dtos/createQuizRequestDto";
 import { QuizDto } from "../dtos/quizDto";
 import { QuizAttemptDto } from "../dtos/quizAttemptDto";
 import { QuizAttempt } from "../entities/quizAttempt";
+import { Quiz } from "../entities/quiz";
 
 export const quizController = express.Router();
 const quizService = new QuizService();
-const rabbitMqService = new RabbitMqService();
+const rabbitmq = new RabbitmqService();
+rabbitmq.setup();
+rabbitmq.consumeGptRequestMessageFromMq();
 
-quizController.post("/quiz", (req: Request, res: Response) => {
+quizController.post("/quiz", async (req: Request, res: Response) => {
   try {
-    const jsonData = JSON.stringify(req.body);
-
-    const quizDto: CreateQuizRequestDto = plainToInstance(
-      CreateQuizRequestDto,
-      jsonData
+    const quizDto = new CreateQuizRequestDto(
+      req.body.topic,
+      req.body.title,
+      req.body.numberOfQuestions,
+      req.body.numberOfOptionsPerQuestion,
+      req.body.difficulty
     );
 
-    console.log("Sending create quiz request to publishing exchange", quizDto);
-    rabbitMqService.sendMessageToGptQueue(quizDto);
-    res.status(200).send(quizDto.id); // send id back to client to use, can save next time and attach the id as query parameter
+    console.log(quizDto);
+    rabbitmq.publishMessage(quizDto);
+
+    // need to find it in the database, and then send it back
+    const quiz: Quiz = await quizService.getQuizById(quizDto.id);
+    res.status(200).send(JSON.stringify(quiz)); // send id back to client to use, can save next time and attach the id as query parameter
   } catch (error) {
     console.log(error);
     res.status(400).send("Error: Unable to send to queue");

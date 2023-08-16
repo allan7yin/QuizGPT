@@ -1,19 +1,37 @@
-import { Message, MessageProperties } from "amqplib";
-import dotenv from "dotenv";
+import amqp, { Message, MessageProperties } from "amqplib";
 import { CreateQuizRequestDto } from "../dtos/createQuizRequestDto";
-import { channel } from "../../rabbitmq/rabbitMqConfig";
 import { getQuizRepository } from "../repositories/quizRepository";
+import { Repository } from "typeorm";
 import { Quiz } from "../entities/quiz";
 import { Question } from "../entities/question";
+import dotenv from "dotenv";
+import { Option } from "../entities/option";
+import { Answer } from "../entities/answer";
 
-dotenv.config;
+dotenv.config();
 
-export class RabbitMqService {
-  quizRepository = getQuizRepository();
+export class RabbitmqService {
+  channel!: amqp.Channel;
+  quizRepository!: Repository<Quiz>;
 
-  sendMessageToGptQueue = async (
-    message: CreateQuizRequestDto
-  ): Promise<string> => {
+  setup = async () => {
+    const connection = await amqp.connect("amqp://localhost:5672");
+    this.channel = await connection.createChannel();
+    this.quizRepository = getQuizRepository();
+  };
+
+  publishMessage = async (message: CreateQuizRequestDto): Promise<string> => {
+    if (!this.channel) {
+      await this.setup();
+    }
+    await this.channel.assertExchange(
+      process.env.rabbitmq_gpt_exchange!,
+      "direct",
+      {
+        durable: true,
+      }
+    );
+
     const outputMessage: string = JSON.stringify(message);
     const correlationId: string = message.id;
     const messageProperties: MessageProperties = {
@@ -37,7 +55,7 @@ export class RabbitMqService {
 
     const messageBuffer = Buffer.from(outputMessage);
 
-    channel.publish(
+    this.channel.publish(
       process.env.rabbitmq_gpt_exchange!,
       process.env.gpt_request_rabbitmq_routing_key!,
       messageBuffer,
@@ -48,33 +66,74 @@ export class RabbitMqService {
   };
 
   consumeGptRequestMessageFromMq = async (): Promise<void> => {
-    try {
-      channel.consume(
-        process.env.to_gateway_gpt_rabbitmq_response_queue!,
-        (data) => {
-          if (data) {
-            console.log(`${Buffer.from(data.content)}`);
-            channel.ack(data);
-            this.save(data);
-          }
-        }
-      );
-    } catch (error) {
-      console.log(error);
+    if (!this.channel) {
+      await this.setup();
     }
+
+    await this.channel.assertExchange(
+      process.env.rabbitmq_gpt_exchange!,
+      "direct",
+      {
+        durable: true,
+      }
+    );
+
+    const queueNames = [
+      process.env.to_gpt_rabbitmq_request_queue,
+      process.env.to_gateway_gpt_rabbitmq_response_queue,
+    ];
+
+    for (const queueName of queueNames) {
+      await this.channel.assertQueue(queueName!, { durable: true });
+    }
+
+    this.channel.consume(
+      process.env.to_gateway_gpt_rabbitmq_response_queue!,
+      (data) => {
+        if (data) {
+          this.channel.ack(data);
+          this.save(data);
+        }
+      }
+    );
   };
 
   save = async (incomingMessage: any): Promise<void> => {
     try {
+      const quizRepository = getQuizRepository();
       const message: Message = incomingMessage as Message;
-      const id: string = message.properties.correlationId;
-
       const messageString: string = message.content.toString("utf-8");
-      console.log(JSON);
 
-      const questions: Question[] = JSON.parse(messageString);
+      const dataObject = JSON.parse(messageString);
+      const quiz = new Quiz();
+      quiz.quizId = dataObject.id;
+      quiz.title = dataObject.title;
+      quiz.questions = [];
 
-      await this.quizRepository.save(new Quiz(id, questions, []));
+      for (let q of dataObject.questions) {
+        console.log(q);
+        const question = new Question();
+        question.options = [];
+        question.answers = [];
+
+        for (let op of q.options) {
+          const option = new Option();
+          option.content = op;
+          question.options.push(option);
+          option.question = question;
+        }
+
+        for (let a of q.answers) {
+          const answer = new Answer();
+          answer.content = a;
+          question.answers.push(answer);
+          answer.question = question;
+        }
+
+        question.text = q.text;
+        quiz.questions.push(question);
+      }
+      await quizRepository.save(quiz);
     } catch (error) {
       console.log(error);
     }

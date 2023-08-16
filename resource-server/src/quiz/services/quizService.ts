@@ -15,14 +15,40 @@ export class QuizService {
   }
 
   async getQuizById(id: string): Promise<Quiz> {
-    const quiz = await this.quizRepository.findOneBy({
-      quizId: id,
-    });
-    if (!quiz) {
-      throw new Error(`Quiz not found with id: ${id}`);
+    const maxAttempts = 10;
+    const delayMs = 1000;
+    let attempts = 0;
+    let quiz: Quiz | null;
+
+    while (attempts < maxAttempts) {
+      quiz = await this.quizRepository.findOneBy({
+        quizId: id,
+      });
+
+      if (quiz) {
+        return quiz;
+      }
+
+      await this.delay(delayMs);
+      attempts++;
     }
-    return quiz;
+
+    throw new Error(`Quiz not found with id: ${id}`);
   }
+
+  private async delay(ms: number): Promise<void> {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
+  // async getQuizById(id: string): Promise<Quiz> {
+  //   const quiz = await this.quizRepository.findOneBy({
+  //     quizId: id,
+  //   });
+  //   if (!quiz) {
+  //     throw new Error(`Quiz not found with id: ${id}`);
+  //   }
+  //   return quiz;
+  // }
 
   async saveQuiz(quiz: Quiz): Promise<Quiz> {
     return this.quizRepository.save(quiz);

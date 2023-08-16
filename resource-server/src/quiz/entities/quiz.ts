@@ -1,28 +1,26 @@
-import { Entity, PrimaryGeneratedColumn, OneToMany, Column } from "typeorm";
+import { Entity, PrimaryColumn, OneToMany, Column } from "typeorm";
 import { Question } from "./question";
 import { QuizAttempt } from "./quizAttempt";
+import { Cipher } from "crypto";
 
 @Entity("Quizes")
 export class Quiz {
-  @PrimaryGeneratedColumn()
-  quizId: string;
+  @PrimaryColumn()
+  quizId!: string;
+
+  @Column()
+  title!: string;
 
   @OneToMany(() => Question, (question) => question.quiz, {
     cascade: true,
     eager: true,
   })
-  questions: Question[];
+  questions!: Question[];
 
   @OneToMany(() => QuizAttempt, (quizAttempt) => quizAttempt.quiz)
-  attempts: QuizAttempt[];
+  attempts!: QuizAttempt[];
 
   //   @Column()
   //   @ManyToOne(() => User, (user) => user.quizzes)
   //   owner: User;
-
-  constructor(quizId: string, questions: Question[], attempts: QuizAttempt[]) {
-    this.quizId = quizId;
-    this.questions = questions;
-    this.attempts = attempts;
-  }
 }

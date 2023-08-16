@@ -4,7 +4,7 @@ import {
   Entity,
   ManyToOne,
   OneToMany,
-  PrimaryGeneratedColumn,
+  PrimaryColumn,
   UpdateDateColumn,
 } from "typeorm";
 
@@ -13,32 +13,18 @@ import { UserAnswer } from "./userAnswer";
 
 @Entity("QuizAttempt")
 export class QuizAttempt {
-  @PrimaryGeneratedColumn()
-  quizAttemptId: string;
+  @PrimaryColumn()
+  quizAttemptId!: string;
 
   @ManyToOne(() => Quiz, (quiz) => quiz.attempts)
-  quiz: Quiz;
+  quiz!: Quiz;
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt!: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt!: Date;
 
   @OneToMany(() => UserAnswer, (userAnswer) => userAnswer.quizAttempt)
-  userAnswers: UserAnswer[];
-
-  constructor(
-    quizAttemptId: string,
-    quiz: Quiz,
-    createdAt: Date,
-    updatedAt: Date,
-    userAnswers: UserAnswer[]
-  ) {
-    this.quizAttemptId = quizAttemptId;
-    this.quiz = quiz;
-    this.createdAt = createdAt;
-    this.updatedAt = updatedAt;
-    this.userAnswers = userAnswers;
-  }
+  userAnswers!: UserAnswer[];
 }
