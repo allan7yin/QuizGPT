@@ -1,9 +1,14 @@
+import { plainToInstance } from "class-transformer";
+import dotenv from "dotenv";
+import client from "../../redis/redisConfig.js";
 import { Question } from "../entities/question.js";
 import { Quiz } from "../entities/quiz.js";
 import { QuizAttempt } from "../entities/quizAttempt.js";
-import { getQuizRepository } from "../repositories/quizRepository.js";
-import { getQuizAttemptRepository } from "../repositories/quizAttemptRepository.js";
 import { getQuestionRepository } from "../repositories/questionRepository.js";
+import { getQuizAttemptRepository } from "../repositories/quizAttemptRepository.js";
+import { getQuizRepository } from "../repositories/quizRepository.js";
+
+dotenv.config();
 
 export class QuizService {
   quizRepository = getQuizRepository();
@@ -11,14 +16,38 @@ export class QuizService {
   questionRepository = getQuestionRepository();
 
   async getAllQuizzes(): Promise<Quiz[]> {
-    return this.quizRepository.find();
+    const quizList: Quiz[] = [];
+    const quizIdSet: string[] = await client.sMembers("quiz-ids");
+    let quiz: Quiz;
+
+    for (const quizId of quizIdSet) {
+      const result = await client.get(quizId);
+      if (result != null) {
+        quiz = plainToInstance(Quiz, result);
+      } else {
+        quiz = await this.getQuizById(quizId);
+        await client.set(quiz.quizId, JSON.stringify(quiz));
+        await client.expire(quiz.quizId, 60 * 60 * 3);
+      }
+
+      quizList.push(quiz);
+    }
+
+    return quizList;
   }
 
   async getQuizById(id: string): Promise<Quiz> {
+    let quiz: Quiz | null;
+    const result = await client.get(id);
+
+    if (result != null) {
+      quiz = plainToInstance(Quiz, result);
+      return quiz;
+    }
+
     const maxAttempts = 10;
     const delayMs = 1000;
     let attempts = 0;
-    let quiz: Quiz | null;
 
     while (attempts < maxAttempts) {
       quiz = await this.quizRepository.findOne({
@@ -27,6 +56,9 @@ export class QuizService {
       });
 
       if (quiz) {
+        await client.set(quiz.quizId, JSON.stringify(quiz));
+        await client.expire(quiz.quizId, 60 * 60 * 3);
+
         return quiz;
       }
 
@@ -41,23 +73,18 @@ export class QuizService {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
-  // async getQuizById(id: string): Promise<Quiz> {
-  //   const quiz = await this.quizRepository.findOneBy({
-  //     quizId: id,
-  //   });
-  //   if (!quiz) {
-  //     throw new Error(`Quiz not found with id: ${id}`);
-  //   }
-  //   return quiz;
-  // }
-
   async saveQuiz(quiz: Quiz): Promise<Quiz> {
-    return this.quizRepository.save(quiz);
+    const quizEntity = await this.quizRepository.save(quiz);
+    await client.set(quizEntity.quizId, JSON.stringify(quizEntity));
+    await client.expire(quizEntity.quizId, 60 * 60 * 3);
+
+    return quizEntity;
   }
 
   async deleteQuiz(id: string): Promise<void> {
     const quiz = await this.getQuizById(id);
     await this.quizRepository.remove(quiz);
+    await client.del(quiz.quizId);
   }
 
   async getAllQuestions(): Promise<Question[]> {

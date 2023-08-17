@@ -1,14 +1,14 @@
 import {
-  Entity,
-  PrimaryGeneratedColumn,
   Column,
-  OneToMany,
+  Entity,
   ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
   Relation,
 } from "typeorm";
 
-import { Option } from "./option.js";
 import { Answer } from "./answer.js";
+import { Option } from "./option.js";
 import { Quiz } from "./quiz.js";
 
 @Entity("Question")

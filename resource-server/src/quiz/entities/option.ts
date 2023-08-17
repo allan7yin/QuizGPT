@@ -1,8 +1,8 @@
 import {
-  Entity,
-  PrimaryGeneratedColumn,
   Column,
+  Entity,
   ManyToOne,
+  PrimaryGeneratedColumn,
   Relation,
 } from "typeorm";
 import { Question } from "./question.js";

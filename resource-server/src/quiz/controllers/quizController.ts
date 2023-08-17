@@ -1,22 +1,22 @@
-import express, { Request, Response, json } from "express";
+import { plainToInstance } from "class-transformer";
+import express, { Request, Response } from "express";
+import { CreateQuizRequestDto } from "../dtos/createQuizRequestDto.js";
+import { QuizAttemptDto } from "../dtos/quizAttemptDto.js";
+import { QuizDto } from "../dtos/quizDto.js";
+import { Quiz } from "../entities/quiz.js";
+import { QuizAttempt } from "../entities/quizAttempt.js";
 import { QuizService } from "../services/quizService.js";
 import { RabbitmqService } from "../services/rabbitmqService.js";
-import { plainToInstance } from "class-transformer";
-import { CreateQuizRequestDto } from "../dtos/createQuizRequestDto.js";
-import { QuizDto } from "../dtos/quizDto.js";
-import { QuizAttemptDto } from "../dtos/quizAttemptDto.js";
-import { QuizAttempt } from "../entities/quizAttempt.js";
-import { Quiz } from "../entities/quiz.js";
 
 export const quizController = express.Router();
 const quizService = new QuizService();
 const rabbitmq = new RabbitmqService();
-rabbitmq.setup();
+await rabbitmq.setup();
 rabbitmq.consumeGptRequestMessageFromMq();
 
 quizController.post("/quiz", async (req: Request, res: Response) => {
   try {
-    const quizDto = new CreateQuizRequestDto(
+    const createQuizDto = new CreateQuizRequestDto(
       req.body.topic,
       req.body.title,
       req.body.numberOfQuestions,
@@ -24,13 +24,13 @@ quizController.post("/quiz", async (req: Request, res: Response) => {
       req.body.difficulty
     );
 
-    console.log(quizDto);
-    rabbitmq.publishMessage(quizDto);
+    console.log(createQuizDto);
+    rabbitmq.publishMessage(createQuizDto);
 
-    // need to find it in the database, and then send it back
-    const quiz: Quiz = await quizService.getQuizById(quizDto.id);
-    console.log(quiz);
-    res.status(200).send(JSON.stringify(quiz)); // send id back to client to use, can save next time and attach the id as query parameter
+    // need to find it in the database, and then cache it into redis
+    const quiz: Quiz = await quizService.getQuizById(createQuizDto.id);
+
+    res.status(200).json(quiz);
   } catch (error) {
     console.log(error);
     res.status(400).send("Error: Unable to send to queue");

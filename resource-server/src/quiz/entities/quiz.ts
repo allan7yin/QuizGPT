@@ -1,4 +1,4 @@
-import { Entity, PrimaryColumn, OneToMany, Column, Relation } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryColumn, Relation } from "typeorm";
 import { Question } from "./question.js";
 import { QuizAttempt } from "./quizAttempt.js";
 

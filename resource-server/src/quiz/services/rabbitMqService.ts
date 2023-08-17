@@ -1,12 +1,13 @@
 import amqp, { Message, MessageProperties } from "amqplib";
-import { CreateQuizRequestDto } from "../dtos/createQuizRequestDto.js";
-import { getQuizRepository } from "../repositories/quizRepository.js";
-import { Repository } from "typeorm";
-import { Quiz } from "../entities/quiz.js";
-import { Question } from "../entities/question.js";
 import dotenv from "dotenv";
-import { Option } from "../entities/option.js";
+import { Repository } from "typeorm";
+import client from "../../redis/redisConfig.js";
+import { CreateQuizRequestDto } from "../dtos/createQuizRequestDto.js";
 import { Answer } from "../entities/answer.js";
+import { Option } from "../entities/option.js";
+import { Question } from "../entities/question.js";
+import { Quiz } from "../entities/quiz.js";
+import { getQuizRepository } from "../repositories/quizRepository.js";
 
 dotenv.config();
 
@@ -18,12 +19,16 @@ export class RabbitmqService {
     const connection = await amqp.connect("amqp://localhost:5672");
     this.channel = await connection.createChannel();
     this.quizRepository = getQuizRepository();
-  };
 
-  publishMessage = async (message: CreateQuizRequestDto): Promise<string> => {
-    if (!this.channel) {
-      await this.setup();
+    const queueNames = [
+      process.env.to_gpt_rabbitmq_request_queue,
+      process.env.to_gateway_gpt_rabbitmq_response_queue,
+    ];
+
+    for (const queueName of queueNames) {
+      await this.channel.assertQueue(queueName!, { durable: true });
     }
+
     await this.channel.assertExchange(
       process.env.rabbitmq_gpt_exchange!,
       "direct",
@@ -31,7 +36,9 @@ export class RabbitmqService {
         durable: true,
       }
     );
+  };
 
+  publishMessage = async (message: CreateQuizRequestDto): Promise<string> => {
     const outputMessage: string = JSON.stringify(message);
     const correlationId: string = message.id;
     const messageProperties: MessageProperties = {
@@ -66,27 +73,6 @@ export class RabbitmqService {
   };
 
   consumeGptRequestMessageFromMq = async (): Promise<void> => {
-    if (!this.channel) {
-      await this.setup();
-    }
-
-    await this.channel.assertExchange(
-      process.env.rabbitmq_gpt_exchange!,
-      "direct",
-      {
-        durable: true,
-      }
-    );
-
-    const queueNames = [
-      process.env.to_gpt_rabbitmq_request_queue,
-      process.env.to_gateway_gpt_rabbitmq_response_queue,
-    ];
-
-    for (const queueName of queueNames) {
-      await this.channel.assertQueue(queueName!, { durable: true });
-    }
-
     this.channel.consume(
       process.env.to_gateway_gpt_rabbitmq_response_queue!,
       (data) => {
@@ -128,10 +114,13 @@ export class RabbitmqService {
         }
 
         question.text = q.text;
-        console.log(question);
         quiz.questions.push(question);
       }
       await quizRepository.save(quiz);
+
+      // want to save to redis cache here
+      await client.json.set(quiz.quizId, "$", JSON.stringify(quiz));
+      await client.expire(quiz.quizId, 60 * 60 * 3); // expires in in 3 hours
     } catch (error) {
       console.log(error);
     }
