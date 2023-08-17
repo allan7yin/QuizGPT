@@ -1,4 +1,4 @@
-import { QuizAttemptDto } from "./quizAttemptDto";
+import { QuizAttemptDto } from "./quizAttemptDto.js";
 
 export class UserAnswerDto {
   userAnswerId: number;

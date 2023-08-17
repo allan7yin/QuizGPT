@@ -1,6 +1,6 @@
-import { AnswerDto } from "./answerDto";
-import { OptionDto } from "./optionDto";
-import { QuizDto } from "./quizDto";
+import { AnswerDto } from "./answerDto.js";
+import { OptionDto } from "./optionDto.js";
+import { QuizDto } from "./quizDto.js";
 
 export class QuestionDto {
   questionId: number;

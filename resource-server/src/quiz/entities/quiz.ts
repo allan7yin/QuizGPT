@@ -1,7 +1,6 @@
-import { Entity, PrimaryColumn, OneToMany, Column } from "typeorm";
-import { Question } from "./question";
-import { QuizAttempt } from "./quizAttempt";
-import { Cipher } from "crypto";
+import { Entity, PrimaryColumn, OneToMany, Column, Relation } from "typeorm";
+import { Question } from "./question.js";
+import { QuizAttempt } from "./quizAttempt.js";
 
 @Entity("Quizes")
 export class Quiz {
@@ -15,10 +14,10 @@ export class Quiz {
     cascade: true,
     eager: true,
   })
-  questions!: Question[];
+  questions!: Relation<Question[]>;
 
   @OneToMany(() => QuizAttempt, (quizAttempt) => quizAttempt.quiz)
-  attempts!: QuizAttempt[];
+  attempts!: Relation<QuizAttempt[]>;
 
   //   @Column()
   //   @ManyToOne(() => User, (user) => user.quizzes)

@@ -1,5 +1,11 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
-import { Question } from "./question";
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  Relation,
+} from "typeorm";
+import { Question } from "./question.js";
 
 @Entity("Option")
 export class Option {
@@ -10,5 +16,5 @@ export class Option {
   content!: String;
 
   @ManyToOne(() => Question, (question) => question.options)
-  question!: Question;
+  question!: Relation<Question>;
 }

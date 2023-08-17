@@ -5,11 +5,12 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryColumn,
+  Relation,
   UpdateDateColumn,
 } from "typeorm";
 
-import { Quiz } from "./quiz";
-import { UserAnswer } from "./userAnswer";
+import { Quiz } from "./quiz.js";
+import { UserAnswer } from "./userAnswer.js";
 
 @Entity("QuizAttempt")
 export class QuizAttempt {
@@ -17,7 +18,7 @@ export class QuizAttempt {
   quizAttemptId!: string;
 
   @ManyToOne(() => Quiz, (quiz) => quiz.attempts)
-  quiz!: Quiz;
+  quiz!: Relation<Quiz>;
 
   @CreateDateColumn()
   createdAt!: Date;
@@ -26,5 +27,5 @@ export class QuizAttempt {
   updatedAt!: Date;
 
   @OneToMany(() => UserAnswer, (userAnswer) => userAnswer.quizAttempt)
-  userAnswers!: UserAnswer[];
+  userAnswers!: Relation<UserAnswer[]>;
 }

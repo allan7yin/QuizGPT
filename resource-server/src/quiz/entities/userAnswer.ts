@@ -1,5 +1,11 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { QuizAttempt } from "./quizAttempt";
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  Relation,
+} from "typeorm";
+import { QuizAttempt } from "./quizAttempt.js";
 
 @Entity("UserAnswer")
 export class UserAnswer {
@@ -7,7 +13,7 @@ export class UserAnswer {
   userAnswerId!: number;
 
   @ManyToOne(() => QuizAttempt, (quizAttempt) => quizAttempt.userAnswers)
-  quizAttempt!: QuizAttempt;
+  quizAttempt!: Relation<QuizAttempt>;
 
   @Column()
   text!: String;

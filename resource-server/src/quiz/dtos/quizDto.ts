@@ -1,5 +1,5 @@
-import { QuestionDto } from "./questionDto";
-import { QuizAttemptDto } from "./quizAttemptDto";
+import { QuestionDto } from "./questionDto.js";
+import { QuizAttemptDto } from "./quizAttemptDto.js";
 
 export class QuizDto {
   quizId: number;

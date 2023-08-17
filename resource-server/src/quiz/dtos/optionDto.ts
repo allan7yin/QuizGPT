@@ -1,4 +1,4 @@
-import { QuestionDto } from "./questionDto";
+import { QuestionDto } from "./questionDto.js";
 
 export class OptionDto {
   optionId: number;

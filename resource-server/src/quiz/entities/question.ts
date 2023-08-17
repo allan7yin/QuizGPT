@@ -3,13 +3,13 @@ import {
   PrimaryGeneratedColumn,
   Column,
   OneToMany,
-  JoinColumn,
   ManyToOne,
+  Relation,
 } from "typeorm";
 
-import { Option } from "./option";
-import { Answer } from "./answer";
-import { Quiz } from "./quiz";
+import { Option } from "./option.js";
+import { Answer } from "./answer.js";
+import { Quiz } from "./quiz.js";
 
 @Entity("Question")
 export class Question {
@@ -21,12 +21,12 @@ export class Question {
 
   @OneToMany(() => Option, (option) => option.question, { cascade: true })
   //   @JoinColumn({ name: "questionId_fk", referencedColumnName: "questionId" })
-  options!: Option[];
+  options!: Relation<Option[]>;
 
   @OneToMany(() => Answer, (answer) => answer.question, { cascade: true })
   //   @JoinColumn({ name: "questionId_fk", referencedColumnName: "questionId" })
-  answers!: Answer[];
+  answers!: Relation<Answer[]>;
 
   @ManyToOne(() => Quiz, (quiz) => quiz.questions)
-  quiz!: Quiz;
+  quiz!: Relation<Quiz>;
 }

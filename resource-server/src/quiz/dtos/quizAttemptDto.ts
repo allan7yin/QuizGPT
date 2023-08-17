@@ -1,5 +1,5 @@
-import { QuizDto } from "./quizDto";
-import { UserAnswerDto } from "./userAnswerDto";
+import { QuizDto } from "./quizDto.js";
+import { UserAnswerDto } from "./userAnswerDto.js";
 import { v4 as uuidv4 } from "uuid";
 
 export class QuizAttemptDto {
