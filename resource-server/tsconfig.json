@@ -13,5 +13,5 @@
     "types": ["node"],
     "outDir": "./dist"
   },
-  "include": ["src/**/*.ts", "./environment.d.ts"]
+  "include": ["src/**/*.ts", "./environment.d.ts", "src/redis/redisConfig.mts"]
 }

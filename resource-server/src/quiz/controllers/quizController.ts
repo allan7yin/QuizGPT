@@ -1,12 +1,12 @@
 import express, { Request, Response, json } from "express";
-import { QuizService } from "../services/quizService";
-import { RabbitmqService } from "../services/rabbitmqService";
+import { QuizService } from "../services/quizService.js";
+import { RabbitmqService } from "../services/rabbitmqService.js";
 import { plainToInstance } from "class-transformer";
-import { CreateQuizRequestDto } from "../dtos/createQuizRequestDto";
-import { QuizDto } from "../dtos/quizDto";
-import { QuizAttemptDto } from "../dtos/quizAttemptDto";
-import { QuizAttempt } from "../entities/quizAttempt";
-import { Quiz } from "../entities/quiz";
+import { CreateQuizRequestDto } from "../dtos/createQuizRequestDto.js";
+import { QuizDto } from "../dtos/quizDto.js";
+import { QuizAttemptDto } from "../dtos/quizAttemptDto.js";
+import { QuizAttempt } from "../entities/quizAttempt.js";
+import { Quiz } from "../entities/quiz.js";
 
 export const quizController = express.Router();
 const quizService = new QuizService();

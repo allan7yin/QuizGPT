@@ -1,9 +1,9 @@
-import { Question } from "../entities/question";
-import { Quiz } from "../entities/quiz";
-import { QuizAttempt } from "../entities/quizAttempt";
-import { getQuizRepository } from "../repositories/quizRepository";
-import { getQuizAttemptRepository } from "../repositories/quizAttemptRepository";
-import { getQuestionRepository } from "../repositories/questionRepository";
+import { Question } from "../entities/question.js";
+import { Quiz } from "../entities/quiz.js";
+import { QuizAttempt } from "../entities/quizAttempt.js";
+import { getQuizRepository } from "../repositories/quizRepository.js";
+import { getQuizAttemptRepository } from "../repositories/quizAttemptRepository.js";
+import { getQuestionRepository } from "../repositories/questionRepository.js";
 
 export class QuizService {
   quizRepository = getQuizRepository();

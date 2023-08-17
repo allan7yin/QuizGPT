@@ -1,12 +1,12 @@
 import amqp, { Message, MessageProperties } from "amqplib";
-import { CreateQuizRequestDto } from "../dtos/createQuizRequestDto";
-import { getQuizRepository } from "../repositories/quizRepository";
+import { CreateQuizRequestDto } from "../dtos/createQuizRequestDto.js";
+import { getQuizRepository } from "../repositories/quizRepository.js";
 import { Repository } from "typeorm";
-import { Quiz } from "../entities/quiz";
-import { Question } from "../entities/question";
+import { Quiz } from "../entities/quiz.js";
+import { Question } from "../entities/question.js";
 import dotenv from "dotenv";
-import { Option } from "../entities/option";
-import { Answer } from "../entities/answer";
+import { Option } from "../entities/option.js";
+import { Answer } from "../entities/answer.js";
 
 dotenv.config();
 
