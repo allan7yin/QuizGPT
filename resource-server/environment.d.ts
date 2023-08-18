@@ -16,6 +16,7 @@ declare global {
       RABBITMQ_SERVER: string;
       AUTH0_AUDIENCE: string;
       AUTH0_ISSUER: string;
+      AUTH0_SIGNATURE_ALGORITHM: string;
     }
   }
 }

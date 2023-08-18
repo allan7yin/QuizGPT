@@ -1,0 +1,193 @@
+openapi: 3.0.0
+info:
+  title: QuizGPT REST API Endpoints
+  version: 1.0.0
+
+paths:
+  /api/v1/healthcheck:
+    get:
+      summary: Health Check
+      description: Check the health of the API.
+      responses:
+        "200":
+          description: Health check passed.
+
+  /api/v1/quiz:
+    post:
+      summary: Create a Quiz
+      description: Create a new quiz and publish it to a message queue.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateQuizRequest"
+      responses:
+        "200":
+          description: Successfully created a quiz and published to the queue.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Quiz"
+        "400":
+          description: Unable to send to queue.
+
+  /api/v1/quizzes:
+    get:
+      summary: Get All Quizzes
+      description: Retrieve a list of all quizzes.
+      responses:
+        "200":
+          description: Successfully retrieved quizzes.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Quiz"
+
+  /api/v1/quiz/{quizId}:
+    get:
+      summary: Get Quiz by ID
+      description: Retrieve a quiz by its ID.
+      parameters:
+        - name: quizId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID of the quiz to retrieve.
+      responses:
+        "200":
+          description: Successfully retrieved the quiz.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Quiz"
+        "400":
+          description: Unable to retrieve the quiz.
+
+  /api/v1/quiz/{quizId}/delete:
+    delete:
+      summary: Delete Quiz
+      description: Delete a quiz by its ID.
+      parameters:
+        - name: quizId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID of the quiz to delete.
+      responses:
+        "200":
+          description: Successfully deleted the quiz.
+        "400":
+          description: Unable to delete the quiz.
+
+security:
+  - BearerAuth: []
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    CreateQuizRequest:
+      type: object
+      properties:
+        title:
+          type: string
+        topic:
+          type: string
+        numberOfQuestions:
+          type: integer
+          format: int64
+        numberOfOptionsPerQuestion:
+          type: integer
+          format: int64
+        difficulty:
+          type: string
+
+    Quiz:
+      type: object
+      properties:
+        quizId:
+          type: string
+        title:
+          type: string
+        questions:
+          type: array
+          items:
+            $ref: "#/components/schemas/Question"
+        attempts:
+          type: array
+          items:
+            $ref: "#/components/schemas/QuizAttempt"
+
+    Question:
+      type: object
+      properties:
+        questionId:
+          type: integer
+        text:
+          type: string
+        options:
+          type: array
+          items:
+            $ref: "#/components/schemas/Option"
+        answers:
+          type: array
+          items:
+            $ref: "#/components/schemas/Answer"
+        quiz:
+          $ref: "#/components/schemas/Quiz"
+
+    Option:
+      type: object
+      properties:
+        optionId:
+          type: integer
+        content:
+          type: string
+        question:
+          $ref: "#/components/schemas/Question"
+
+    Answer:
+      type: object
+      properties:
+        answerId:
+          type: integer
+        content:
+          type: string
+        question:
+          $ref: "#/components/schemas/Question"
+
+    QuizAttempt:
+      type: object
+      properties:
+        quizAttemptId:
+          type: string
+        quiz:
+          $ref: "#/components/schemas/Quiz"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        userAnswers:
+          type: array
+          items:
+            $ref: "#/components/schemas/UserAnswer"
+
+    UserAnswer:
+      type: object
+      properties:
+        userAnswerId:
+          type: integer
+        quizAttempt:
+          $ref: "#/components/schemas/QuizAttempt"
+        text:
+          type: string

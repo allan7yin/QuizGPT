@@ -10,7 +10,8 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "types": ["node"],
-    "outDir": "./dist"
+    "outDir": "./dist",
+    "resolveJsonModule": true
   },
   "include": [
     "src/**/*.ts",

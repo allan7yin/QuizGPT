@@ -4,13 +4,15 @@ import "es6-shim";
 import express from "express";
 import "reflect-metadata";
 import dataSource from "../config/ormconfig.js";
+import swaggerDocs from "../swagger/swagger.js";
+import { auth0JwtMiddleware } from "./middleware/authMiddleware.js";
 import { quizController } from "./quiz/controllers/quizController.js";
 import { getQuizRepository } from "./quiz/repositories/quizRepository.js";
 import client from "./redis/redisConfig.js";
 
 dotenv.config();
 
-const PORT = process.env.PORT;
+const PORT = parseInt(process.env.PORT!);
 
 // Server setup code
 const app = express();
@@ -30,7 +32,7 @@ for (let id of quizIdSet) {
 }
 
 // configure api endpoints
-app.use("/api/v1", quizController);
+app.use("/api/v1", auth0JwtMiddleware, quizController);
 app.get("/api/public", function (req, res) {
   res.json({
     message:
@@ -57,4 +59,5 @@ app.get("/redis/test", async (req, res) => {
 // start application
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
+  swaggerDocs(app, PORT);
 });

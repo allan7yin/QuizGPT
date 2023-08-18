@@ -14,6 +14,10 @@ const rabbitmq = new RabbitmqService();
 await rabbitmq.setup();
 rabbitmq.consumeGptRequestMessageFromMq();
 
+quizController.get("/healthcheck", (req: Request, res: Response) => {
+  res.sendStatus(200);
+});
+
 quizController.post("/quiz", async (req: Request, res: Response) => {
   try {
     const createQuizDto = new CreateQuizRequestDto(
