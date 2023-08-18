@@ -16,7 +16,7 @@ export class RabbitmqService {
   quizRepository!: Repository<Quiz>;
 
   setup = async () => {
-    const connection = await amqp.connect("amqp://localhost:5672");
+    const connection = await amqp.connect(process.env.RABBITMQ_SERVER!);
     this.channel = await connection.createChannel();
     this.quizRepository = getQuizRepository();
 

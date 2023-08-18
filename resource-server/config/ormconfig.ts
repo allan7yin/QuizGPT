@@ -1,26 +1,26 @@
-import { DataSource } from "typeorm";
 import dotenv from "dotenv";
-import { Quiz } from "../src/quiz/entities/quiz";
-import { QuizAttempt } from "../src/quiz/entities/quizAttempt";
-import { Question } from "../src/quiz/entities/question";
-import { Answer } from "../src/quiz/entities/answer";
-import { Option } from "../src/quiz/entities/option";
-import { UserAnswer } from "../src/quiz/entities/userAnswer";
+import { DataSource } from "typeorm";
+import { Answer } from "../src/quiz/entities/answer.js";
+import { Option } from "../src/quiz/entities/option.js";
+import { Question } from "../src/quiz/entities/question.js";
+import { Quiz } from "../src/quiz/entities/quiz.js";
+import { QuizAttempt } from "../src/quiz/entities/quizAttempt.js";
+import { UserAnswer } from "../src/quiz/entities/userAnswer.js";
 
 dotenv.config;
 
 const dataSource = new DataSource({
   type: "postgres",
-  host: "localhost",
-  port: 5432,
-  username: "allanyin",
+  host: process.env.DB_HOST || "localhost",
+  port: parseInt(process.env.DB_PORT as string) || 5432,
+  username: process.env.DB_USERNAME || "allanyin",
   password: "",
-  database: "QuizGPT",
+  database: process.env.DB_DATABASE || "QuizGPT",
   entities: [Quiz, QuizAttempt, Question, Answer, Option, UserAnswer],
   synchronize: true,
 });
 
-dataSource
+await dataSource
   .initialize()
   .then(() => {
     console.log(`Data Source has been initialized`);

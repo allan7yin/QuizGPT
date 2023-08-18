@@ -17,7 +17,9 @@ export class QuizService {
 
   async getAllQuizzes(): Promise<Quiz[]> {
     const quizList: Quiz[] = [];
-    const quizIdSet: string[] = await client.sMembers("quiz-ids");
+    const quizIdSet: string[] = await client.sMembers(
+      process.env.REDIS_QUIZID_SET!
+    );
     let quiz: Quiz;
 
     for (const quizId of quizIdSet) {

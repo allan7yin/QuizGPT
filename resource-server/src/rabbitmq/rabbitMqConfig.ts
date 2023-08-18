@@ -8,7 +8,7 @@ export var channel: amqp.Channel;
 
 export const rabbitMqConfig = async () => {
   try {
-    connection = await amqp.connect("amqp://localhost:5672");
+    connection = await amqp.connect(process.env.RABBITMQ_SERVER!);
     channel = await connection.createChannel();
 
     const queueNames = [

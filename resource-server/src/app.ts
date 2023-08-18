@@ -1,4 +1,5 @@
 import cors from "cors";
+import dotenv from "dotenv";
 import "es6-shim";
 import express from "express";
 import "reflect-metadata";
@@ -6,6 +7,8 @@ import dataSource from "../config/ormconfig.js";
 import { quizController } from "./quiz/controllers/quizController.js";
 import { getQuizRepository } from "./quiz/repositories/quizRepository.js";
 import client from "./redis/redisConfig.js";
+
+dotenv.config();
 
 const PORT = process.env.PORT;
 
@@ -21,8 +24,9 @@ const quizRepo = getQuizRepository();
 const quizzes = await quizRepo.find({ select: ["quizId"] });
 const quizIdSet = new Set(quizzes.map((quiz) => quiz.quizId));
 console.log(quizIdSet);
+const quizKeysIdentifier = process.env.REDIS_QUIZID_SET!;
 for (let id of quizIdSet) {
-  await client.sAdd("quiz-ids", id);
+  await client.sAdd(quizKeysIdentifier, id);
 }
 
 // configure api endpoints
