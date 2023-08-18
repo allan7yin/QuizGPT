@@ -1,16 +1,15 @@
-import React, { useState } from "react";
-import "../Styles/LoginPage.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "../Styles/LoginPage.css";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    // only need to go make login api call if jwt is not in local storage
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const loginData = {
@@ -39,7 +38,7 @@ const LoginPage = () => {
         console.log(response);
       }
     } catch (error) {
-      console.error("Login failed:", error.message);
+      console.error("Login failed:", error);
     }
   };
 

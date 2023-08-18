@@ -1,9 +1,14 @@
-import React, { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import Modal from "react-modal";
 
 import "../Styles/ErrorModal.css";
 
-const ErrorModal = ({ errorMessage, onClose }) => {
+interface ErrorModalProps {
+  errorMessage: string;
+  onClose: () => void;
+}
+
+const ErrorModal: FC<ErrorModalProps> = ({ errorMessage, onClose }) => {
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {

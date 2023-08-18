@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 
 export const useQuizForm = () => {
   const [inputNumOptions, setInputNumOptions] = useState("");
@@ -7,12 +7,12 @@ export const useQuizForm = () => {
   const [inputDifficulty, setInputDifficulty] = useState("");
   const [inputTitle, setInputTitle] = useState("");
 
-  const handleInputNumOptionsChange = (e) => {
+  const handleInputNumOptionsChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     setInputNumOptions(value.replace(/\D/g, "")); // Remove all non-digit characters
   };
 
-  const handleInputNumQuestionsChange = (e) => {
+  const handleInputNumQuestionsChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     setInputNumQuestions(value.replace(/\D/g, "")); // Remove all non-digit characters
   };

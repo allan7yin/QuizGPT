@@ -1,12 +1,11 @@
-import React from "react";
-import "../Styles/NavBarDarkMode.css";
+import { FC } from "react";
 import { Link } from "react-router-dom";
+import "../Styles/NavBarDarkMode.css";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
-import { faMoon } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const Navbar = ({ darkMode, onToggleDarkMode }) => {
+const Navbar: FC = () => {
   return (
     <nav className="NavContainer">
       <ul className="NavList">
@@ -17,7 +16,7 @@ const Navbar = ({ darkMode, onToggleDarkMode }) => {
         </li>
         <li className="NavItem">
           <Link className="NavLink" to="/about">
-            Quizes
+            Quizzes
           </Link>
         </li>
         <li className="NavItem">
@@ -30,6 +29,7 @@ const Navbar = ({ darkMode, onToggleDarkMode }) => {
             className="NavLink"
             href="https://github.com/allan7yin/QuizGenerationAppGPT"
             target="_blank"
+            rel="noopener noreferrer"
           >
             <FontAwesomeIcon icon={faGithub} className="Icon" /> Source
           </a>

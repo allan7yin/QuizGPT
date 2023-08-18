@@ -1,11 +1,13 @@
-import React from "react";
-import { createRoot } from "react-dom/client";
 import { Auth0Provider } from "@auth0/auth0-react";
+import ReactDOM from "react-dom/client";
+import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import "./index.css";
-import { BrowserRouter } from "react-router-dom";
+import reportWebVitals from "./reportWebVitals";
 
-const root = createRoot(document.getElementById("root"));
+const root = ReactDOM.createRoot(
+  document.getElementById("root") as HTMLElement
+);
 
 root.render(
   <BrowserRouter>
@@ -23,3 +25,5 @@ root.render(
     </Auth0Provider>
   </BrowserRouter>
 );
+
+reportWebVitals();

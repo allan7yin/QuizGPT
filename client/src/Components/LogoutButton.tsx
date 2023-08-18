@@ -1,7 +1,7 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import React from "react";
+import { FC } from "react";
 
-const LogoutButton = () => {
+const LogoutButton: FC = () => {
   const { logout } = useAuth0();
 
   const handleLogout = () => {
@@ -9,7 +9,7 @@ const LogoutButton = () => {
     localStorage.removeItem("authToken");
 
     // Call the Auth0 logout function
-    logout({ returnTo: window.location.origin });
+    logout({ logoutParams: { returnTo: window.location.origin } });
   };
 
   return <button onClick={handleLogout}>Log Out</button>;

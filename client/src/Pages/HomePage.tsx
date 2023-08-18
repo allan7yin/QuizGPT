@@ -1,15 +1,15 @@
-import "../Styles/HomePageDarkMode.css";
-import React, { useEffect } from "react";
+import React, { FC, useEffect } from "react";
 import { useQuizForm } from "../Hooks/useQuizForm";
+import "../Styles/HomePageDarkMode.css";
 
 import LoginButton from "../Components/LoginButton";
 import LogoutButton from "../Components/LogoutButton";
-import myImage from "../Images/answer.png";
+import answer from "../Images/answer.png";
 
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
 
-const HomePage = () => {
+const HomePage: FC = () => {
   const {
     inputTitle,
     setInputTitle,
@@ -39,15 +39,15 @@ const HomePage = () => {
         });
 
         localStorage.setItem("token", accessToken);
-      } catch (e) {
-        console.log(e.message);
+      } catch (error) {
+        console.error("An error occured", error);
       }
     };
 
     saveAccessToken();
   }, [getAccessTokenSilently]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const accessToken = localStorage.getItem("token");
@@ -61,7 +61,6 @@ const HomePage = () => {
       difficulty: inputDifficulty,
     };
 
-    // make API call to create quiz, will return a
     try {
       console.log("1");
       const response = await fetch("http://localhost:8080/api/v1/quiz", {
@@ -78,7 +77,6 @@ const HomePage = () => {
       if (response.ok) {
         const quiz = await response.json();
         console.log(quiz);
-        // once we have the response, we will redirect to the page /quiz/id
         const quizId = quiz.quizId;
         console.log(quizId);
         navigate(`/quiz/${quizId}`, { state: quiz });
@@ -86,7 +84,7 @@ const HomePage = () => {
         console.log("Something went wrong ...");
       }
     } catch (error) {
-      console.error("Create Quiz Request failed:", error.message);
+      console.error("Create Quiz Request failed:", error);
     }
   };
 
@@ -94,9 +92,9 @@ const HomePage = () => {
     <>
       <div className="homepage-container">
         <h1 className="homepage-title"> QuizGPT </h1>
-        <img src={myImage} className="home-image" />
+        <img src={answer} className="home-image" alt="QuizGPT" />
         <div className="homepage-subtitle">
-          Welcome to a quick and easy way to generate multiple choice quizeses!
+          Welcome to a quick and easy way to generate multiple choice quizzes!
         </div>
 
         <div className="description-Container">
@@ -167,7 +165,9 @@ const HomePage = () => {
             />
           </div>
           <div className="Prompt">
-            <button className="Prompt-input-submit-button"> Submit </button>
+            <button className="Prompt-input-submit-button" type="submit">
+              Submit
+            </button>
           </div>
         </form>
 
