@@ -19,14 +19,22 @@ export class Question {
   @Column()
   content!: String;
 
-  @OneToMany(() => Option, (option) => option.question, { cascade: true })
+  @OneToMany(() => Option, (option) => option.question, {
+    cascade: true,
+    onDelete: "CASCADE",
+  })
   //   @JoinColumn({ name: "questionId_fk", referencedColumnName: "questionId" })
   options!: Relation<Option[]>;
 
-  @OneToMany(() => Answer, (answer) => answer.question, { cascade: true })
+  @OneToMany(() => Answer, (answer) => answer.question, {
+    cascade: true,
+    onDelete: "CASCADE",
+  })
   //   @JoinColumn({ name: "questionId_fk", referencedColumnName: "questionId" })
   answers!: Relation<Answer[]>;
 
-  @ManyToOne(() => Quiz, (quiz) => quiz.questions)
+  @ManyToOne(() => Quiz, (quiz) => quiz.questions, {
+    onDelete: "CASCADE",
+  })
   quiz!: Relation<Quiz>;
 }

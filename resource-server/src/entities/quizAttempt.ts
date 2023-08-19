@@ -25,6 +25,8 @@ export class QuizAttempt {
   @UpdateDateColumn()
   updatedAt!: Date;
 
-  @OneToMany(() => UserAnswer, (userAnswer) => userAnswer.quizAttempt)
+  @OneToMany(() => UserAnswer, (userAnswer) => userAnswer.quizAttempt, {
+    onDelete: "CASCADE",
+  })
   userAnswers!: Relation<UserAnswer[]>;
 }

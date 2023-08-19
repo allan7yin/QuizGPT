@@ -1,7 +1,15 @@
 import { Expose } from "class-transformer";
-import { Column, Entity, OneToMany, PrimaryColumn, Relation } from "typeorm";
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryColumn,
+  Relation,
+} from "typeorm";
 import { Question } from "./question.js";
 import { QuizAttempt } from "./quizAttempt.js";
+import { User } from "./user.js";
 
 @Entity("Quizes")
 export class Quiz {
@@ -17,14 +25,16 @@ export class Quiz {
   @OneToMany(() => Question, (question) => question.quiz, {
     cascade: true,
     eager: true,
+    onDelete: "CASCADE",
   })
   questions!: Relation<Question[]>;
 
   @Expose()
-  @OneToMany(() => QuizAttempt, (quizAttempt) => quizAttempt.quiz)
+  @OneToMany(() => QuizAttempt, (quizAttempt) => quizAttempt.quiz, {
+    onDelete: "CASCADE",
+  })
   attempts!: Relation<QuizAttempt[]>;
 
-  //   @Column()
-  //   @ManyToOne(() => User, (user) => user.quizzes)
-  //   owner: User;
+  @ManyToOne(() => User, (user) => user.quizzes, { onDelete: "CASCADE" })
+  user!: User;
 }

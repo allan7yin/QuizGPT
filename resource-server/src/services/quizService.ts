@@ -15,11 +15,9 @@ export class QuizService {
   quizAttemptRepository = getQuizAttemptRepository();
   questionRepository = getQuestionRepository();
 
-  async getAllQuizzes(): Promise<Quiz[]> {
+  async getAllQuizzes(userId: string): Promise<Quiz[]> {
     const quizList: Quiz[] = [];
-    const quizIdSet: string[] = await client.sMembers(
-      process.env.REDIS_QUIZID_SET!
-    );
+    const quizIdSet: string[] = await client.sMembers(userId);
     let quiz: Quiz;
 
     for (const quizId of quizIdSet) {
@@ -92,10 +90,12 @@ export class QuizService {
     return quizEntity;
   }
 
-  async deleteQuiz(id: string): Promise<void> {
-    const quiz = await this.getQuizById(id);
+  async deleteQuiz(userId: string, quizId: string): Promise<void> {
+    const quiz = await this.getQuizById(quizId);
     await this.quizRepository.remove(quiz);
-    await client.del(quiz.quizId);
+    // console.log(quiz);
+    await client.json.del(quizId);
+    await client.sRem(userId, quizId);
   }
 
   async getAllQuestions(): Promise<Question[]> {

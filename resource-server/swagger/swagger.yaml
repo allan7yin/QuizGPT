@@ -66,8 +66,6 @@ paths:
                 $ref: "#/components/schemas/Quiz"
         "400":
           description: Unable to retrieve the quiz.
-
-  /api/v1/quiz/{quizId}/delete:
     delete:
       summary: Delete Quiz
       description: Delete a quiz by its ID.

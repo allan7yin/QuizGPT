@@ -15,6 +15,8 @@ export class Answer {
   @Column()
   content!: String;
 
-  @ManyToOne(() => Question, (question) => question.options)
+  @ManyToOne(() => Question, (question) => question.options, {
+    onDelete: "CASCADE",
+  })
   question!: Relation<Question>;
 }

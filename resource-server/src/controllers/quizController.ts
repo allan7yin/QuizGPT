@@ -15,12 +15,15 @@ await rabbitmq.setup();
 rabbitmq.consumeGptRequestMessageFromMq();
 
 quizController.get("/healthcheck", (req: Request, res: Response) => {
+  console.log(req.auth?.payload.sub);
   res.sendStatus(200);
 });
 
 quizController.post("/quiz", async (req: Request, res: Response) => {
+  console.log(req.auth?.payload.sub);
   try {
     const createQuizDto = new CreateQuizRequestDto(
+      req.auth?.payload.sub!,
       req.body.topic,
       req.body.title,
       req.body.numberOfQuestions,
@@ -43,8 +46,9 @@ quizController.post("/quiz", async (req: Request, res: Response) => {
 
 quizController.get("/quizzes", (req: Request, res: Response) => {
   let quizzes: QuizDto[];
+
   try {
-    quizService.getAllQuizzes().then((result) => {
+    quizService.getAllQuizzes(req.auth?.payload.sub!).then((result) => {
       console.log(result);
       quizzes = result.map((quiz) => plainToInstance(QuizDto, quiz));
       console.log(quizzes);
@@ -78,10 +82,13 @@ quizController.get("/quiz/:quizId", (req: Request, res: Response) => {
   }
 });
 
-quizController.delete("./quiz/:quizId", (req: Request, res: Response) => {
+quizController.delete("/quiz/:quizId", (req: Request, res: Response) => {
+  console.log("want to delete");
   const quizId: string = req.params.quizId;
+  console.log(quizId);
+  console.log(req.auth?.payload.sub!);
   try {
-    quizService.deleteQuiz(quizId);
+    quizService.deleteQuiz(req.auth?.payload.sub!, quizId);
     res.status(200).send("Deleted quiz with id ${quizId}");
   } catch (error) {
     res
@@ -90,7 +97,7 @@ quizController.delete("./quiz/:quizId", (req: Request, res: Response) => {
   }
 });
 
-quizController.post("./quiz/:quizId/save", (req: Request, res: Response) => {
+quizController.post("/quiz/:quizId/save", (req: Request, res: Response) => {
   let quizAttemptDto: QuizAttemptDto;
   let quizAttempt: QuizAttempt;
   const quizId: string = req.params.quizId;
@@ -111,7 +118,7 @@ quizController.post("./quiz/:quizId/save", (req: Request, res: Response) => {
   }
 });
 
-quizController.post("./quiz/:quizId/save", (req: Request, res: Response) => {
+quizController.post("/quiz/:quizId/save", (req: Request, res: Response) => {
   let quizAttemptDto: QuizAttemptDto;
   let quizAttempt: QuizAttempt;
   const quizId: string = req.params.quizId;
@@ -132,28 +139,25 @@ quizController.post("./quiz/:quizId/save", (req: Request, res: Response) => {
   }
 });
 
-quizController.delete(
-  "./quiz/:quizId/delete",
-  (req: Request, res: Response) => {
-    let quizAttemptDto: QuizAttemptDto;
-    const quizId: string = req.params.quizId;
-    try {
-      const jsonData = JSON.stringify(req.body);
-      console.log("Saving quiz attempt");
-      quizAttemptDto = plainToInstance(QuizAttemptDto, jsonData);
+quizController.delete("/quiz/:quizId/delete", (req: Request, res: Response) => {
+  let quizAttemptDto: QuizAttemptDto;
+  const quizId: string = req.params.quizId;
+  try {
+    const jsonData = JSON.stringify(req.body);
+    console.log("Saving quiz attempt");
+    quizAttemptDto = plainToInstance(QuizAttemptDto, jsonData);
 
-      quizService.deleteQuizAttempt(quizAttemptDto.quizAttemptId);
-      res
-        .status(200)
-        .send(
-          "Deleted quiz attempt with attemptid ${quizAttemptDto.quizAttemptId}"
-        );
-    } catch (error) {
-      res
-        .status(400)
-        .send(
-          "Error: Encountered issues when saving quiz attempt for quiz with id ${quizId}"
-        );
-    }
+    quizService.deleteQuizAttempt(quizAttemptDto.quizAttemptId);
+    res
+      .status(200)
+      .send(
+        "Deleted quiz attempt with attemptid ${quizAttemptDto.quizAttemptId}"
+      );
+  } catch (error) {
+    res
+      .status(400)
+      .send(
+        "Error: Encountered issues when saving quiz attempt for quiz with id ${quizId}"
+      );
   }
-);
+});

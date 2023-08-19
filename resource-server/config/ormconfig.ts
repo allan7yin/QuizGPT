@@ -5,6 +5,7 @@ import { Option } from "../src/entities/option.js";
 import { Question } from "../src/entities/question.js";
 import { Quiz } from "../src/entities/quiz.js";
 import { QuizAttempt } from "../src/entities/quizAttempt.js";
+import { User } from "../src/entities/user.js";
 import { UserAnswer } from "../src/entities/userAnswer.js";
 
 dotenv.config;
@@ -16,7 +17,7 @@ const dataSource = new DataSource({
   username: process.env.DB_USERNAME || "allanyin",
   password: "",
   database: process.env.DB_DATABASE || "QuizGPT",
-  entities: [Quiz, QuizAttempt, Question, Answer, Option, UserAnswer],
+  entities: [Quiz, QuizAttempt, Question, Answer, Option, UserAnswer, User],
   synchronize: true,
 });
 

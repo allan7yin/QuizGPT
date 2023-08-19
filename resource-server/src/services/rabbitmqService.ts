@@ -6,8 +6,10 @@ import { Answer } from "../entities/answer.js";
 import { Option } from "../entities/option.js";
 import { Question } from "../entities/question.js";
 import { Quiz } from "../entities/quiz.js";
+import { User } from "../entities/user.js";
 import client from "../redis/redisConfig.js";
 import { getQuizRepository } from "../repositories/quizRepository.js";
+import { getUserRepository } from "../repositories/userRepository.js";
 
 dotenv.config();
 
@@ -87,10 +89,13 @@ export class RabbitmqService {
   save = async (incomingMessage: any): Promise<void> => {
     try {
       const quizRepository = getQuizRepository();
+      const userRepository = getUserRepository();
       const message: Message = incomingMessage as Message;
       const messageString: string = message.content.toString("utf-8");
 
       const dataObject = JSON.parse(messageString);
+      console.log(dataObject.userId);
+
       const quiz = new Quiz();
       quiz.quizId = dataObject.id;
       quiz.title = dataObject.title;
@@ -117,8 +122,23 @@ export class RabbitmqService {
         quiz.questions.push(question);
       }
       console.log(quiz);
-      await quizRepository.save(quiz);
 
+      // check if the userId is in the database, if not, we will create a new user
+      let user = await userRepository.findOne({
+        where: { userId: dataObject.userId },
+      });
+
+      if (user == null) {
+        // create the new user
+        user = new User();
+        user.userId = dataObject.userId;
+        user.quizzes = [];
+      }
+      user.quizzes.push(quiz);
+
+      await quizRepository.save(quiz);
+      await userRepository.save(user);
+      await client.sAdd(user.userId, quiz.quizId);
       // want to save to redis cache here
       await client.json.set(quiz.quizId, "$", JSON.stringify(quiz));
       await client.expire(quiz.quizId, 60 * 60 * 3); // expires in in 3 hours

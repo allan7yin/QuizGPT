@@ -9,6 +9,7 @@ import { quizController } from "./controllers/quizController.js";
 import { auth0JwtMiddleware } from "./middleware/authMiddleware.js";
 import client from "./redis/redisConfig.js";
 import { getQuizRepository } from "./repositories/quizRepository.js";
+import { getUserRepository } from "./repositories/userRepository.js";
 
 dotenv.config();
 
@@ -21,15 +22,21 @@ app.use(cors());
 
 dataSource;
 
-// redis setup code
+// redis setup code, map userId -> set of quizId
+const userRepo = getUserRepository();
 const quizRepo = getQuizRepository();
-const quizzes = await quizRepo.find({ select: ["quizId"] });
-const quizIdSet = new Set(quizzes.map((quiz) => quiz.quizId));
-console.log(quizIdSet);
-const quizKeysIdentifier = process.env.REDIS_QUIZID_SET!;
-for (let id of quizIdSet) {
-  await client.sAdd(quizKeysIdentifier, id);
-}
+
+const usersWithQuizIds = await userRepo
+  .createQueryBuilder("user")
+  .leftJoinAndSelect("user.quizzes", "quiz")
+  .select(["user.userId", "quiz.quizId"])
+  .getMany();
+
+usersWithQuizIds.forEach((user) => {
+  user.quizzes.forEach(async (quiz) => {
+    await client.sAdd(user.userId, quiz.quizId);
+  });
+});
 
 // configure api endpoints
 app.use("/api/v1", auth0JwtMiddleware, quizController);
