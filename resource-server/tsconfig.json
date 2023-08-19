@@ -14,7 +14,7 @@
     "resolveJsonModule": true
   },
   "include": [
-    "src/**/*.ts",
+    "src/*.ts",
     "./environment.d.ts",
     "src/redis/redisConfig.ts",
     "src/redisOM/quiz.js"

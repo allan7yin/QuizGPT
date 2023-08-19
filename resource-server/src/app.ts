@@ -5,10 +5,10 @@ import express from "express";
 import "reflect-metadata";
 import dataSource from "../config/ormconfig.js";
 import swaggerDocs from "../swagger/swagger.js";
+import { quizController } from "./controllers/quizController.js";
 import { auth0JwtMiddleware } from "./middleware/authMiddleware.js";
-import { quizController } from "./quiz/controllers/quizController.js";
-import { getQuizRepository } from "./quiz/repositories/quizRepository.js";
 import client from "./redis/redisConfig.js";
+import { getQuizRepository } from "./repositories/quizRepository.js";
 
 dotenv.config();
 

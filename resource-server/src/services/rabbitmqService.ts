@@ -1,12 +1,12 @@
 import amqp, { Message, MessageProperties } from "amqplib";
 import dotenv from "dotenv";
 import { Repository } from "typeorm";
-import client from "../../redis/redisConfig.js";
 import { CreateQuizRequestDto } from "../dtos/createQuizRequestDto.js";
 import { Answer } from "../entities/answer.js";
 import { Option } from "../entities/option.js";
 import { Question } from "../entities/question.js";
 import { Quiz } from "../entities/quiz.js";
+import client from "../redis/redisConfig.js";
 import { getQuizRepository } from "../repositories/quizRepository.js";
 
 dotenv.config();
@@ -113,9 +113,10 @@ export class RabbitmqService {
           question.answers.push(answer);
         }
 
-        question.text = q.text;
+        question.content = q.content;
         quiz.questions.push(question);
       }
+      console.log(quiz);
       await quizRepository.save(quiz);
 
       // want to save to redis cache here

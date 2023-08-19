@@ -17,7 +17,7 @@ export class Question {
   questionId!: number;
 
   @Column()
-  text!: String;
+  content!: String;
 
   @OneToMany(() => Option, (option) => option.question, { cascade: true })
   //   @JoinColumn({ name: "questionId_fk", referencedColumnName: "questionId" })

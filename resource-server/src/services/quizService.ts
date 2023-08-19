@@ -1,9 +1,9 @@
-import { plainToInstance } from "class-transformer";
+import { instanceToPlain, plainToInstance } from "class-transformer";
 import dotenv from "dotenv";
-import client from "../../redis/redisConfig.js";
 import { Question } from "../entities/question.js";
 import { Quiz } from "../entities/quiz.js";
 import { QuizAttempt } from "../entities/quizAttempt.js";
+import client from "../redis/redisConfig.js";
 import { getQuestionRepository } from "../repositories/questionRepository.js";
 import { getQuizAttemptRepository } from "../repositories/quizAttemptRepository.js";
 import { getQuizRepository } from "../repositories/quizRepository.js";
@@ -23,12 +23,19 @@ export class QuizService {
     let quiz: Quiz;
 
     for (const quizId of quizIdSet) {
-      const result = await client.get(quizId);
+      const result = await client.json.get(quizId);
       if (result != null) {
         quiz = plainToInstance(Quiz, result);
       } else {
         quiz = await this.getQuizById(quizId);
-        await client.set(quiz.quizId, JSON.stringify(quiz));
+
+        const jsonFormattedData = {
+          quizId: quiz.quizId,
+          title: quiz.title,
+          questions: JSON.stringify(quiz.questions),
+          attempts: JSON.stringify(quiz.attempts),
+        };
+        await client.json.set(quiz.quizId, "$", jsonFormattedData);
         await client.expire(quiz.quizId, 60 * 60 * 3);
       }
 
@@ -40,7 +47,7 @@ export class QuizService {
 
   async getQuizById(id: string): Promise<Quiz> {
     let quiz: Quiz | null;
-    const result = await client.get(id);
+    const result = await client.json.get(id);
 
     if (result != null) {
       quiz = plainToInstance(Quiz, result);
@@ -58,7 +65,8 @@ export class QuizService {
       });
 
       if (quiz) {
-        await client.set(quiz.quizId, JSON.stringify(quiz));
+        const plain = instanceToPlain(quiz);
+        await client.json.set(quiz.quizId, "$", plain);
         await client.expire(quiz.quizId, 60 * 60 * 3);
 
         return quiz;
@@ -77,7 +85,8 @@ export class QuizService {
 
   async saveQuiz(quiz: Quiz): Promise<Quiz> {
     const quizEntity = await this.quizRepository.save(quiz);
-    await client.set(quizEntity.quizId, JSON.stringify(quizEntity));
+    const plain = instanceToPlain(quizEntity);
+    await client.json.set(quizEntity.quizId, "$", plain);
     await client.expire(quizEntity.quizId, 60 * 60 * 3);
 
     return quizEntity;

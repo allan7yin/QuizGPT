@@ -1,11 +1,11 @@
 import dotenv from "dotenv";
 import { DataSource } from "typeorm";
-import { Answer } from "../src/quiz/entities/answer.js";
-import { Option } from "../src/quiz/entities/option.js";
-import { Question } from "../src/quiz/entities/question.js";
-import { Quiz } from "../src/quiz/entities/quiz.js";
-import { QuizAttempt } from "../src/quiz/entities/quizAttempt.js";
-import { UserAnswer } from "../src/quiz/entities/userAnswer.js";
+import { Answer } from "../src/entities/answer.js";
+import { Option } from "../src/entities/option.js";
+import { Question } from "../src/entities/question.js";
+import { Quiz } from "../src/entities/quiz.js";
+import { QuizAttempt } from "../src/entities/quizAttempt.js";
+import { UserAnswer } from "../src/entities/userAnswer.js";
 
 dotenv.config;
 
