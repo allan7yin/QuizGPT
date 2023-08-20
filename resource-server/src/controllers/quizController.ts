@@ -118,27 +118,6 @@ quizController.post("/quiz/:quizId/save", (req: Request, res: Response) => {
   }
 });
 
-quizController.post("/quiz/:quizId/save", (req: Request, res: Response) => {
-  let quizAttemptDto: QuizAttemptDto;
-  let quizAttempt: QuizAttempt;
-  const quizId: string = req.params.quizId;
-  try {
-    const jsonData = JSON.stringify(req.body);
-    console.log("Saving quiz attempt");
-    quizAttemptDto = plainToInstance(QuizAttemptDto, jsonData);
-    quizAttempt = plainToInstance(QuizAttempt, quizAttemptDto);
-
-    quizService.saveQuizAttempt(quizAttempt);
-    res.status(200).send(quizAttempt.quizAttemptId);
-  } catch (error) {
-    res
-      .status(400)
-      .send(
-        "Error: Encountered issues when saving quiz attempt for quiz with id ${quizId}"
-      );
-  }
-});
-
 quizController.delete("/quiz/:quizId/delete", (req: Request, res: Response) => {
   let quizAttemptDto: QuizAttemptDto;
   const quizId: string = req.params.quizId;
