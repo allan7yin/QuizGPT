@@ -1,5 +1,6 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { FC } from "react";
+import "../Styles/AuthButton.css";
 
 const LogoutButton: FC = () => {
   const { logout } = useAuth0();

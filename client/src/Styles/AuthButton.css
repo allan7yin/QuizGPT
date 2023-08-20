@@ -1,0 +1,14 @@
+button {
+  padding: 8px;
+  background-color: #1a1a19;
+  font-family: "Overpass", sans-serif;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 10px;
+  transition: background-color 0.3s;
+  border-color: transparent;
+
+  &:hover {
+    background-color: #ff6347; /* Change the background color on hover */
+  }
+}

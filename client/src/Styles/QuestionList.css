@@ -1,10 +1,10 @@
 .question-list-container {
-  background-color: #202023;
+  background-color: #fff;
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 40%;
-  color: #fff;
+  color: #1a1a19;
   flex-wrap: wrap;
   gap: 20px;
   margin-bottom: 50px;
@@ -15,7 +15,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  color: #fff;
+  color: #1a1a19;
   font-family: "Overpass", sans-serif;
   border-radius: 7px; /* Set the border radius to create rounded edges */
   font-size: 50px;
