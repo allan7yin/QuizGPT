@@ -3,10 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { useQuizForm } from "../Hooks/useQuizForm";
 
 import { ChangeEvent, SetStateAction } from "react";
-import cubes from "../Images/cubes.png";
 import {
   Content,
-  CustomImage,
   EncapsulatingContainer,
   Form,
   LeftContainer,
@@ -39,7 +37,6 @@ const CreateQuizPage = () => {
   ) => {
     const input = event.target.value;
 
-    // Use regular expression to only allow digits (numbers)
     if (/^\d*$/.test(input)) {
       setterFunction(input);
     }
@@ -167,9 +164,7 @@ const CreateQuizPage = () => {
           </Form>
         </LeftContainer>
         <RightContainer>
-          <Content>
-            <CustomImage src={cubes} />
-          </Content>
+          <Content></Content>
         </RightContainer>
       </EncapsulatingContainer>
     </>

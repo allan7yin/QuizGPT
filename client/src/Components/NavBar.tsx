@@ -1,5 +1,5 @@
 import { FC, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../Styles/NavBar.css";
 
 import { useAuth0 } from "@auth0/auth0-react";
@@ -8,8 +8,21 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import LoginButton from "./LoginButton";
 import LogoutButton from "./LogoutButton";
 
+const style = {
+  position: "absolute" as "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
+
 const Navbar: FC = () => {
   const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const saveAccessToken = async () => {
@@ -38,11 +51,18 @@ const Navbar: FC = () => {
             QuizGPT
           </Link>
         </li>
-        <li className="NavItem">
-          <Link className="NavLink" to="/quizzes">
-            Quizzes
-          </Link>
-        </li>
+        {isAuthenticated ? (
+          <li
+            className="NavItem"
+            onClick={() => {
+              console.log("GOING TO QUIZZES");
+            }}
+          >
+            <Link className="NavLink" to="/quizzes">
+              Quizzes
+            </Link>
+          </li>
+        ) : null}
         <li className="NavItem">
           <Link className="NavLink" to="/services">
             Export
@@ -61,11 +81,11 @@ const Navbar: FC = () => {
 
         <li className="NavItem NavListRight">
           {isAuthenticated ? (
-            <div className="NavButton">
+            <div className="NavButton AuthButton">
               <LogoutButton />
             </div>
           ) : (
-            <div className="NavButton">
+            <div className="NavButton AuthButton">
               <LoginButton message="Log In" />
             </div>
           )}

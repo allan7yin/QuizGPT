@@ -11,7 +11,8 @@ const LeftContainer = styled(Container)`
 const RightContainer = styled(Container)`
   flex: 0 0 50%;
   box-sizing: border-box;
-  background-color: #f7f6f0;
+  background: #f7f6f0 url('https://source.unsplash.com/rMmibFe4czY') center/cover no-repeat;
+  background-image:
   color: #f7f6f0;
   padding: 9%;
 `;

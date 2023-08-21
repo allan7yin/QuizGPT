@@ -7,7 +7,7 @@ const LogoutButton: FC = () => {
 
   const handleLogout = () => {
     // Remove token from localStorage
-    localStorage.removeItem("authToken");
+    localStorage.removeItem("token");
 
     // Call the Auth0 logout function
     logout({ logoutParams: { returnTo: window.location.origin } });
