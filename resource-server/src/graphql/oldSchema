@@ -1,9 +1,14 @@
+import { QuizService } from "../services/quizService.js";
+
 import {
-    GraphQLID,
-    GraphQLList,
-    GraphQLObjectType,
-    GraphQLString
+  GraphQLID,
+  GraphQLList,
+  GraphQLObjectType,
+  GraphQLSchema,
+  GraphQLString,
 } from "graphql";
+
+const quizService = new QuizService();
 
 const QuizType = new GraphQLObjectType({
   name: "Quiz",
@@ -60,11 +65,20 @@ const UserAnswerType = new GraphQLObjectType({
 });
 
 const RootQuery = new GraphQLObjectType({
-    name: "Query",
-    fields: {
-        quizzes: {
-            type: new GraphQLList(QuizType),
-            resolve(parent, )
-        }
-    }
-})
+  name: "RootQueryType",
+  fields: {
+    quiz: {
+      type: QuizType,
+      args: { id: { type: GraphQLID } },
+      resolve(parent, args) {
+        return quizService.getQuizById(args.id);
+      },
+    },
+  },
+});
+
+const schema = new GraphQLSchema({
+  query: RootQuery,
+});
+
+export default {};

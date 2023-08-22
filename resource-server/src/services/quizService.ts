@@ -27,12 +27,7 @@ export class QuizService {
       } else {
         quiz = await this.getQuizById(quizId);
 
-        const jsonFormattedData = {
-          quizId: quiz.quizId,
-          title: quiz.title,
-          questions: instanceToPlain(quiz.questions),
-          attempts: instanceToPlain(quiz.attempts),
-        };
+        const jsonFormattedData = instanceToPlain(quiz);
         console.log(jsonFormattedData);
         await client.json.set(quiz.quizId, "$", jsonFormattedData);
         await client.expire(quiz.quizId, 60 * 60 * 3);
@@ -60,7 +55,6 @@ export class QuizService {
     while (attempts < maxAttempts) {
       quiz = await this.quizRepository.findOne({
         where: { quizId: id },
-        relations: ["questions", "questions.options", "questions.answers"],
       });
 
       if (quiz) {
