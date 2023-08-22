@@ -97,7 +97,7 @@ export class QuizService {
     return this.questionRepository.find();
   }
 
-  async getQuestionById(id: number): Promise<Question> {
+  async getQuestionById(id: string): Promise<Question> {
     const question = await this.questionRepository.findOneBy({
       questionId: id,
     });
@@ -111,7 +111,7 @@ export class QuizService {
     return this.questionRepository.save(question);
   }
 
-  async deleteQuestion(id: number): Promise<void> {
+  async deleteQuestion(id: string): Promise<void> {
     const question = await this.getQuestionById(id);
     await this.questionRepository.remove(question);
   }

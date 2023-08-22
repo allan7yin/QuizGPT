@@ -9,8 +9,8 @@ import { Question } from "./question.js";
 
 @Entity("Answer")
 export class Answer {
-  @PrimaryGeneratedColumn()
-  answerId!: number;
+  @PrimaryGeneratedColumn("uuid")
+  answerId!: string;
 
   @Column()
   content!: String;

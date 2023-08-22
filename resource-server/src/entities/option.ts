@@ -9,8 +9,8 @@ import { Question } from "./question.js";
 
 @Entity("Option")
 export class Option {
-  @PrimaryGeneratedColumn()
-  optionId!: number;
+  @PrimaryGeneratedColumn("uuid")
+  optionId!: string;
 
   @Column()
   content!: String;

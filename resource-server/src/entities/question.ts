@@ -13,11 +13,11 @@ import { Quiz } from "./quiz.js";
 
 @Entity("Question")
 export class Question {
-  @PrimaryGeneratedColumn()
-  questionId!: number;
+  @PrimaryGeneratedColumn("uuid")
+  questionId!: string;
 
   @Column()
-  content!: String;
+  content!: string;
 
   @OneToMany(() => Option, (option) => option.question, {
     cascade: true,

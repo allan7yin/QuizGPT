@@ -94,7 +94,8 @@ export class RabbitmqService {
       const messageString: string = message.content.toString("utf-8");
 
       const dataObject = JSON.parse(messageString);
-      console.log(dataObject.userId);
+      const optionList: string[] = [];
+      const answerList: string[] = [];
 
       const quiz = new Quiz();
       quiz.quizId = dataObject.id;
@@ -121,7 +122,6 @@ export class RabbitmqService {
         question.content = q.content;
         quiz.questions.push(question);
       }
-      console.log(quiz);
 
       // check if the userId is in the database, if not, we will create a new user
       let user = await userRepository.findOne({
@@ -140,7 +140,54 @@ export class RabbitmqService {
       await userRepository.save(user);
       await client.sAdd(user.userId, quiz.quizId);
       // want to save to redis cache here
-      await client.json.set(quiz.quizId, "$", JSON.stringify(quiz));
+      console.log(quiz);
+      var counter = 1;
+      for (let question of quiz.questions) {
+        await client.sAdd(question.questionId, "options"); // we can use this technique to simulate nested data structures
+        await client.sAdd(question.questionId, "answers");
+
+        for (let option of question.options) {
+          console.log(counter);
+
+          // await client.json.set(
+          //   option.optionId.toString(),
+          //   "$",
+          //   JSON.stringify(option.content)
+          // );
+
+          await client.expire(option.optionId.toString(), 60 * 60 * 3);
+          await client.rPush(
+            `${question.questionId}:options`,
+            JSON.stringify(option)
+          ); // this is pushes this onto the question options list
+          counter += 1;
+        }
+
+        for (let answer of question.answers) {
+          console.log(counter);
+          // await client.json.set(
+          //   answer.answerId.toString(),
+          //   "$",
+          //   JSON.stringify(answer.content)
+          // );
+
+          await client.expire(answer.answerId.toString(), 60 * 60 * 3);
+          await client.rPush(
+            `${question.questionId}:answers`,
+            JSON.stringify(answer)
+          ); // this pushes this ontop the question answers list
+          counter += 1;
+        }
+
+        await client.expire(question.questionId.toString(), 60 * 60 * 3);
+
+        // now, we push the lists as "strings" to the questionId's set so that we can always find them
+        await client.sAdd(question.questionId, "options");
+        await client.sAdd(question.questionId, "answers"); // to find the options and quizzes, just do key:value to find the key to the list of options/answers
+        await client.sAdd(question.questionId, question.content);
+        await client.rPush(`${quiz.quizId}:questions`, question.questionId);
+      }
+
       await client.expire(quiz.quizId, 60 * 60 * 3); // expires in in 3 hours
     } catch (error) {
       console.log(error);

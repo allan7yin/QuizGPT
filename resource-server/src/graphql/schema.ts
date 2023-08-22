@@ -2,7 +2,8 @@ export const typeDefs = `#graphql
   type Quiz {
     quizId: ID!
     title: String!
-    questions: [Question]
+    topic: String!
+    questions: [Question]!
   }
 
   type Question {
@@ -29,5 +30,17 @@ export const typeDefs = `#graphql
     answers: [Answer]
 
     quiz(quizId: ID!): Quiz
+  }
+
+  type Mutation {
+    createQuiz(createQuizRequest: CreateQuizInput): Quiz
+  }
+  
+  input CreateQuizInput {
+    title: String!,
+    topic: String!,
+    numberOfQuestions: Int!,
+    numberOfOptionsPerQuestion: Int!
+    difficulty: String!
   }
 `;
