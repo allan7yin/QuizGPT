@@ -49,9 +49,7 @@ quizController.get("/quizzes", (req: Request, res: Response) => {
 
   try {
     quizService.getAllQuizzes(req.auth?.payload.sub!).then((result) => {
-      console.log(result);
       quizzes = result.map((quiz) => plainToInstance(QuizDto, quiz));
-      console.log(quizzes);
       res.status(200).send(quizzes);
     });
   } catch (error) {

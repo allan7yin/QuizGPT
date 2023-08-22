@@ -30,9 +30,10 @@ export class QuizService {
         const jsonFormattedData = {
           quizId: quiz.quizId,
           title: quiz.title,
-          questions: JSON.stringify(quiz.questions),
-          attempts: JSON.stringify(quiz.attempts),
+          questions: instanceToPlain(quiz.questions),
+          attempts: instanceToPlain(quiz.attempts),
         };
+        console.log(jsonFormattedData);
         await client.json.set(quiz.quizId, "$", jsonFormattedData);
         await client.expire(quiz.quizId, 60 * 60 * 3);
       }
