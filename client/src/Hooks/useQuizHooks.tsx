@@ -1,14 +1,10 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
 import { Question } from "../Interfaces/QuestionInterface";
+import { Quiz } from "../Interfaces/QuizInterface";
 import { dataShape } from "../Interfaces/dataShapeInterface";
 
-export const useQuizData = () => {
-  const location = useLocation();
-  const quizTitle = location.state.title;
-  const quizId = location.state.quizId;
-
-  console.log(location.state);
+export const useQuizData = (quiz: Quiz) => {
+  const quizTitle = quiz.title;
 
   const [questions, setQuestions] = useState<dataShape[]>([]);
   const [answers, setAnswers] = useState<dataShape[]>([]);
@@ -16,7 +12,7 @@ export const useQuizData = () => {
   const [title, setTitle] = useState("");
 
   const generateProcessingData = () => {
-    const quizData = location.state.questions;
+    const quizData = quiz.questions;
     const questionsArray: dataShape[] = [];
     const answersArray: dataShape[] = [];
     const optionsArray: dataShape[][] = [];
@@ -61,5 +57,5 @@ export const useQuizData = () => {
     generateProcessingData();
   }, []);
 
-  return { questions, answers, options, title, quizId };
+  return { questions, answers, options, title };
 };

@@ -32,22 +32,24 @@ const BasicModal: React.FC<ModalProps> = ({
   handleConfirm,
 }) => {
   return (
-    <Modal
-      open={open}
-      onClose={onClose}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
-    >
-      <Box sx={style}>
-        <Typography id="modal-modal-title" variant="h6" component="h2">
-          {modalTitle}
-        </Typography>
-        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-          {modalMessage}
-        </Typography>
-        <Button onClick={handleConfirm}>Confirm</Button>
-      </Box>
-    </Modal>
+    <div>
+      <Modal
+        open={open}
+        onClose={onClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            {modalTitle}
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            {modalMessage}
+          </Typography>
+          <Button onClick={handleConfirm}>Confirm</Button>
+        </Box>
+      </Modal>
+    </div>
   );
 };
 

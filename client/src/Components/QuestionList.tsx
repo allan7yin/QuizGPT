@@ -151,12 +151,6 @@ const QuestionList: FC<QuestionListProps> = ({
         Submit
       </button>
       {submitted && <button onClick={handleSave}>Save</button>}
-      {/* {error && (
-        <BasicModal
-          modalTitle="ERROR"
-          modalMessage="Cannot save quiz without submitting"
-        />
-      )} */}
       {submitted && <button onClick={handleRetry}>Retry</button>}
     </form>
   );

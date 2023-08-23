@@ -1,3 +1,4 @@
+import { useMutation, useQuery } from "@apollo/client";
 import {
   Button,
   Card,
@@ -13,79 +14,67 @@ import { useNavigate } from "react-router-dom";
 import { createApi } from "unsplash-js";
 import BasicModal from "../Components/Modal";
 import { Quiz } from "../Interfaces/QuizInterface";
+import { DELETE_QUIZ_MUTATION } from "../graphql/Mutations";
+import { LOAD_QUIZZES_TITLE } from "../graphql/Queries";
 
 const unsplash = createApi({
   accessKey: "U02Os41iR5j0Dqdvx5pY9bOEz8gjCubjq6b5x8mvsZE",
 });
 
 const QuizzesPage: FC = () => {
+  const accessToken = localStorage.getItem("token");
+  console.log(accessToken);
+  const { loading, data } = useQuery(LOAD_QUIZZES_TITLE, {
+    context: {
+      headers: {
+        Authorization: accessToken,
+      },
+    },
+  });
+
+  const [deleteQuiz, { error }] = useMutation(DELETE_QUIZ_MUTATION, {
+    context: {
+      headers: {
+        Authorization: accessToken,
+      },
+    },
+  });
+
   const navigate = useNavigate();
   const [quizzes, setQuizzes] = useState<Quiz[]>([]);
   const [images, setImages] = useState<string[]>([]);
   const [isConfirmModalOpen, setConfirmModalOpen] = useState(false);
 
   const handleCreateQuiz = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    const accessToken = localStorage.getItem("token");
-    console.log(accessToken);
-
     e.preventDefault();
     navigate("/createQuiz");
   };
 
   useEffect(() => {
-    fetchQuizzes();
-  }, []);
-
-  const fetchQuizzes = async () => {
-    const accessToken = localStorage.getItem("token");
-    try {
-      const response = await fetch("http://localhost:8080/api/v1/quizzes", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          authorization: `Bearer ${accessToken}`,
-        },
-      });
-      if (response.ok) {
-        const data = await response.json();
-        console.log(data);
-        setQuizzes(data);
-      } else {
-        console.log("Fetch failed with status:", response.status);
-      }
-    } catch (error) {
-      console.error("Fetch error:", error);
+    if (data) {
+      setQuizzes(data.quizzes);
     }
-  };
+  }, [data]);
 
   const handleDelete = async (quizId: string) => {
-    const accessToken = localStorage.getItem("token");
-    try {
-      const response = await fetch(
-        `http://localhost:8080/api/v1/quiz/${quizId}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
+    await deleteQuiz({
+      variables: {
+        quizId,
+      },
+    });
 
-      if (response.ok) {
-        console.log("Deleted quiz");
-        setQuizzes(quizzes.filter((quiz) => quiz.quizId !== quizId));
-      } else {
-        console.log("Fetch failed with status:", response.status);
-      }
-    } catch (error) {
-      console.error("Fetch error:", error);
+    if (error) {
+      console.log(error);
+    } else {
+      console.log("Deleted quiz");
+      setQuizzes(quizzes.filter((quiz) => quiz.quizId !== quizId));
+      setConfirmModalOpen(false);
     }
   };
 
   const handleViewQuiz = async (quiz: Quiz) => {
     // Inside a function or event handler
-    navigate(`/quiz/${quiz.quizId}`, { state: quiz });
+    navigate(`/quiz/${quiz.quizId}`, { state: quiz.quizId });
   };
 
   return (

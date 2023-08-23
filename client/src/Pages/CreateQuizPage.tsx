@@ -1,8 +1,8 @@
+import { useMutation } from "@apollo/client";
 import { Button, TextField, Typography } from "@mui/material";
+import { ChangeEvent, SetStateAction } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQuizForm } from "../Hooks/useQuizForm";
-
-import { ChangeEvent, SetStateAction } from "react";
 import {
   Content,
   EncapsulatingContainer,
@@ -10,8 +10,17 @@ import {
   LeftContainer,
   RightContainer,
 } from "../Styles/MaterialUIStyledComponents/CreateQuizPageComponents";
+import { CREATE_QUIZ_MUTATION } from "../graphql/Mutations";
 
 const CreateQuizPage = () => {
+  const accessToken = localStorage.getItem("token");
+  const [createQuiz, { error, data }] = useMutation(CREATE_QUIZ_MUTATION, {
+    context: {
+      headers: {
+        Authorization: accessToken,
+      },
+    },
+  });
   const navigate = useNavigate();
 
   const {
@@ -45,41 +54,32 @@ const CreateQuizPage = () => {
   const handleQuizCreate = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const accessToken = localStorage.getItem("token");
-    console.log(accessToken);
-
-    const quizData = {
+    console.log({
       title: inputTitle,
       topic: inputTopic,
       numberOfQuestions: inputNumQuestions,
       numberOfOptionsPerQuestion: inputNumOptions,
       difficulty: inputDifficulty,
-    };
+    });
 
-    try {
-      console.log("1");
-      const response = await fetch("http://localhost:8080/api/v1/quiz", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          authorization: `Bearer ${accessToken}`,
+    const response = await createQuiz({
+      variables: {
+        CreateQuizInput: {
+          title: inputTitle,
+          topic: inputTopic,
+          numberOfQuestions: parseInt(inputNumQuestions),
+          numberOfOptionsPerQuestion: parseInt(inputNumOptions),
+          difficulty: inputDifficulty,
         },
-        body: JSON.stringify(quizData),
-      });
+      },
+    });
 
-      console.log("2");
-
-      if (response.ok) {
-        const quiz = await response.json();
-        console.log(quiz);
-        const quizId = quiz.quizId;
-        console.log(quizId);
-        navigate(`/quiz/${quizId}`, { state: quiz });
-      } else {
-        console.log("Something went wrong ...");
-      }
-    } catch (error) {
-      console.error("Create Quiz Request failed:", error);
+    if (error) {
+      console.log(error);
+    } else {
+      const quiz = response.data.createQuiz;
+      console.log(quiz);
+      navigate(`/quiz/${quiz.quizId}`, { state: quiz });
     }
   };
 
