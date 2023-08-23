@@ -7,6 +7,7 @@ import {
   Relation,
 } from "typeorm";
 
+import { Exclude } from "class-transformer";
 import { Answer } from "./answer.js";
 import { Option } from "./option.js";
 import { Quiz } from "./quiz.js";
@@ -19,6 +20,7 @@ export class Question {
   @Column()
   content!: string;
 
+  @Exclude()
   @OneToMany(() => Option, (option) => option.question, {
     cascade: true,
     onDelete: "CASCADE",
@@ -26,6 +28,7 @@ export class Question {
   //   @JoinColumn({ name: "questionId_fk", referencedColumnName: "questionId" })
   options!: Relation<Option[]>;
 
+  @Exclude()
   @OneToMany(() => Answer, (answer) => answer.question, {
     cascade: true,
     onDelete: "CASCADE",
@@ -33,6 +36,7 @@ export class Question {
   //   @JoinColumn({ name: "questionId_fk", referencedColumnName: "questionId" })
   answers!: Relation<Answer[]>;
 
+  @Exclude()
   @ManyToOne(() => Quiz, (quiz) => quiz.questions, {
     onDelete: "CASCADE",
   })

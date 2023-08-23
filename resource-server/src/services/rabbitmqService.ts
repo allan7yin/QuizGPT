@@ -94,8 +94,6 @@ export class RabbitmqService {
       const messageString: string = message.content.toString("utf-8");
 
       const dataObject = JSON.parse(messageString);
-      const optionList: string[] = [];
-      const answerList: string[] = [];
 
       const quiz = new Quiz();
       quiz.quizId = dataObject.id;
@@ -143,9 +141,6 @@ export class RabbitmqService {
       console.log(quiz);
       var counter = 1;
       for (let question of quiz.questions) {
-        await client.sAdd(question.questionId, "options"); // we can use this technique to simulate nested data structures
-        await client.sAdd(question.questionId, "answers");
-
         for (let option of question.options) {
           console.log(counter);
 
@@ -155,7 +150,6 @@ export class RabbitmqService {
           //   JSON.stringify(option.content)
           // );
 
-          await client.expire(option.optionId.toString(), 60 * 60 * 3);
           await client.rPush(
             `${question.questionId}:options`,
             JSON.stringify(option)
@@ -171,7 +165,6 @@ export class RabbitmqService {
           //   JSON.stringify(answer.content)
           // );
 
-          await client.expire(answer.answerId.toString(), 60 * 60 * 3);
           await client.rPush(
             `${question.questionId}:answers`,
             JSON.stringify(answer)
@@ -182,10 +175,16 @@ export class RabbitmqService {
         await client.expire(question.questionId.toString(), 60 * 60 * 3);
 
         // now, we push the lists as "strings" to the questionId's set so that we can always find them
-        await client.sAdd(question.questionId, "options");
-        await client.sAdd(question.questionId, "answers"); // to find the options and quizzes, just do key:value to find the key to the list of options/answers
-        await client.sAdd(question.questionId, question.content);
+        await client.rPush(question.questionId, "options");
+        await client.rPush(question.questionId, "answers"); // to find the options and quizzes, just do key:value to find the key to the list of options/answers
+        await client.rPush(question.questionId, question.content);
+
         await client.rPush(`${quiz.quizId}:questions`, question.questionId);
+
+        await client.expire(question.questionId, 60 * 60 * 3); // expires in in 3 hours
+        await client.expire(`${question.questionId}:options`, 60 * 60 * 3);
+        await client.expire(`${question.questionId}:answers`, 60 * 60 * 3);
+        await client.expire(`${quiz.quizId}:questions`, 60 * 60 * 3);
       }
 
       await client.expire(quiz.quizId, 60 * 60 * 3); // expires in in 3 hours

@@ -2,17 +2,17 @@ import { Long } from "typeorm";
 import { CreateQuizRequestDto } from "../dtos/createQuizRequestDto.js";
 import { Question } from "../entities/question.js";
 import { Quiz } from "../entities/quiz.js";
-import { getAnswerRepository } from "../repositories/answerRepository.js";
-import { getOptionRepository } from "../repositories/optionRepository.js";
-import { getQuestionRepository } from "../repositories/questionRepository.js";
+import { AnswerService } from "../services/answerService.js";
+import { OptionService } from "../services/optionService.js";
+import { QuestionService } from "../services/questionService.js";
 import { QuizService } from "../services/quizService.js";
 import { RabbitmqService } from "../services/rabbitmqService.js";
 
-const questionRepository = getQuestionRepository();
-const optionRepository = getOptionRepository();
-const answerRespoitory = getAnswerRepository();
 const rabbitmq = new RabbitmqService();
 const quizService = new QuizService();
+const questionService = new QuestionService();
+const answerService = new AnswerService();
+const optionService = new OptionService();
 await rabbitmq.setup();
 rabbitmq.consumeGptRequestMessageFromMq();
 
@@ -38,55 +38,22 @@ const resolvers = {
   Quiz: {
     questions: async (parent: Quiz) => {
       console.log("getting questions in query resolver");
-      const questions = await questionRepository.find({
-        where: {
-          quiz: {
-            quizId: parent.quizId,
-          },
-        },
-      });
-
-      if (questions) {
-        return questions;
-      }
-
-      return [];
+      const questions = await questionService.getQuestions(parent.quizId);
+      return questions;
     },
   },
 
   Question: {
     answers: async (parent: Question) => {
       console.log("getting answers in Question query resolver");
-      const answers = await answerRespoitory.find({
-        where: {
-          question: {
-            questionId: parent.questionId,
-          },
-        },
-      });
-
-      if (answers) {
-        return answers;
-      }
-
-      return [];
+      const answers = await answerService.getAnswers(parent.questionId);
+      return answers;
     },
 
     options: async (parent: Question) => {
       console.log("getting options in Question query resolver");
-      const options = await optionRepository.find({
-        where: {
-          question: {
-            questionId: parent.questionId,
-          },
-        },
-      });
-
-      if (options) {
-        return options;
-      }
-
-      return [];
+      const options = await optionService.getAnswers(parent.questionId);
+      return options;
     },
   },
 
