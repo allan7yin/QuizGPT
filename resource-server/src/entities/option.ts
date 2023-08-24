@@ -1,4 +1,3 @@
-import { Exclude } from "class-transformer";
 import {
   Column,
   Entity,
@@ -10,13 +9,12 @@ import { Question } from "./question.js";
 
 @Entity("Option")
 export class Option {
-  @PrimaryGeneratedColumn("uuid")
-  optionId!: string;
+  @PrimaryGeneratedColumn()
+  optionId!: number;
 
   @Column()
   content!: String;
 
-  @Exclude()
   @ManyToOne(() => Question, (question) => question.options, {
     onDelete: "CASCADE",
   })

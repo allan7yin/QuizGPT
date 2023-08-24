@@ -9,7 +9,7 @@ import { QuizAttempt } from "./quizAttempt.js";
 
 @Entity("UserAnswer")
 export class UserAnswer {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn()
   userAnswerId!: number;
 
   @ManyToOne(() => QuizAttempt, (quizAttempt) => quizAttempt.userAnswers)

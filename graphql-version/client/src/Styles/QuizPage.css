@@ -1,0 +1,26 @@
+.quiz-container {
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 1%;
+}
+
+.quiz-title {
+  background-color: #fff;
+  padding-left: 15px;
+  padding-right: 15px;
+  height: 50px;
+  width: 30%;
+  border-radius: 7px; /* Set the border radius to create rounded edges */
+  display: flex;
+  justify-content: center;
+  color: #1a1a19;
+  font-family: "Overpass", sans-serif;
+  text-align: center;
+  font-size: 30px;
+  align-items: center;
+  margin-bottom: 1%;
+  outline: none;
+  border: transparent;
+}

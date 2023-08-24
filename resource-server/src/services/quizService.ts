@@ -27,8 +27,12 @@ export class QuizService {
       } else {
         quiz = await this.getQuizById(quizId);
 
-        const jsonFormattedData = instanceToPlain(quiz);
-        console.log(jsonFormattedData);
+        const jsonFormattedData = {
+          quizId: quiz.quizId,
+          title: quiz.title,
+          questions: JSON.stringify(quiz.questions),
+          attempts: JSON.stringify(quiz.attempts),
+        };
         await client.json.set(quiz.quizId, "$", jsonFormattedData);
         await client.expire(quiz.quizId, 60 * 60 * 3);
       }
@@ -55,6 +59,7 @@ export class QuizService {
     while (attempts < maxAttempts) {
       quiz = await this.quizRepository.findOne({
         where: { quizId: id },
+        relations: ["questions", "questions.options", "questions.answers"],
       });
 
       if (quiz) {
@@ -97,7 +102,7 @@ export class QuizService {
     return this.questionRepository.find();
   }
 
-  async getQuestionById(id: string): Promise<Question> {
+  async getQuestionById(id: number): Promise<Question> {
     const question = await this.questionRepository.findOneBy({
       questionId: id,
     });
@@ -111,7 +116,7 @@ export class QuizService {
     return this.questionRepository.save(question);
   }
 
-  async deleteQuestion(id: string): Promise<void> {
+  async deleteQuestion(id: number): Promise<void> {
     const question = await this.getQuestionById(id);
     await this.questionRepository.remove(question);
   }

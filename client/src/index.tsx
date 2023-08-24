@@ -6,13 +6,6 @@ import App from "./App";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 
-import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
-
-const client = new ApolloClient({
-  uri: "http://localhost:4000",
-  cache: new InMemoryCache(),
-});
-
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
@@ -42,25 +35,23 @@ const theme = createTheme({
 });
 
 root.render(
-  <ApolloProvider client={client}>
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <BrowserRouter>
-        <Auth0Provider
-          domain="dev-w5ogvkwglktdnp2m.us.auth0.com"
-          clientId="0dfvdORx076LBUisN9JcW08AXWNfMevD"
-          authorizationParams={{
-            redirect_uri: window.location.origin,
-            audience: "http://localhost:8080/api/v1",
-            scope:
-              "read:current_user update:current_user_metadata read:quiz create:quiz read:messages",
-          }}
-        >
-          <App />
-        </Auth0Provider>
-      </BrowserRouter>
-    </ThemeProvider>
-  </ApolloProvider>
+  <ThemeProvider theme={theme}>
+    <CssBaseline />
+    <BrowserRouter>
+      <Auth0Provider
+        domain="dev-w5ogvkwglktdnp2m.us.auth0.com"
+        clientId="0dfvdORx076LBUisN9JcW08AXWNfMevD"
+        authorizationParams={{
+          redirect_uri: window.location.origin,
+          audience: "http://localhost:8080/api/v1",
+          scope:
+            "read:current_user update:current_user_metadata read:quiz create:quiz read:messages",
+        }}
+      >
+        <App />
+      </Auth0Provider>
+    </BrowserRouter>
+  </ThemeProvider>
 );
 
 reportWebVitals();

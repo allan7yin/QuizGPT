@@ -3,7 +3,7 @@ import {
   Entity,
   ManyToOne,
   OneToMany,
-  PrimaryGeneratedColumn,
+  PrimaryColumn,
   Relation,
   UpdateDateColumn,
 } from "typeorm";
@@ -13,7 +13,7 @@ import { UserAnswer } from "./userAnswer.js";
 
 @Entity("QuizAttempt")
 export class QuizAttempt {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryColumn()
   quizAttemptId!: string;
 
   @ManyToOne(() => Quiz, (quiz) => quiz.attempts)

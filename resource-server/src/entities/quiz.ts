@@ -1,4 +1,4 @@
-import { Exclude, Expose } from "class-transformer";
+import { Expose } from "class-transformer";
 import {
   Column,
   Entity,
@@ -21,20 +21,20 @@ export class Quiz {
   @Column()
   title!: string;
 
-  @Exclude()
+  @Expose()
   @OneToMany(() => Question, (question) => question.quiz, {
     cascade: true,
+    eager: true,
     onDelete: "CASCADE",
   })
   questions!: Relation<Question[]>;
 
-  @Exclude()
+  @Expose()
   @OneToMany(() => QuizAttempt, (quizAttempt) => quizAttempt.quiz, {
     onDelete: "CASCADE",
   })
   attempts!: Relation<QuizAttempt[]>;
 
-  @Exclude()
   @ManyToOne(() => User, (user) => user.quizzes, { onDelete: "CASCADE" })
   user!: User;
 }

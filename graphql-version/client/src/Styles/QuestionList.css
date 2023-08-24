@@ -1,0 +1,70 @@
+.question-list-container {
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 40%;
+  color: #1a1a19;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 50px;
+}
+
+.question-list-title {
+  padding-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #1a1a19;
+  font-family: "Overpass", sans-serif;
+  border-radius: 7px; /* Set the border radius to create rounded edges */
+  font-size: 50px;
+  font-weight: bolder;
+}
+
+.question-container {
+  width: 80%;
+  background-color: #fff;
+  color: #202023;
+  border-radius: 10px;
+  padding: 20px;
+  flex-direction: column;
+  display: flex;
+  align-items: center; /* Center the question text horizontally */
+  text-align: center;
+}
+
+.question-container.correct {
+  /* Green background for correct answers */
+  background-color: #d7fcd6;
+}
+
+.question-container.wrong {
+  /* Red background for wrong answers */
+  background-color: #fddddd;
+}
+
+.question {
+  width: 100%; /* Set the question width to 100% */
+  font-size: 120%;
+  font-family: "Overpass", sans-serif;
+  margin-bottom: 15px; /* Add some space below the question */
+}
+
+.options-container {
+  flex: 1;
+  width: 100%; /* Set the options container width to 100% */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.option {
+  font-family: "Overpass", sans-serif;
+  color: #202023;
+  margin-bottom: 7px;
+}
+
+input[type="checkbox"] {
+  margin-right: 5px;
+}
