@@ -19,3 +19,65 @@ Between the **Server** and `questionGPT`, `RabbitMQ` was used a message broker t
 
 ### How to Run 
 This will be detailed for all 3 microservices 
+
+**Server **
+1. Install the dependencies
+```
+npm i 
+```
+2. Run Server -- make sure Redis, RabbitMQ, and PostgreSQL are running
+```
+npm run start
+```
+
+For the above service, please fill in the needed sections in the `.env`. file. 
+
+**questionGPT**
+1. Enter Python Vritual Environment (Example shown below, e.g open a terminal in the project root directory and run):
+```
+$ virtualenv env
+```
+2. Then enter the virtual environment:
+```
+$ source env/bin/activate
+```
+3. Then install the dependencies:
+```
+$ (env) pip install -r requirements.txt
+```
+4. Finally start the web server:
+```
+$ (env) flask run
+```
+This server will start on port 5000 by default. You can change this in `app.py` by changing the following line to this:
+```
+if __name__ == "__main__":
+    app.run(debug=True, port=<desired port>)
+```
+
+Before running, you will need to enter the following into your `.env` file:
+* OpenAI API secret key
+* RabbitMQ username and password (default ones are already in repo .env file. Change if yours are different.
+* RabbitMQ port (the one in repo is default one)
+
+**Client**
+1. Install the dependencies
+```
+npm i 
+```
+2. Run Server -- make sure Redis, RabbitMQ, and PostgreSQL are running
+```
+npm run start
+```
+
+
+
+
+
+
+
+
+
+
+
+
