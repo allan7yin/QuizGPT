@@ -65,7 +65,7 @@ Before running, you will need to enter the following into your `.env` file:
 ```
 npm i 
 ```
-2. Run Server -- make sure Redis, RabbitMQ, and PostgreSQL are running
+2. Run Server
 ```
 npm run start
 ```
