@@ -135,8 +135,49 @@ export class QuizService {
     return quizAttempt;
   }
 
-  async saveQuizAttempt(attempt: QuizAttempt): Promise<QuizAttempt> {
-    return this.quizAttemptRepository.save(attempt);
+  async saveQuizAttempt(
+    attempt: QuizAttempt,
+    quizId: string
+  ): Promise<QuizAttempt> {
+    console.log(attempt);
+    const associatedQuiz = await this.quizRepository.findOne({
+      where: { quizId },
+      relations: [
+        "questions",
+        "questions.options",
+        "questions.answers",
+        "attempts",
+      ],
+    });
+
+    console.log(associatedQuiz);
+    if (!associatedQuiz) {
+      throw new Error(`Quiz with ID ${quizId} not found.`);
+    }
+
+    associatedQuiz?.attempts.push(attempt);
+    await this.quizRepository.save(associatedQuiz);
+
+    const response = await this.quizAttemptRepository.save(attempt);
+    console.log(response);
+
+    for (let userAnswer of attempt.userAnswers) {
+    }
+
+    // we can go ahead and check this in redis, and update it, find it, and save it
+    const saveQuiz = await this.quizRepository.findOne({
+      where: { quizId },
+      relations: [
+        "questions",
+        "questions.options",
+        "questions.answers",
+        "attempts",
+        "attempts.userAnswers",
+      ],
+    });
+
+    console.log(saveQuiz);
+    return response;
   }
 
   async deleteQuizAttempt(id: string): Promise<void> {

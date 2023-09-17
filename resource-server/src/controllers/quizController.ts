@@ -98,16 +98,16 @@ quizController.delete("/quiz/:quizId", (req: Request, res: Response) => {
 });
 
 quizController.post("/quiz/:quizId/save", (req: Request, res: Response) => {
-  let quizAttemptDto: QuizAttemptDto;
   let quizAttempt: QuizAttempt;
-  const quizId: string = req.params.quizId;
+  const quizId = req.params.quizId.slice(1);
+  console.log(quizId);
   try {
-    const jsonData = JSON.stringify(req.body);
     console.log("Saving quiz attempt");
-    quizAttemptDto = plainToInstance(QuizAttemptDto, jsonData);
-    quizAttempt = plainToInstance(QuizAttempt, quizAttemptDto);
+    quizAttempt = plainToInstance(QuizAttempt, req.body);
 
-    quizService.saveQuizAttempt(quizAttempt);
+    console.log(quizAttempt);
+    console.log(typeof quizAttempt);
+    quizService.saveQuizAttempt(quizAttempt, quizId);
     res.status(200).send(quizAttempt.quizAttemptId);
   } catch (error) {
     res

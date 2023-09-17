@@ -12,7 +12,9 @@ export class UserAnswer {
   @PrimaryGeneratedColumn()
   userAnswerId!: number;
 
-  @ManyToOne(() => QuizAttempt, (quizAttempt) => quizAttempt.userAnswers)
+  @ManyToOne(() => QuizAttempt, (quizAttempt) => quizAttempt.userAnswers, {
+    cascade: true,
+  })
   quizAttempt!: Relation<QuizAttempt>;
 
   @Column()

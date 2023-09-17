@@ -1,20 +1,29 @@
 import { FC } from "react";
+import { Cursor, useTypewriter } from "react-simple-typewriter";
+import LoginButton from "../Components/LoginButton";
 import "../Styles/HomePage.css";
 
-import LoginButton from "../Components/LoginButton";
-
 const HomePage: FC = () => {
+  const [text] = useTypewriter({
+    words: ["Dynamic", "Custom", "Personalized", "Quick"],
+    loop: 0,
+    typeSpeed: 120,
+    deleteSpeed: 80,
+  });
+
   return (
     <>
       <div className="homepage-container">
         <div className="homepage-title">
-          {" "}
-          Quick online quiz maker: custom quizzes in seconds{" "}
+          <span>{text} </span>
+          <span>
+            <Cursor cursorColor="red" />
+          </span>
+          <span>online quiz maker</span>
         </div>
         <div className="homepage-subtitle">
-          Quizzes are a powerful tool for engagement, and wildly underrated for
-          bringing in more customers. Take yours to the next level with
-          Typeform.
+          Quizzes are a powerful tool for engagement and learning. Take yours to
+          the next level with QuizGPT, and create a quiz of any topic.
         </div>
 
         <div className="tryoutContainer">

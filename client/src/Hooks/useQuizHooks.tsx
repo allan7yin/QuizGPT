@@ -55,6 +55,15 @@ export const useQuizData = () => {
     setQuestions(questionsArray);
     setAnswers(answersArray);
     setOptions(optionsArray);
+
+    // want to sort the options array
+    for (let options of optionsArray) {
+      options.sort((a, b) => {
+        const firstCharA = a.content?.charAt(0) || "";
+        const firstCharB = b.content?.charAt(0) || "";
+        return firstCharA.localeCompare(firstCharB);
+      });
+    }
     setTitle(quizTitle);
   };
   useEffect(() => {

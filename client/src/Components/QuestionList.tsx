@@ -1,3 +1,4 @@
+import { Checkbox, FormControlLabel } from "@mui/material";
 import React, { FC, useState } from "react";
 import { dataShape } from "../Interfaces/dataShapeInterface";
 import "../Styles/QuestionList.css";
@@ -84,16 +85,22 @@ const QuestionList: FC<QuestionListProps> = ({
       };
 
       try {
-        const response = await fetch("http://localhost:8080/api/quizAttempt", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(attemptData),
-        });
+        console.log(JSON.stringify(attemptData));
+        const accessToken = localStorage.getItem("token");
+        const response = await fetch(
+          `http://localhost:8080/api/v1/quiz/:${quizId}/save`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              authorization: `Bearer ${accessToken}`,
+            },
+            body: JSON.stringify(attemptData),
+          }
+        );
 
         if (response.ok) {
-          // console.log(response.data);
+          console.log("saved attempt!");
         } else {
           console.log("Something went wrong while saving attempt...");
         }
@@ -125,39 +132,35 @@ const QuestionList: FC<QuestionListProps> = ({
           <div className="options-container">
             {options[index1].map((option, index2) => (
               <div key={index2}>
-                <label>
-                  <input
-                    type="checkbox"
-                    className="option"
-                    value={option.content}
-                    onChange={(event) =>
-                      handleOptionChange(
-                        index1,
-                        option.content!,
-                        event.target.checked
-                      )
-                    }
-                    checked={selectedOptions[index1] === option.content}
-                    disabled={submitted}
-                  />
-                  {option.content}
-                </label>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      className="option"
+                      checked={selectedOptions[index1] === option.content}
+                      disabled={submitted}
+                      onChange={(event) =>
+                        handleOptionChange(
+                          index1,
+                          option.content!,
+                          event.target.checked
+                        )
+                      }
+                    />
+                  }
+                  label={option.content}
+                />
               </div>
             ))}
           </div>
         </div>
       ))}
-      <button type="submit" onClick={handleSubmit}>
-        Submit
-      </button>
-      {submitted && <button onClick={handleSave}>Save</button>}
-      {/* {error && (
-        <BasicModal
-          modalTitle="ERROR"
-          modalMessage="Cannot save quiz without submitting"
-        />
-      )} */}
-      {submitted && <button onClick={handleRetry}>Retry</button>}
+      <div className="button-container">
+        <button type="submit" onClick={handleSubmit}>
+          Submit
+        </button>
+        {submitted && <button onClick={handleSave}>Save</button>}
+        {submitted && <button onClick={handleRetry}>Retry</button>}
+      </div>
     </form>
   );
 };

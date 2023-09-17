@@ -1,0 +1,58 @@
+version: "1"
+services:
+  react-app:
+    build:
+      context: ./client
+    ports:
+      - "3000:3000"
+
+  node-backend:
+    build:
+      context: ./resource-server
+    ports:
+      - "8080:8080"
+    depends_on:
+      - react-app
+      - rabbitmq
+      - redis
+      - postgres
+    links:
+      - rabbitmq
+      - redis
+      - postgres
+    environment:
+      AUTH0_AUDIENCE: "http://localhost:8080/api/v1" # Use the same value as in local development
+
+  flask-app:
+    build:
+      context: ./gptService
+    ports:
+      - "8001:5000"
+    depends_on:
+      - rabbitmq
+      - redis
+      - postgres
+    links:
+      - rabbitmq
+      - redis
+      - postgres
+
+  rabbitmq:
+    image: "rabbitmq:management"
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  redis:
+    image: "redis/redis-stack:latest"
+    ports:
+      - "6379:6379"
+
+  postgres:
+    image: "postgres:latest"
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: allan7yin
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: QuizGPT

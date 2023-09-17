@@ -24,7 +24,7 @@
 
 .question-container {
   width: 80%;
-  background-color: #fff;
+  background-color: #f4f4f4;
   color: #202023;
   border-radius: 10px;
   padding: 20px;
@@ -67,4 +67,13 @@
 
 input[type="checkbox"] {
   margin-right: 5px;
+}
+
+.button-container {
+  display: flex;
+  gap: 10px; /* Adjust the gap between buttons as needed */
+}
+
+.button-container button {
+  flex: 1;
 }
