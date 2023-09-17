@@ -1,4 +1,4 @@
-import amqp, { Message, MessageProperties } from "amqplib";
+import amqp, { Connection, Message, MessageProperties } from "amqplib";
 import dotenv from "dotenv";
 import { Repository } from "typeorm";
 import { CreateQuizRequestDto } from "../dtos/createQuizRequestDto.js";
@@ -16,6 +16,7 @@ dotenv.config();
 export class RabbitmqService {
   channel!: amqp.Channel;
   quizRepository!: Repository<Quiz>;
+  connection!: Connection;
 
   setup = async () => {
     const connection = await amqp.connect(process.env.RABBITMQ_SERVER!);
