@@ -28,7 +28,7 @@ quizController.post("/quiz", async (req: Request, res: Response) => {
       req.body.title,
       req.body.numberOfQuestions,
       req.body.numberOfOptionsPerQuestion,
-      req.body.difficulty
+      req.body.difficulty,
     );
 
     console.log(createQuizDto);
@@ -77,7 +77,7 @@ quizController.get("/quiz/:quizId", (req: Request, res: Response) => {
       .send("Error: Encountered issues while obtaining quiz with id ${quizId}");
 
     console.log(
-      "Error: Encountered issues while obtaining quiz with id ${quizId}"
+      "Error: Encountered issues while obtaining quiz with id ${quizId}",
     );
   }
 });
@@ -113,7 +113,7 @@ quizController.post("/quiz/:quizId/save", (req: Request, res: Response) => {
     res
       .status(400)
       .send(
-        "Error: Encountered issues when saving quiz attempt for quiz with id ${quizId}"
+        "Error: Encountered issues when saving quiz attempt for quiz with id ${quizId}",
       );
   }
 });
@@ -130,13 +130,13 @@ quizController.delete("/quiz/:quizId/delete", (req: Request, res: Response) => {
     res
       .status(200)
       .send(
-        "Deleted quiz attempt with attemptid ${quizAttemptDto.quizAttemptId}"
+        "Deleted quiz attempt with attemptid ${quizAttemptDto.quizAttemptId}",
       );
   } catch (error) {
     res
       .status(400)
       .send(
-        "Error: Encountered issues when saving quiz attempt for quiz with id ${quizId}"
+        "Error: Encountered issues when saving quiz attempt for quiz with id ${quizId}",
       );
   }
 });
