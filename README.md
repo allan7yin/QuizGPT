@@ -1,9 +1,8 @@
 # QuizGPT
-
-**Note:** To view legacy code (written in SpringBoot), refer to old [server](https://github.com/allan7yin/ResourceServer) and [authentication server](https://github.com/allan7yin/AccountMicroservice)
-
 ### System Diagram
-![IMG_5CA1904774EE-1](https://github.com/allan7yin/QuizGPT/assets/66652405/5b9273be-56b1-4ad7-b2bf-587660b2e258)
+![QuizGPT drawio](https://github.com/allan7yin/QuizGPT/assets/66652405/571a79a1-8a6a-4618-8a0f-809be6a787ca)
+
+
 
 ----
 
@@ -78,14 +77,4 @@ npm i
 npm run start
 ```
 
-
-
-
-
-
-
-
-
-
-
-
+**Note:** To view legacy code (written in SpringBoot), refer to old [server](https://github.com/allan7yin/ResourceServer) and [authentication server](https://github.com/allan7yin/AccountMicroservice)
